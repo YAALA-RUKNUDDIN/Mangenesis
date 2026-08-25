@@ -26,6 +26,7 @@ export function ScenarioProvider({ children }) {
   const [liveRisk, setLiveRisk] = useState(null);
   const [liveActions, setLiveActions] = useState(null);
   const [isLiveConnected, setIsLiveConnected] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Active Mine Metadata with fallback guarantees
   const fallbackMine = localMines.find((m) => m.id === activeMine) || localMines[0];
@@ -229,6 +230,8 @@ export function ScenarioProvider({ children }) {
     liveSatellite,
     liveZones: liveZones || activeMineData.zones,
     isLiveConnected,
+    mobileMenuOpen,
+    setMobileMenuOpen,
     refreshData,
   };
 

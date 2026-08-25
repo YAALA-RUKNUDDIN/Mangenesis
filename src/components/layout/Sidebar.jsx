@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
   Map,
@@ -9,8 +10,10 @@ import {
   Bell,
   Sparkles,
   Layers,
+  X,
 } from 'lucide-react';
 import { navItems } from '../../data/mockData';
+import { useScenario } from '../../context/ScenarioContext';
 
 const iconMap = {
   'command-center': LayoutDashboard,
@@ -22,8 +25,10 @@ const iconMap = {
 };
 
 export default function Sidebar() {
-  return (
-    <aside className="w-[260px] min-w-[260px] h-screen bg-[#0A0E17] border-r border-slate-800/80 flex flex-col z-30 select-none shadow-2xl relative">
+  const { mobileMenuOpen, setMobileMenuOpen } = useScenario();
+
+  const sidebarContent = (
+    <div className="w-[270px] h-full bg-[#0A0E17] border-r border-slate-800/80 flex flex-col z-30 select-none shadow-2xl relative">
       {/* Brand Header */}
       <div className="h-16 min-h-[64px] flex items-center justify-between px-5 border-b border-slate-800/80 bg-[#0A0E17]">
         <div className="flex items-center gap-3">
@@ -50,9 +55,17 @@ export default function Sidebar() {
             </p>
           </div>
         </div>
+
+        {/* Mobile Close Button */}
+        <button
+          onClick={() => setMobileMenuOpen(false)}
+          className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+        >
+          <X size={18} />
+        </button>
       </div>
 
-      {/* Navigation Section */}
+      {/* Navigation Section Header */}
       <div className="px-4 pt-5 pb-2">
         <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-slate-400 px-2.5 mb-1.5 font-bold">
           <span>Control Platform</span>
@@ -60,6 +73,7 @@ export default function Sidebar() {
         </div>
       </div>
 
+      {/* Nav Items */}
       <nav className="flex-1 px-3 space-y-1.5 overflow-y-auto">
         {navItems.map((item) => {
           const Icon = iconMap[item.id] || Layers;
@@ -67,6 +81,7 @@ export default function Sidebar() {
             <NavLink
               key={item.id}
               to={item.path}
+              onClick={() => setMobileMenuOpen(false)}
               className={({ isActive }) =>
                 `group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 relative ${
                   isActive
@@ -113,6 +128,43 @@ export default function Sidebar() {
           </span>
         </div>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar (hidden on mobile/tablet) */}
+      <aside className="hidden lg:flex shrink-0">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile Drawer Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 z-[3000] lg:hidden flex">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/75 backdrop-blur-sm"
+            />
+
+            {/* Slide-out Menu Panel */}
+            <motion.div
+              initial={{ x: -280 }}
+              animate={{ x: 0 }}
+              exit={{ x: -280 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 260 }}
+              className="relative z-10 h-full"
+            >
+              {sidebarContent}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

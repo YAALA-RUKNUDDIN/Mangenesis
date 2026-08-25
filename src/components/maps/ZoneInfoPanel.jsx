@@ -21,7 +21,7 @@ export default function ZoneInfoPanel({ zone, onClose }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 10, scale: 0.98 }}
         transition={{ duration: 0.15 }}
-        className="absolute bottom-4 right-14 sm:right-16 z-[1050] w-84 bg-[#0F121A] border border-[#303A50] rounded-xl p-4 shadow-2xl pointer-events-auto max-h-[85vh] overflow-y-auto"
+        className="absolute bottom-4 left-3 right-3 sm:left-auto sm:right-16 z-[1050] sm:w-84 max-w-sm bg-[#0F121A] border border-[#303A50] rounded-2xl p-4 shadow-2xl pointer-events-auto max-h-[80vh] overflow-y-auto"
         style={{ backgroundColor: '#0F121A' }}
       >
         {/* Header */}
@@ -101,20 +101,20 @@ export default function ZoneInfoPanel({ zone, onClose }) {
           <button
             onClick={handlePrioritize}
             disabled={isScheduled}
-            className={`w-full py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+            className={`w-full py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm ${
               isScheduled
-                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg'
+                ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/40'
+                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-glow-blue'
             }`}
           >
             {isScheduled ? (
               <>
-                <Check size={13} />
-                <span>Core Drill Dispatched to Schedule</span>
+                <Check size={13} className="text-emerald-400" />
+                <span>Survey Target Scheduled!</span>
               </>
             ) : (
               <>
-                <span>Schedule Diamond Core Drill</span>
+                <span>Target Drill Rig Schedule</span>
                 <ArrowRight size={13} />
               </>
             )}

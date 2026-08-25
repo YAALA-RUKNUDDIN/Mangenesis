@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Layers,
@@ -17,7 +17,11 @@ export default function ReserveIntelligence() {
   const { activeMineData, liveZones } = useScenario();
   const zonesToUse = liveZones || activeMineData.zones || [];
   const [selectedZone, setSelectedZone] = useState(null);
-  const [isFusionOpen, setIsFusionOpen] = useState(true);
+  
+  // On mobile screens, collapse data fusion panel by default so map is visible
+  const [isFusionOpen, setIsFusionOpen] = useState(() => {
+    return typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
+  });
 
   const fusionLayers = [
     { name: `${activeMineData.geological_formation}`, status: 'Active', color: '#3B82F6' },
@@ -32,10 +36,10 @@ export default function ReserveIntelligence() {
     <PageLayout
       title="Reserve Intelligence"
       subtitle={`AI-assisted identification of manganese exploration targets through spatial multi-band satellite data fusion across ${activeMineData.name}.`}
-      className="h-[calc(100vh-64px)] flex flex-col p-6 !pb-4"
+      className="min-h-[calc(100vh-80px)] lg:h-[calc(100vh-64px)] flex flex-col p-3.5 sm:p-6 lg:p-8 !pb-24 lg:!pb-4"
     >
       {/* Immersive GIS Map */}
-      <div className="relative flex-1 w-full rounded-2xl overflow-hidden border border-slate-800 bg-[#080B11] shadow-2xl">
+      <div className="relative flex-1 w-full min-h-[480px] lg:min-h-0 rounded-2xl overflow-hidden border border-slate-800 bg-[#080B11] shadow-2xl">
         <MineMap
           height="100%"
           zones={zonesToUse}
@@ -48,7 +52,7 @@ export default function ReserveIntelligence() {
         />
 
         {/* Floating Left Panel: Data Fusion Streams */}
-        <div className="absolute top-4 left-4 z-[1000] pointer-events-auto">
+        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-[1000] pointer-events-auto">
           <AnimatePresence mode="wait">
             {isFusionOpen ? (
               <motion.div
@@ -57,7 +61,7 @@ export default function ReserveIntelligence() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.15 }}
-                className="w-84 bg-[#0E131F]/95 backdrop-blur-2xl border border-slate-800 rounded-2xl p-4 shadow-popover max-h-[calc(100vh-150px)] overflow-y-auto"
+                className="w-[calc(100vw-40px)] max-w-xs sm:w-84 bg-[#0E131F]/95 backdrop-blur-2xl border border-slate-800 rounded-2xl p-4 shadow-popover max-h-[calc(100vh-180px)] overflow-y-auto"
               >
                 {/* Header */}
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
@@ -90,7 +94,7 @@ export default function ReserveIntelligence() {
                           className="w-2 h-2 rounded-full shrink-0 shadow-sm"
                           style={{ backgroundColor: layer.color }}
                         />
-                        <span className="text-slate-300 font-medium text-[11px] truncate max-w-[170px]">{layer.name}</span>
+                        <span className="text-slate-300 font-medium text-[11px] truncate max-w-[150px] sm:max-w-[170px]">{layer.name}</span>
                       </div>
                       <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.2 rounded">
                         {layer.status}
@@ -111,7 +115,7 @@ export default function ReserveIntelligence() {
                   <div className="p-3 bg-[#080B11] border border-slate-800 rounded-xl space-y-2">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-slate-400">Architecture:</span>
-                      <span className="font-mono text-slate-200 font-semibold">XGBoost Classifier</span>
+                      <span className="font-mono text-slate-200 font-semibold">XGBoost</span>
                     </div>
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-slate-400">Model ROC-AUC:</span>
@@ -119,7 +123,7 @@ export default function ReserveIntelligence() {
                     </div>
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-slate-400">Calibration Site:</span>
-                      <span className="font-mono text-slate-300">{activeMineData.name}</span>
+                      <span className="font-mono text-slate-300 truncate max-w-[120px]">{activeMineData.name}</span>
                     </div>
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-slate-400">Assay Logs:</span>
@@ -144,10 +148,10 @@ export default function ReserveIntelligence() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.15 }}
                 onClick={() => setIsFusionOpen(true)}
-                className="flex items-center gap-2 bg-[#0E131F]/90 hover:bg-[#141C2E] border border-slate-800 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-200 shadow-popover transition-all cursor-pointer backdrop-blur-xl"
+                className="flex items-center gap-2 bg-[#0E131F]/90 hover:bg-[#141C2E] border border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold text-slate-200 shadow-popover transition-all cursor-pointer backdrop-blur-xl"
               >
                 <Layers size={14} className="text-blue-400" />
-                <span>Show Data Fusion Streams</span>
+                <span>Data Fusion Streams</span>
                 <ChevronDown size={14} className="text-slate-400 -rotate-90 ml-1" />
               </motion.button>
             )}
