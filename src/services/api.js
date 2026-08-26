@@ -118,3 +118,17 @@ export async function fetchAlertHistory() {
 export async function fetchPushNotifications() {
   try { const res = await fetch(`${API_BASE_URL}/alerts/push`); return await res.json(); } catch { return []; }
 }
+
+export async function fetchSingleMineROI(mineId = 'gumgaon', scenarioId = 'equipment_failure') {
+  try {
+    const res = await fetch(`${API_BASE_URL}/roi/single?mine_id=${mineId}&scenario_id=${scenarioId}`);
+    return await res.json();
+  } catch { return null; }
+}
+
+export async function fetchEnterpriseROI() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/roi/enterprise`);
+    return await res.json();
+  } catch { return null; }
+}

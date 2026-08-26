@@ -9,6 +9,7 @@ import ProductionForecast from './pages/ProductionForecast';
 import RiskAnalysis from './pages/RiskAnalysis';
 import ActionCenter from './pages/ActionCenter';
 import AlertCenter from './pages/AlertCenter';
+import ROIDashboard from './pages/ROIDashboard';
 
 function App() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function App() {
               <Route path="/risk-analysis" element={<RiskAnalysis />} />
               <Route path="/action-center" element={<ActionCenter />} />
               <Route path="/alert-center" element={<AlertCenter />} />
+              <Route path="/roi-dashboard" element={<ROIDashboard />} />
             </Routes>
           </AnimatePresence>
         </main>

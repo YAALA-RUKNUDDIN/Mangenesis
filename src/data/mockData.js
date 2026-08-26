@@ -382,6 +382,7 @@ export const navItems = [
   { id: 'risk-analysis', label: 'Risk Analysis', path: '/risk-analysis' },
   { id: 'action-center', label: 'Action Center', path: '/action-center' },
   { id: 'alert-center', label: 'Alert Center', path: '/alert-center' },
+  { id: 'roi-dashboard', label: 'ROI & Cost-Benefit', path: '/roi-dashboard' },
 ];
 
 export const mapLayers = [

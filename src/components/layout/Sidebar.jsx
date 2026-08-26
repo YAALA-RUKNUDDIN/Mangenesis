@@ -11,6 +11,7 @@ import {
   Sparkles,
   Layers,
   X,
+  CircleDollarSign,
 } from 'lucide-react';
 import { navItems } from '../../data/mockData';
 import { useScenario } from '../../context/ScenarioContext';
@@ -22,6 +23,7 @@ const iconMap = {
   'risk-analysis': ShieldAlert,
   'action-center': Zap,
   'alert-center': Bell,
+  'roi-dashboard': CircleDollarSign,
 };
 
 export default function Sidebar() {

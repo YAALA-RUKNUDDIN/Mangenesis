@@ -8,7 +8,7 @@ import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routers import satellite, zones, production, risk, actions, mines, supabase_router, alerts
+from backend.routers import satellite, zones, production, risk, actions, mines, supabase_router, alerts, roi
 from backend.models.train_models import train_all_models
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -45,6 +45,7 @@ app.include_router(risk.router)
 app.include_router(actions.router)
 app.include_router(supabase_router.router)
 app.include_router(alerts.router)
+app.include_router(roi.router)
 
 @app.get("/")
 async def root():

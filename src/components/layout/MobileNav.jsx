@@ -6,6 +6,7 @@ import {
   ShieldAlert,
   Zap,
   Bell,
+  CircleDollarSign,
 } from 'lucide-react';
 import { navItems } from '../../data/mockData';
 
@@ -16,6 +17,7 @@ const iconMap = {
   'risk-analysis': ShieldAlert,
   'action-center': Zap,
   'alert-center': Bell,
+  'roi-dashboard': CircleDollarSign,
 };
 
 const shortLabels = {
@@ -25,6 +27,7 @@ const shortLabels = {
   'risk-analysis': 'Risk',
   'action-center': 'Actions',
   'alert-center': 'Alerts',
+  'roi-dashboard': 'ROI',
 };
 
 export default function MobileNav() {
