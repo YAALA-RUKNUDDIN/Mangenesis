@@ -51,8 +51,8 @@ export default function ProductionForecastChart({
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-slate-850 border border-slate-700 rounded-lg p-3 shadow-dropdown text-xs min-w-[160px]">
-          <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-slate-750 mb-2">
+        <div className="bg-[#131720] border border-[#262F3D] rounded-xl p-3 shadow-popover text-xs min-w-[160px]">
+          <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-[#262F3D] mb-2">
             <span className="font-semibold text-slate-200">{data.date}</span>
             <span className="text-[10px] text-slate-400 font-mono">
               {data.isForecast ? 'Forecast' : 'Actual'}
@@ -71,21 +71,21 @@ export default function ProductionForecastChart({
               </div>
             )}
             {data.predicted !== null && (
-              <div className="flex items-center justify-between text-accent">
+              <div className="flex items-center justify-between text-blue-400">
                 <span>Predicted:</span>
                 <span className="font-semibold">{data.predicted.toLocaleString()} T</span>
               </div>
             )}
             {data.risk && (
-              <div className="flex items-center justify-between pt-1 border-t border-slate-750 text-[10px]">
-                <span className="text-slate-500">Risk:</span>
+              <div className="flex items-center justify-between pt-1 border-t border-[#262F3D] text-[10px]">
+                <span className="text-slate-400">Risk:</span>
                 <span
                   className={`font-semibold uppercase ${
                     data.risk === 'high'
-                      ? 'text-status-danger'
+                      ? 'text-rose-400'
                       : data.risk === 'medium'
-                      ? 'text-status-warning'
-                      : 'text-status-success'
+                      ? 'text-amber-400'
+                      : 'text-emerald-400'
                   }`}
                 >
                   {data.risk}
@@ -114,20 +114,20 @@ export default function ProductionForecastChart({
             </linearGradient>
           </defs>
 
-          <CartesianGrid strokeDasharray="3 3" stroke="#1C2230" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#262F3D" vertical={false} />
 
           <XAxis
             dataKey="date"
             tickLine={false}
-            axisLine={{ stroke: '#242C3E' }}
-            tick={{ fill: '#64748B', fontSize: 10, fontFamily: 'Inter' }}
+            axisLine={{ stroke: '#262F3D' }}
+            tick={{ fill: '#7E90A8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' }}
           />
 
           <YAxis
             domain={[4000, 12000]}
             tickLine={false}
-            axisLine={{ stroke: '#242C3E' }}
-            tick={{ fill: '#64748B', fontSize: 10, fontFamily: 'JetBrains Mono' }}
+            axisLine={{ stroke: '#262F3D' }}
+            tick={{ fill: '#7E90A8', fontSize: 10, fontFamily: 'JetBrains Mono' }}
             tickFormatter={(val) => `${val / 1000}k`}
           />
 
@@ -136,14 +136,14 @@ export default function ProductionForecastChart({
           {/* Planned Target Line */}
           <ReferenceLine
             y={10000}
-            stroke="#475569"
+            stroke="#425167"
             strokeDasharray="4 4"
             label={{
               value: '10,000 T TARGET',
               position: 'insideTopLeft',
-              fill: '#64748B',
+              fill: '#7E90A8',
               fontSize: 9,
-              fontFamily: 'Inter',
+              fontFamily: 'Plus Jakarta Sans',
             }}
           />
 

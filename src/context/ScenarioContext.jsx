@@ -18,7 +18,7 @@ const ScenarioContext = createContext();
 export function ScenarioProvider({ children }) {
   const [minesList, setMinesList] = useState(localMines);
   const [activeMine, setActiveMine] = useState('gumgaon');
-  const [activeScenario, setActiveScenario] = useState('normal');
+  const [activeScenario, setActiveScenario] = useState('equipment_failure');
 
   const [liveSatellite, setLiveSatellite] = useState(null);
   const [liveZones, setLiveZones] = useState(null);

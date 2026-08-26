@@ -21,11 +21,10 @@ export default function ZoneInfoPanel({ zone, onClose }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 10, scale: 0.98 }}
         transition={{ duration: 0.15 }}
-        className="absolute bottom-4 left-3 right-3 sm:left-auto sm:right-16 z-[1050] sm:w-84 max-w-sm bg-[#0F121A] border border-[#303A50] rounded-2xl p-4 shadow-2xl pointer-events-auto max-h-[80vh] overflow-y-auto"
-        style={{ backgroundColor: '#0F121A' }}
+        className="absolute bottom-4 left-3 right-3 sm:left-auto sm:right-16 z-[1050] sm:w-84 max-w-sm bg-[#131720] border border-[#262F3D] rounded-2xl p-4 shadow-2xl pointer-events-auto max-h-[80vh] overflow-y-auto"
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-2.5 border-b border-[#242C3E]">
+        <div className="flex items-center justify-between pb-2.5 border-b border-[#262F3D]">
           <div className="flex items-center gap-2">
             <MapPin size={14} className="text-blue-400" />
             <div>
@@ -35,7 +34,7 @@ export default function ZoneInfoPanel({ zone, onClose }) {
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+            className="p-1 rounded text-slate-400 hover:text-white hover:bg-[#1A202C] transition-colors cursor-pointer"
             title="Close Zone Panel"
           >
             <X size={14} />
@@ -43,7 +42,7 @@ export default function ZoneInfoPanel({ zone, onClose }) {
         </div>
 
         {/* Probability Section */}
-        <div className="py-3 border-b border-[#242C3E]">
+        <div className="py-3 border-b border-[#262F3D]">
           <div className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1 flex items-center justify-between">
             <span>Manganese Ore Deposit Probability</span>
             <span className="font-mono text-slate-500 text-[9px]">XGBoost AI</span>
@@ -67,7 +66,7 @@ export default function ZoneInfoPanel({ zone, onClose }) {
         </div>
 
         {/* Geological Host */}
-        <div className="py-2.5 border-b border-[#242C3E] text-xs">
+        <div className="py-2.5 border-b border-[#262F3D] text-xs">
           <div className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">
             Geological Formation
           </div>
@@ -77,7 +76,7 @@ export default function ZoneInfoPanel({ zone, onClose }) {
         </div>
 
         {/* Space & Exploration Indicators */}
-        <div className="py-2.5 border-b border-[#242C3E] text-xs">
+        <div className="py-2.5 border-b border-[#262F3D] text-xs">
           <div className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1.5 flex items-center gap-1">
             <Sparkles size={11} className="text-blue-400" />
             <span>AI Space & Assay Evidence</span>
@@ -104,7 +103,7 @@ export default function ZoneInfoPanel({ zone, onClose }) {
             className={`w-full py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm ${
               isScheduled
                 ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/40'
-                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-glow-blue'
+                : 'bg-blue-600 hover:bg-blue-500 text-white shadow-glow-blue'
             }`}
           >
             {isScheduled ? (

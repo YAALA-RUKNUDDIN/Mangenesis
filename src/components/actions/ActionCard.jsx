@@ -10,7 +10,7 @@ export default function ActionCard({ action, index = 0, onExecute }) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2, delay: index * 0.05 }}
-      className="rounded-2xl border border-slate-800/90 bg-[#0E131F]/85 text-slate-100 shadow-card backdrop-blur-xl p-5 hover:border-slate-700 hover:shadow-card-hover transition-all duration-200"
+      className="rounded-2xl border border-[#262F3D] bg-[#131720]/85 text-slate-100 shadow-card backdrop-blur-xl p-5 hover:border-slate-700 transition-all duration-200"
     >
       {/* Top Header */}
       <div className="flex items-center justify-between mb-3">
@@ -42,7 +42,7 @@ export default function ActionCard({ action, index = 0, onExecute }) {
       </p>
 
       {/* Impact & Score Grid */}
-      <div className="mt-4 pt-3.5 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3.5 items-center">
+      <div className="mt-4 pt-3.5 border-t border-[#262F3D] grid grid-cols-1 sm:grid-cols-2 gap-3.5 items-center">
         <div className="flex items-center gap-2 text-xs">
           <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
           <span className="text-emerald-400 font-semibold">{action.impact}</span>
@@ -56,25 +56,25 @@ export default function ActionCard({ action, index = 0, onExecute }) {
               {score}/100
             </span>
           </div>
-          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-[#0B0D12] rounded-full overflow-hidden border border-[#262F3D]">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${score}%` }}
               transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
-              className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full shadow-glow-blue"
+              className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"
             />
           </div>
         </div>
       </div>
 
       {/* Bottom Dispatch Button */}
-      <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+      <div className="mt-4 pt-3 border-t border-[#262F3D] flex items-center justify-between">
         <span className="text-[11px] text-slate-400 font-mono">
           MILP Optimal Assignment
         </span>
         <button
           onClick={() => onExecute && onExecute(action)}
-          className="flex items-center gap-2 px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-semibold text-xs transition-all shadow-glow-blue cursor-pointer"
+          className="flex items-center gap-2 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold text-xs transition-all shadow-glow-blue cursor-pointer"
         >
           <span>Dispatch Command</span>
           <ArrowRight size={13} />

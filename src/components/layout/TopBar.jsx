@@ -16,6 +16,8 @@ import {
   Zap,
   Sparkles,
   Menu,
+  Activity,
+  Sliders,
 } from 'lucide-react';
 import { useScenario } from '../../context/ScenarioContext';
 import { fetchSupabaseStatus, seedSupabaseDatabase } from '../../services/api';
@@ -26,11 +28,16 @@ export default function TopBar() {
     activeMine,
     activeMineData,
     switchMine,
+    activeScenario,
+    switchScenario,
+    availableScenarios,
+    scenarioData,
     liveSatellite,
     setMobileMenuOpen,
   } = useScenario();
 
   const [mineDropdownOpen, setMineDropdownOpen] = useState(false);
+  const [scenarioDropdownOpen, setScenarioDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [supabaseModalOpen, setSupabaseModalOpen] = useState(false);
   const [supabaseInfo, setSupabaseInfo] = useState(null);
@@ -84,13 +91,13 @@ export default function TopBar() {
   ];
 
   return (
-    <header className="h-16 min-h-[64px] bg-[#0A0E17]/85 backdrop-blur-xl border-b border-slate-800/80 flex items-center justify-between px-3 sm:px-6 z-[2000] relative">
-      {/* Left: Mobile Hamburger + Interactive MOIL Mine Selector */}
+    <header className="h-16 min-h-[64px] bg-[#131720]/90 backdrop-blur-xl border-b border-[#262F3D] flex items-center justify-between px-3 sm:px-6 z-[2000] relative">
+      {/* Left: Mobile Hamburger + Interactive MOIL Mine Selector + Scenario Switcher */}
       <div className="flex items-center gap-2 sm:gap-3">
         {/* Mobile Hamburger Toggle Button */}
         <button
           onClick={() => setMobileMenuOpen(true)}
-          className="lg:hidden p-2 rounded-xl bg-[#0E131F] hover:bg-[#141C2E] border border-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer"
+          className="lg:hidden p-2 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-slate-300 hover:text-white transition-colors cursor-pointer"
           title="Open Menu"
         >
           <Menu size={18} />
@@ -99,8 +106,11 @@ export default function TopBar() {
         {/* Mine Selector Dropdown */}
         <div className="relative z-[2100]">
           <button
-            onClick={() => setMineDropdownOpen(!mineDropdownOpen)}
-            className="flex items-center gap-2 sm:gap-3 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#0E131F] hover:bg-[#141C2E] border border-slate-800 text-xs text-slate-100 transition-all duration-200 shadow-card cursor-pointer group max-w-[210px] sm:max-w-none"
+            onClick={() => {
+              setMineDropdownOpen(!mineDropdownOpen);
+              setScenarioDropdownOpen(false);
+            }}
+            className="flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-xs text-slate-100 transition-all duration-200 shadow-card cursor-pointer group max-w-[180px] sm:max-w-none"
           >
             <div className="w-6 h-6 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-105 transition-transform shrink-0">
               <Building2 size={13} />
@@ -110,7 +120,7 @@ export default function TopBar() {
               <div className="flex items-center gap-1.5">
                 <span className="font-semibold text-slate-100 tracking-tight truncate">{activeMineData.name}</span>
                 {activeMineData.pilot && (
-                  <span className="hidden xs:inline-block text-[9px] font-mono font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-1.5 py-0.2 rounded shadow-sm shrink-0">
+                  <span className="hidden xs:inline-block text-[9px] font-mono font-bold bg-[#C7B59F] text-[#1E1813] px-1.5 py-0.2 rounded shadow-sm shrink-0">
                     PILOT
                   </span>
                 )}
@@ -120,7 +130,7 @@ export default function TopBar() {
               </div>
             </div>
 
-            <ChevronDown size={14} className="text-slate-400 ml-0.5 sm:ml-1 group-hover:text-slate-200 transition-colors shrink-0" />
+            <ChevronDown size={14} className="text-slate-400 ml-0.5 group-hover:text-slate-200 transition-colors shrink-0" />
           </button>
 
           {/* Mine Dropdown Popover */}
@@ -136,9 +146,9 @@ export default function TopBar() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 6, scale: 0.98 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute left-0 mt-2 w-[calc(100vw-32px)] max-w-sm sm:w-96 bg-[#0E131F] border border-slate-800 rounded-2xl py-2.5 shadow-popover z-[2200] overflow-hidden"
+                  className="absolute left-0 mt-2 w-[calc(100vw-32px)] max-w-sm sm:w-96 bg-[#131720] border border-[#262F3D] rounded-2xl py-2.5 shadow-popover z-[2200] overflow-hidden"
                 >
-                  <div className="px-4 pb-2.5 mb-1.5 border-b border-slate-800 flex items-center justify-between">
+                  <div className="px-4 pb-2.5 mb-1.5 border-b border-[#262F3D] flex items-center justify-between">
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
                       MOIL Manganese Mines Network
                     </span>
@@ -158,33 +168,126 @@ export default function TopBar() {
                             switchMine(m.id);
                             setMineDropdownOpen(false);
                           }}
-                          className={`w-full text-left p-3 rounded-xl text-xs transition-all flex items-start justify-between cursor-pointer ${
+                          className={`w-full text-left p-2.5 rounded-xl text-xs transition-all flex items-start justify-between cursor-pointer ${
                             isSelected
-                              ? 'bg-gradient-to-r from-blue-600/20 via-blue-500/10 to-transparent border border-blue-500/40 text-white font-medium shadow-card'
-                              : 'hover:bg-slate-850 text-slate-300'
+                              ? 'bg-[#1A202C] text-white font-semibold border border-blue-500/30 shadow-sm'
+                              : 'text-slate-300 hover:text-white hover:bg-[#1A202C]/60 border border-transparent'
                           }`}
                         >
-                          <div className="space-y-1">
+                          <div className="space-y-0.5 pr-2">
                             <div className="flex items-center gap-1.5">
                               <span className="font-semibold text-slate-100">{m.name}</span>
                               {m.pilot && (
-                                <span className="text-[9px] font-mono font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.2 rounded">
+                                <span className="text-[8px] font-mono font-bold bg-[#C7B59F] text-[#1E1813] px-1.5 py-0.2 rounded">
                                   PILOT
                                 </span>
                               )}
                             </div>
-                            <div className="text-[11px] text-slate-400">
-                              {m.district}, {m.state} &bull; <span className="font-mono text-slate-400">{coords[0]}°N, {coords[1]}°E</span>
+                            <div className="text-[10px] text-slate-400 flex items-center gap-2">
+                              <span>{m.district}, {m.state}</span>
+                              <span>&bull;</span>
+                              <span className="font-mono text-[9px] text-slate-500">
+                                {coords[0].toFixed(2)}°N, {coords[1].toFixed(2)}°E
+                              </span>
                             </div>
-                            <div className="text-[10px] font-mono text-slate-400">
-                              Capacity: <span className="text-slate-200 font-semibold">{m.capacity_tpd ? m.capacity_tpd.toLocaleString() : '10,000'} TPD</span> ({m.type})
+                            <div className="text-[10px] text-slate-400 italic">
+                              {m.type} &bull; {m.capacity_tpd ? m.capacity_tpd.toLocaleString() : 10000} TPD
                             </div>
                           </div>
 
                           {isSelected && (
-                            <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-glow-blue">
-                              <Check size={12} />
+                            <div className="w-5 h-5 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
+                              <Check size={11} />
                             </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Global Operational Scenario Switcher (Available on ALL pages) */}
+        <div className="relative z-[2100]">
+          <button
+            onClick={() => {
+              setScenarioDropdownOpen(!scenarioDropdownOpen);
+              setMineDropdownOpen(false);
+            }}
+            className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-xs text-slate-100 transition-all duration-200 shadow-card cursor-pointer group"
+          >
+            <div className={`w-2 h-2 rounded-full ${
+              scenarioData.riskLevel === 'CRITICAL' ? 'bg-rose-400 animate-pulse' :
+              scenarioData.riskLevel === 'HIGH' ? 'bg-rose-400' :
+              scenarioData.riskLevel === 'MEDIUM' ? 'bg-amber-400' : 'bg-emerald-400'
+            }`} />
+            
+            <div className="text-left hidden md:block">
+              <span className="text-[9px] uppercase font-mono font-bold text-slate-400 block -mb-0.5">Scenario</span>
+              <span className="font-semibold text-slate-200 text-xs truncate max-w-[140px] block">
+                {scenarioData.label}
+              </span>
+            </div>
+
+            <span className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded border ${
+              scenarioData.riskLevel === 'CRITICAL' || scenarioData.riskLevel === 'HIGH'
+                ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+                : scenarioData.riskLevel === 'MEDIUM'
+                ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+                : 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
+            }`}>
+              {scenarioData.shortfallRisk}% Risk
+            </span>
+
+            <ChevronDown size={13} className="text-slate-400 group-hover:text-slate-200 transition-colors" />
+          </button>
+
+          {/* Scenario Popover */}
+          <AnimatePresence>
+            {scenarioDropdownOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-[2150] bg-black/60 backdrop-blur-xs"
+                  onClick={() => setScenarioDropdownOpen(false)}
+                />
+                <motion.div
+                  initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute left-0 mt-2 w-[calc(100vw-32px)] max-w-sm sm:w-80 bg-[#131720] border border-[#262F3D] rounded-2xl py-2 shadow-popover z-[2200] overflow-hidden"
+                >
+                  <div className="px-4 py-2 border-b border-[#262F3D] mb-1">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                      Simulate Mine Operational Scenarios
+                    </span>
+                  </div>
+
+                  <div className="space-y-1 px-2">
+                    {availableScenarios.map((sc) => {
+                      const isSelected = activeScenario === sc.id;
+                      return (
+                        <button
+                          key={sc.id}
+                          onClick={() => {
+                            switchScenario(sc.id);
+                            setScenarioDropdownOpen(false);
+                          }}
+                          className={`w-full text-left p-2.5 rounded-xl text-xs transition-all flex items-start justify-between cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#1A202C] text-white font-semibold border border-blue-500/30 shadow-sm'
+                              : 'text-slate-300 hover:text-white hover:bg-[#1A202C]/60 border border-transparent'
+                          }`}
+                        >
+                          <div className="space-y-0.5">
+                            <div className="font-semibold text-slate-100">{sc.label}</div>
+                            <div className="text-[10px] text-slate-400">{sc.description}</div>
+                          </div>
+                          {isSelected && (
+                            <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0 mt-1.5" />
                           )}
                         </button>
                       );
@@ -200,13 +303,13 @@ export default function TopBar() {
       {/* Right: Actions & System Status */}
       <div className="flex items-center gap-1.5 sm:gap-3">
         {/* Date Display (Desktop only) */}
-        <div className="hidden xl:flex items-center gap-2 text-xs text-slate-300 font-mono px-3 py-1.5 rounded-xl bg-[#0E131F] border border-slate-800 shadow-card">
+        <div className="hidden xl:flex items-center gap-2 text-xs text-slate-300 font-mono px-3 py-1.5 rounded-xl bg-[#1A202C] border border-[#262F3D] shadow-card">
           <Calendar size={13} className="text-slate-400" />
           <span>18 Aug 2026</span>
         </div>
 
         {/* Space Data Active Badge */}
-        <div className="hidden sm:flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold shadow-glow-emerald">
+        <div className="hidden sm:flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -218,7 +321,7 @@ export default function TopBar() {
         <div className="relative z-[2100]">
           <button
             onClick={() => setSupabaseModalOpen(!supabaseModalOpen)}
-            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#0E131F] hover:bg-[#141C2E] border border-slate-800 text-slate-200 text-xs font-mono transition-all cursor-pointer shadow-card"
+            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-slate-200 text-xs font-mono transition-all cursor-pointer shadow-card"
             title="Supabase PostgreSQL + PostGIS Status"
           >
             <Database size={13} className="text-emerald-400 shrink-0" />
@@ -238,9 +341,9 @@ export default function TopBar() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 6, scale: 0.98 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-[calc(100vw-32px)] max-w-sm sm:w-96 bg-[#0E131F] border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-popover z-[2200]"
+                  className="absolute right-0 mt-2 w-[calc(100vw-32px)] max-w-sm sm:w-96 bg-[#131720] border border-[#262F3D] rounded-2xl p-4 sm:p-5 shadow-popover z-[2200]"
                 >
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                  <div className="flex items-center justify-between pb-3 border-b border-[#262F3D]">
                     <div className="flex items-center gap-2.5">
                       <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                         <Database size={15} />
@@ -263,7 +366,7 @@ export default function TopBar() {
                   </div>
 
                   <div className="py-3 space-y-3">
-                    <div className="p-3 rounded-xl bg-[#080B11] border border-slate-800 space-y-2 text-xs">
+                    <div className="p-3 rounded-xl bg-[#0B0D12] border border-[#262F3D] space-y-2 text-xs">
                       <div className="flex items-center justify-between">
                         <span className="text-slate-400">Connection Status:</span>
                         <span className="font-mono text-emerald-400 font-semibold flex items-center gap-1.5">
@@ -283,7 +386,7 @@ export default function TopBar() {
                       </span>
                       <div className="grid grid-cols-2 gap-1.5">
                         {['mines', 'drill_points', 'reserve_zones', 'production_logs', 'shortfall_alerts'].map((t) => (
-                          <div key={t} className="px-2.5 py-1.5 rounded-lg bg-[#080B11] border border-slate-800 text-[11px] font-mono text-slate-300 flex items-center gap-1.5">
+                          <div key={t} className="px-2.5 py-1.5 rounded-lg bg-[#0B0D12] border border-[#262F3D] text-[11px] font-mono text-slate-300 flex items-center gap-1.5">
                             <Check size={11} className="text-emerald-400" />
                             {t}
                           </div>
@@ -294,7 +397,7 @@ export default function TopBar() {
                     <button
                       onClick={handleSeed}
                       disabled={isSeeding}
-                      className="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 text-white font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-glow-blue"
+                      className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-glow-blue"
                     >
                       <Zap size={14} />
                       {isSeeding ? 'Seeding Supabase DB...' : 'Sync & Seed MOIL Dataset'}
@@ -317,7 +420,7 @@ export default function TopBar() {
           href="http://localhost:8000/docs"
           target="_blank"
           rel="noreferrer"
-          className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0E131F] hover:bg-[#141C2E] border border-slate-800 text-slate-300 hover:text-white text-xs font-mono transition-colors shadow-card"
+          className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-slate-300 hover:text-white text-xs font-mono transition-colors shadow-card"
           title="Open FastAPI Swagger Docs"
         >
           <Code2 size={13} className="text-slate-400" />
@@ -331,7 +434,7 @@ export default function TopBar() {
               setNotificationsOpen(!notificationsOpen);
               if (unreadCount > 0) setUnreadCount(0);
             }}
-            className="p-2 rounded-xl bg-[#0E131F] hover:bg-[#141C2E] border border-slate-800 text-slate-400 hover:text-slate-100 transition-colors relative cursor-pointer shadow-card"
+            className="p-2 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-slate-400 hover:text-slate-100 transition-colors relative cursor-pointer shadow-card"
             title="Notifications"
           >
             <Bell size={15} />
@@ -355,46 +458,34 @@ export default function TopBar() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 6, scale: 0.98 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-[calc(100vw-32px)] max-w-sm sm:w-96 bg-[#0E131F] border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-popover z-[2200]"
+                  className="absolute right-0 mt-2 w-[calc(100vw-32px)] max-w-sm sm:w-88 bg-[#131720] border border-[#262F3D] rounded-2xl p-4 shadow-popover z-[2200]"
                 >
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                  <div className="flex items-center justify-between pb-2.5 border-b border-[#262F3D]">
                     <div className="flex items-center gap-2">
-                      <Bell size={15} className="text-blue-400" />
-                      <span className="text-xs font-semibold text-slate-100">
-                        System Notifications
-                      </span>
+                      <Bell size={14} className="text-blue-400" />
+                      <span className="text-xs font-semibold text-slate-100">Live Mine Telemetry Alerts</span>
                     </div>
                     <button
                       onClick={() => setNotificationsOpen(false)}
                       className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
                     >
-                      <X size={14} />
+                      <X size={13} />
                     </button>
                   </div>
 
-                  <div className="py-2.5 space-y-2 max-h-72 overflow-y-auto">
+                  <div className="py-2 space-y-2">
                     {notifications.map((n) => {
                       const Icon = n.icon;
                       return (
-                        <div
-                          key={n.id}
-                          className="p-3 rounded-xl bg-[#080B11] border border-slate-800/80 hover:border-slate-700 transition-colors"
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <div className="flex items-center gap-1.5">
-                              <Icon
-                                size={13}
-                                className={n.type === 'warning' ? 'text-amber-400' : 'text-blue-400'}
-                              />
-                              <span className="text-xs font-semibold text-slate-200">
-                                {n.title}
-                              </span>
+                        <div key={n.id} className="p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D] text-xs space-y-1">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Icon size={13} className={n.type === 'warning' ? 'text-amber-400' : 'text-blue-400'} />
+                              <span className="font-semibold text-slate-200">{n.title}</span>
                             </div>
                             <span className="text-[10px] text-slate-400 font-mono">{n.time}</span>
                           </div>
-                          <p className="text-[11px] text-slate-400 leading-normal">
-                            {n.detail}
-                          </p>
+                          <p className="text-[11px] text-slate-300 leading-relaxed pl-5">{n.detail}</p>
                         </div>
                       );
                     })}
@@ -403,16 +494,6 @@ export default function TopBar() {
               </>
             )}
           </AnimatePresence>
-        </div>
-
-        {/* User Pill */}
-        <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-slate-800">
-          <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shadow-glow-blue shrink-0">
-            MC
-          </div>
-          <span className="hidden lg:inline text-xs text-slate-300 font-medium">
-            Mine Controller
-          </span>
         </div>
       </div>
     </header>

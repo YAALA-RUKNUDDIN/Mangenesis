@@ -17,16 +17,16 @@ export default function KPICard({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay, ease: 'easeOut' }}
-      className="rounded-2xl border border-slate-800/90 bg-[#0E131F]/85 text-slate-100 shadow-card backdrop-blur-xl p-5 hover:border-slate-700/90 hover:shadow-card-hover transition-all duration-200 relative overflow-hidden group"
+      className="rounded-2xl border border-[#262F3D] bg-[#131720]/85 text-slate-100 shadow-card backdrop-blur-xl p-5 hover:border-slate-700 transition-all duration-200 relative overflow-hidden group"
     >
       {/* Subtle top card gradient highlight */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#C7B59F]/20 to-transparent" />
 
       {/* Top Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           {Icon && (
-            <div className="w-8 h-8 rounded-xl bg-slate-850/80 border border-slate-700/50 flex items-center justify-center text-blue-400 group-hover:scale-105 group-hover:border-blue-500/30 transition-all">
+            <div className="w-8 h-8 rounded-xl bg-[#1A202C] border border-[#262F3D] flex items-center justify-center text-blue-400 group-hover:scale-105 transition-all">
               <Icon size={16} />
             </div>
           )}

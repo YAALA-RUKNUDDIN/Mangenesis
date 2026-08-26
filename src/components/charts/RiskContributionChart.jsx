@@ -16,9 +16,9 @@ export default function RiskContributionChart({
     if (active && payload && payload.length) {
       const d = payload[0];
       return (
-        <div className="bg-slate-850 border border-slate-700 rounded-lg p-2.5 shadow-dropdown text-xs">
+        <div className="bg-[#131720] border border-[#262F3D] rounded-xl p-2.5 shadow-popover text-xs">
           <div className="font-medium text-slate-200">{d.name}</div>
-          <div className="text-accent font-mono mt-0.5 font-semibold">
+          <div className="text-blue-400 font-mono mt-0.5 font-semibold">
             {d.value}% Impact
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function RiskContributionChart({
               outerRadius={88}
               paddingAngle={2}
               dataKey="value"
-              stroke="#0F121A"
+              stroke="#131720"
               strokeWidth={2}
             >
               {data.map((entry, index) => (
@@ -54,13 +54,19 @@ export default function RiskContributionChart({
 
         {/* Center Metric Display */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
-          <span className="text-2xl font-semibold font-mono text-slate-100 leading-none">
+          <span className="text-2xl font-bold font-mono text-slate-100 leading-none">
             {riskPercentage}%
           </span>
-          <span className="text-[10px] uppercase tracking-wider text-slate-500 font-medium mt-1">
+          <span className="text-[10px] uppercase tracking-wider text-slate-400 font-mono font-medium mt-1">
             Shortfall Risk
           </span>
-          <span className="text-[10px] font-medium uppercase text-status-danger bg-status-danger-bg border border-status-danger-border px-2 py-0.5 rounded-full mt-1">
+          <span className={`text-[10px] font-bold font-mono uppercase px-2 py-0.5 rounded-full mt-1 border ${
+            riskLevel === 'CRITICAL' || riskLevel === 'HIGH'
+              ? 'text-rose-400 bg-rose-500/10 border-rose-500/30'
+              : riskLevel === 'MEDIUM'
+              ? 'text-amber-400 bg-amber-500/10 border-amber-500/30'
+              : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
+          }`}>
             {riskLevel}
           </span>
         </div>
@@ -71,7 +77,7 @@ export default function RiskContributionChart({
         {drivers.map((driver) => (
           <div
             key={driver.name}
-            className="flex items-center justify-between p-2 rounded-lg bg-slate-850 border border-slate-750 text-xs"
+            className="flex items-center justify-between p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D] text-xs"
           >
             <div className="flex items-center gap-2">
               <span

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Layers,
@@ -27,9 +27,9 @@ export default function ReserveIntelligence() {
     { name: `${activeMineData.geological_formation}`, status: 'Active', color: '#3B82F6' },
     { name: `Core Drill Lithology (${activeMineData.drill_points ? activeMineData.drill_points.length : 4} Holes)`, status: 'Active', color: '#0EA5E9' },
     { name: 'Multispectral NDVI Alteration', status: 'Active', color: '#10B981' },
-    { name: 'Soil Moisture Variations (SMAP)', status: 'Active', color: '#0EA5E9' },
+    { name: 'Soil Moisture Variations (SMAP)', status: 'Active', color: '#C7B59F' },
     { name: 'Surface Thermal (MODIS LST)', status: 'Active', color: '#F59E0B' },
-    { name: 'Precipitation Grid (NASA GPM)', status: 'Active', color: '#6366F1' },
+    { name: 'Precipitation Grid (NASA GPM)', status: 'Active', color: '#38BDF8' },
   ];
 
   return (
@@ -39,7 +39,7 @@ export default function ReserveIntelligence() {
       className="min-h-[calc(100vh-80px)] lg:h-[calc(100vh-64px)] flex flex-col p-3.5 sm:p-6 lg:p-8 !pb-24 lg:!pb-4"
     >
       {/* Immersive GIS Map */}
-      <div className="relative flex-1 w-full min-h-[480px] lg:min-h-0 rounded-2xl overflow-hidden border border-slate-800 bg-[#080B11] shadow-2xl">
+      <div className="relative flex-1 w-full min-h-[480px] lg:min-h-0 rounded-2xl overflow-hidden border border-[#262F3D] bg-[#0B0D12] shadow-2xl">
         <MineMap
           height="100%"
           zones={zonesToUse}
@@ -61,10 +61,10 @@ export default function ReserveIntelligence() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.15 }}
-                className="w-[calc(100vw-40px)] max-w-xs sm:w-84 bg-[#0E131F]/95 backdrop-blur-2xl border border-slate-800 rounded-2xl p-4 shadow-popover max-h-[calc(100vh-180px)] overflow-y-auto"
+                className="w-[calc(100vw-40px)] max-w-xs sm:w-84 bg-[#131720]/95 backdrop-blur-2xl border border-[#262F3D] rounded-2xl p-4 shadow-popover max-h-[calc(100vh-180px)] overflow-y-auto"
               >
                 {/* Header */}
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div className="flex items-center justify-between pb-3 border-b border-[#262F3D]">
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                       <Layers size={13} />
@@ -75,7 +75,7 @@ export default function ReserveIntelligence() {
                   </div>
                   <button
                     onClick={() => setIsFusionOpen(false)}
-                    className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                    className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-[#1A202C] transition-colors cursor-pointer"
                     title="Minimize Data Fusion Panel"
                   >
                     <X size={14} />
@@ -83,11 +83,11 @@ export default function ReserveIntelligence() {
                 </div>
 
                 {/* Active Data Streams */}
-                <div className="py-3 space-y-1.5 border-b border-slate-800">
+                <div className="py-3 space-y-1.5 border-b border-[#262F3D]">
                   {fusionLayers.map((layer) => (
                     <div
                       key={layer.name}
-                      className="flex items-center justify-between p-2 rounded-xl bg-[#080B11] border border-slate-800/80 text-xs"
+                      className="flex items-center justify-between p-2 rounded-xl bg-[#0B0D12] border border-[#262F3D] text-xs"
                     >
                       <div className="flex items-center gap-2">
                         <span
@@ -112,10 +112,10 @@ export default function ReserveIntelligence() {
                     </h3>
                   </div>
 
-                  <div className="p-3 bg-[#080B11] border border-slate-800 rounded-xl space-y-2">
+                  <div className="p-3 bg-[#0B0D12] border border-[#262F3D] rounded-xl space-y-2">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-slate-400">Architecture:</span>
-                      <span className="font-mono text-slate-200 font-semibold">XGBoost</span>
+                      <span className="font-mono text-slate-200 font-semibold">XGBoost Classifier</span>
                     </div>
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-slate-400">Model ROC-AUC:</span>
@@ -133,7 +133,7 @@ export default function ReserveIntelligence() {
                 </div>
 
                 {/* Summary Info */}
-                <div className="mt-3.5 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-start gap-2.5 text-xs">
+                <div className="mt-3.5 p-3 bg-[#1A202C] border border-[#262F3D] rounded-xl flex items-start gap-2.5 text-xs">
                   <Info size={15} className="text-blue-400 shrink-0 mt-0.5" />
                   <p className="text-slate-300 text-[11px] leading-relaxed">
                     Click any deposit zone or drill core pin on the map to inspect mineral assay grades and estimated recoverable tonnage.
@@ -148,7 +148,7 @@ export default function ReserveIntelligence() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.15 }}
                 onClick={() => setIsFusionOpen(true)}
-                className="flex items-center gap-2 bg-[#0E131F]/90 hover:bg-[#141C2E] border border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold text-slate-200 shadow-popover transition-all cursor-pointer backdrop-blur-xl"
+                className="flex items-center gap-2 bg-[#131720]/90 hover:bg-[#1A202C] border border-[#262F3D] rounded-xl px-3 py-2 text-xs font-semibold text-slate-200 shadow-popover transition-all cursor-pointer backdrop-blur-xl"
               >
                 <Layers size={14} className="text-blue-400" />
                 <span>Data Fusion Streams</span>

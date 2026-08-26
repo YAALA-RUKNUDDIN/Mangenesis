@@ -11,7 +11,7 @@ export default function RiskBars({ drivers = [] }) {
               {driver.percentage}%
             </span>
           </div>
-          <div className="w-full h-2.5 bg-slate-800 border border-slate-700/80 rounded-full overflow-hidden p-0.5">
+          <div className="w-full h-2.5 bg-[#0B0D12] border border-[#262F3D] rounded-full overflow-hidden p-0.5">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${driver.percentage}%` }}

@@ -36,7 +36,7 @@ export default function CommandCenter() {
     <div className="relative z-[1500]">
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-2.5 bg-[#0E131F] hover:bg-[#141C2E] border border-slate-800 rounded-xl px-3.5 py-2 text-xs font-medium text-slate-200 transition-all cursor-pointer shadow-card relative"
+        className="flex items-center gap-2.5 bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] rounded-xl px-3.5 py-2 text-xs font-medium text-slate-200 transition-all cursor-pointer shadow-card relative"
       >
         <span className="text-slate-400 uppercase tracking-wider text-[10px] font-mono">
           Scenario:
@@ -60,9 +60,9 @@ export default function CommandCenter() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 6, scale: 0.98 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 mt-2 w-72 bg-[#0E131F] border border-slate-800 rounded-2xl py-2 shadow-popover z-[1600] overflow-hidden"
+              className="absolute right-0 mt-2 w-72 bg-[#131720] border border-[#262F3D] rounded-2xl py-2 shadow-popover z-[1600] overflow-hidden"
             >
-              <div className="px-4 py-2 text-[10px] uppercase tracking-wider text-slate-400 font-mono font-bold border-b border-slate-800 mb-1">
+              <div className="px-4 py-2 text-[10px] uppercase tracking-wider text-slate-400 font-mono font-bold border-b border-[#262F3D] mb-1">
                 Select Operational Scenario
               </div>
               {availableScenarios.map((sc) => (
@@ -74,8 +74,8 @@ export default function CommandCenter() {
                   }}
                   className={`w-full text-left px-4 py-2.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
                     activeScenario === sc.id
-                      ? 'bg-gradient-to-r from-blue-600/20 via-blue-500/10 to-transparent text-white font-semibold border-l-2 border-blue-500'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-850'
+                      ? 'bg-[#1A202C] text-white font-semibold border-l-2 border-[#C7B59F]'
+                      : 'text-slate-300 hover:text-white hover:bg-[#1A202C]/60'
                   }`}
                 >
                   <div>
@@ -83,7 +83,7 @@ export default function CommandCenter() {
                     <div className="text-[10px] text-slate-400 font-normal">{sc.description}</div>
                   </div>
                   {activeScenario === sc.id && (
-                    <span className="w-2 h-2 rounded-full bg-blue-400 shadow-glow-blue shrink-0 ml-2" />
+                    <span className="w-2 h-2 rounded-full bg-[#C7B59F] shrink-0 ml-2" />
                   )}
                 </button>
               ))}
@@ -152,7 +152,7 @@ export default function CommandCenter() {
             </span>
           </div>
 
-          <div className="rounded-2xl overflow-hidden border border-slate-800 shadow-card bg-[#080B11]">
+          <div className="rounded-2xl overflow-hidden border border-[#262F3D] shadow-card bg-[#0B0D12]">
             <MineMap
               height="540px"
               zones={liveZones}
@@ -165,8 +165,8 @@ export default function CommandCenter() {
 
         {/* RIGHT (5 Cols) — Production & Risk */}
         <div className="lg:col-span-5 flex flex-col space-y-4">
-          <div className="rounded-2xl border border-slate-800/90 bg-[#0E131F]/85 text-slate-100 shadow-card backdrop-blur-xl p-5">
-            <div className="flex items-center justify-between mb-3.5 pb-3 border-b border-slate-800">
+          <div className="rounded-2xl border border-[#262F3D] bg-[#131720]/85 text-slate-100 shadow-card backdrop-blur-xl p-5">
+            <div className="flex items-center justify-between mb-3.5 pb-3 border-b border-[#262F3D]">
               <div className="flex items-center gap-2">
                 <TrendingUp size={15} className="text-blue-400" />
                 <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-200 font-mono">
@@ -186,11 +186,17 @@ export default function CommandCenter() {
             />
 
             {/* AI Shortfall Alert Box */}
-            <div className="mt-4 p-3.5 bg-rose-500/10 border border-rose-500/20 rounded-xl flex items-center justify-between">
+            <div className={`mt-4 p-3.5 rounded-xl border flex items-center justify-between ${
+              scenarioData.expectedGap > 0
+                ? 'bg-rose-500/10 border-rose-500/20'
+                : 'bg-emerald-500/10 border-emerald-500/20'
+            }`}>
               <div className="flex items-center gap-3">
-                <AlertTriangle size={17} className="text-rose-400 shrink-0" />
+                <AlertTriangle size={17} className={scenarioData.expectedGap > 0 ? 'text-rose-400 shrink-0' : 'text-emerald-400 shrink-0'} />
                 <div>
-                  <div className="text-[10px] uppercase tracking-wider font-mono font-bold text-rose-400">
+                  <div className={`text-[10px] uppercase tracking-wider font-mono font-bold ${
+                    scenarioData.expectedGap > 0 ? 'text-rose-400' : 'text-emerald-400'
+                  }`}>
                     Shortfall Projection
                   </div>
                   <div className="text-sm font-bold font-mono text-white mt-0.5">
@@ -203,7 +209,9 @@ export default function CommandCenter() {
                 <div className="text-[10px] text-slate-400 uppercase font-mono tracking-wider">
                   Expected Deficit
                 </div>
-                <div className="text-xs font-bold font-mono text-rose-400 mt-0.5">
+                <div className={`text-xs font-bold font-mono mt-0.5 ${
+                  scenarioData.expectedGap > 0 ? 'text-rose-400' : 'text-emerald-400'
+                }`}>
                   <AnimatedNumber value={scenarioData.expectedGap} suffix=" T" />
                 </div>
               </div>

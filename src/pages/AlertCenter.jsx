@@ -268,13 +268,13 @@ export default function AlertCenter() {
       )}
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-2.5 overflow-x-auto">
+      <div className="flex items-center gap-2 mb-6 border-b border-[#262F3D] pb-2.5 overflow-x-auto">
         <button
           onClick={() => setActiveTab('config')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'config'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-glow-blue'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              ? 'bg-blue-600 text-white shadow-glow-blue'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-[#1A202C]'
           }`}
         >
           <Sliders size={13} />
@@ -285,8 +285,8 @@ export default function AlertCenter() {
           onClick={() => setActiveTab('gateway')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'gateway'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-glow-blue'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              ? 'bg-blue-600 text-white shadow-glow-blue'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-[#1A202C]'
           }`}
         >
           <Radio size={13} />
@@ -551,7 +551,7 @@ export default function AlertCenter() {
                   type="button"
                   onClick={handleSaveConfig}
                   disabled={isSaving}
-                  className="w-full mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-2.5 rounded-xl text-xs transition-all shadow-glow-blue cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full mt-6 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl text-xs transition-all shadow-glow-blue cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Check size={14} />
                   <span>{isSaving ? 'Synchronizing Rules...' : 'Save & Deploy Alert Rules'}</span>

@@ -233,7 +233,7 @@ export default function ROIDashboard() {
         'DGMS slope stability and blast clearance compliance dashboard',
         'Interactive dispatch optimizer for dumper route scheduling',
       ],
-      kpis: ['₹18.4 Cr Annual Run-Rate', '<5s MILP Dispatch Latency', '100% DGMS Audit Ready'],
+      kpis: ['₹21.4 Cr Annual Run-Rate', '<5s MILP Dispatch Latency', '100% DGMS Audit Ready'],
     },
     {
       phase: 3,
@@ -257,7 +257,7 @@ export default function ROIDashboard() {
       name: 'Final: MOIL Enterprise Rollout & Expansion to Mining PSUs',
       timeline: 'Months 15 – 24',
       status: 'STRATEGIC ROADMAP',
-      statusColor: 'purple',
+      statusColor: 'sand',
       progress: 10,
       description:
         'Full commercialization across all 10 MOIL mining leases and technology transfer to NMDC (Iron Ore), HCL (Copper), and Coal India Ltd (CIL).',
@@ -267,7 +267,7 @@ export default function ROIDashboard() {
         'Cross-commodity AI transfer learning for Iron, Bauxite, and Copper strata',
         'Sovereign Indian mining AI patent filings & commercial licensing framework',
       ],
-      kpis: ['₹98+ Cr MOIL Annual Value', 'National Critical Mineral Security', 'Inter-PSU Ready'],
+      kpis: ['₹126+ Cr MOIL Enterprise Value', 'National Critical Mineral Security', 'Inter-PSU Ready'],
     },
   ];
 
@@ -280,7 +280,7 @@ export default function ROIDashboard() {
           {/* Export Brief Functional Button */}
           <button
             onClick={handleExportBrief}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#0E131F] hover:bg-[#141C2E] border border-slate-800 text-xs font-semibold text-slate-200 hover:text-white transition-all shadow-card cursor-pointer"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-xs font-semibold text-slate-200 hover:text-white transition-all shadow-card cursor-pointer"
           >
             <Download size={14} className="text-blue-400" />
             <span className="hidden sm:inline">Export ROI Brief</span>
@@ -288,7 +288,7 @@ export default function ROIDashboard() {
           </button>
 
           {/* View Toggle */}
-          <div className="flex p-0.5 bg-[#080B11] border border-slate-800 rounded-xl">
+          <div className="flex p-0.5 bg-[#0B0D12] border border-[#262F3D] rounded-xl">
             <button
               onClick={() => setViewMode('single')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
@@ -320,7 +320,7 @@ export default function ROIDashboard() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="fixed top-16 right-8 z-[2500] bg-[#0E131F] border border-slate-700 text-slate-100 text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 backdrop-blur-md"
+            className="fixed top-16 right-8 z-[2500] bg-[#131720] border border-[#262F3D] text-slate-100 text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 backdrop-blur-md"
           >
             <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
             <span>{notification}</span>
@@ -329,13 +329,12 @@ export default function ROIDashboard() {
       </AnimatePresence>
 
       {/* Demonstrable Real Mine Calibration Hero Banner */}
-      <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-[#0E131F] to-indigo-950/40 p-5 shadow-card backdrop-blur-xl mb-6 relative overflow-hidden">
-        <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="rounded-2xl border border-[#262F3D] bg-[#131720]/90 p-5 shadow-card backdrop-blur-xl mb-6 relative overflow-hidden">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10">
           <div className="space-y-1.5 max-w-3xl">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 px-2.5 py-0.5 rounded-full">
-                <ShieldCheck size={12} className="text-blue-400" />
+              <span className="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-[#C7B59F]/15 text-[#D9CBBA] border border-[#C7B59F]/30 px-2.5 py-0.5 rounded-full">
+                <ShieldCheck size={12} className="text-[#D9CBBA]" />
                 DEMONSTRABLE REAL-MINE EVIDENCE
               </span>
               <span className="text-[10px] font-mono text-emerald-400 font-semibold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
@@ -351,12 +350,12 @@ export default function ROIDashboard() {
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            <div className="p-3.5 bg-[#080B11]/90 rounded-xl border border-slate-800 text-center">
+            <div className="p-3.5 bg-[#0B0D12] rounded-xl border border-[#262F3D] text-center">
               <div className="text-[10px] text-slate-400 font-mono">PILOT ACCURACY</div>
               <div className="text-xl font-bold font-mono text-emerald-400">94.2%</div>
               <div className="text-[9px] text-slate-400">DP-G01 Core Match</div>
             </div>
-            <div className="p-3.5 bg-[#080B11]/90 rounded-xl border border-slate-800 text-center">
+            <div className="p-3.5 bg-[#0B0D12] rounded-xl border border-[#262F3D] text-center">
               <div className="text-[10px] text-slate-400 font-mono">RECOVERY RATE</div>
               <div className="text-xl font-bold font-mono text-blue-400">77.0%</div>
               <div className="text-[9px] text-slate-400">MILP Dispatch</div>
@@ -366,7 +365,7 @@ export default function ROIDashboard() {
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-3 mb-6 overflow-x-auto no-scrollbar">
+      <div className="flex items-center gap-2 border-b border-[#262F3D] pb-3 mb-6 overflow-x-auto no-scrollbar">
         {[
           { id: 'overview', label: 'Executive Financial Summary', icon: BarChart3 },
           { id: 'breakdown', label: '6 Value Pillars Breakdown', icon: Layers },
@@ -382,7 +381,7 @@ export default function ROIDashboard() {
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 isActive
                   ? 'bg-blue-600 text-white shadow-glow-blue'
-                  : 'bg-[#0E131F] text-slate-400 hover:text-slate-200 hover:bg-[#141C2E] border border-slate-800'
+                  : 'bg-[#131720] text-slate-400 hover:text-slate-200 hover:bg-[#1A202C] border border-[#262F3D]'
               }`}
             >
               <Icon size={14} />
@@ -398,7 +397,7 @@ export default function ROIDashboard() {
           {/* Big 4 KPI Impact Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* 1. Total Financial Savings */}
-            <div className="rounded-2xl border border-emerald-500/30 bg-[#0E131F]/90 p-5 shadow-card relative overflow-hidden">
+            <div className="rounded-2xl border border-emerald-500/30 bg-[#131720]/90 p-5 shadow-card relative overflow-hidden">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-mono font-bold uppercase text-emerald-400 tracking-wider">
                   {viewMode === 'single' ? 'Estimated Annual Value' : 'MOIL Enterprise Value'}
@@ -408,20 +407,20 @@ export default function ROIDashboard() {
                 </div>
               </div>
               <div className="text-3xl font-extrabold font-display text-white mt-2">
-                ₹{viewMode === 'single' ? calculated.totalCrores : (enterpriseData?.enterprise_total?.total_savings_crores || 98.75)}
+                ₹{viewMode === 'single' ? calculated.totalCrores : (enterpriseData?.enterprise_total?.total_savings_crores || 126.2)}
                 <span className="text-base font-normal text-emerald-400 ml-1">Crores</span>
               </div>
               <p className="text-[11px] text-slate-400 mt-1">
                 Substantiating the claimed ₹15–25 Cr/mine annual target
               </p>
-              <div className="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between text-[10px] font-mono text-emerald-400">
+              <div className="mt-3 pt-2.5 border-t border-[#262F3D] flex items-center justify-between text-[10px] font-mono text-emerald-400">
                 <span>Direct Cash & Output Flow</span>
                 <span>+18.4% Net Margin Lift</span>
               </div>
             </div>
 
             {/* 2. Production Recovered */}
-            <div className="rounded-2xl border border-blue-500/30 bg-[#0E131F]/90 p-5 shadow-card">
+            <div className="rounded-2xl border border-blue-500/30 bg-[#131720]/90 p-5 shadow-card">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-mono font-bold uppercase text-blue-400 tracking-wider">
                   Production Recovered
@@ -432,21 +431,21 @@ export default function ROIDashboard() {
               </div>
               <div className="text-3xl font-extrabold font-display text-white mt-2">
                 <AnimatedNumber
-                  value={viewMode === 'single' ? calculated.annualRecoveredTonnes : (enterpriseData?.enterprise_total?.total_recovered_tonnes || 248000)}
+                  value={viewMode === 'single' ? calculated.annualRecoveredTonnes : (enterpriseData?.enterprise_total?.total_recovered_tonnes || 91400)}
                 />
                 <span className="text-base font-normal text-blue-400 ml-1">T/yr</span>
               </div>
               <p className="text-[11px] text-slate-400 mt-1">
                 Value: ₹{calculated.productionCrores} Cr at ₹{customOrePrice}/T Mn Ore
               </p>
-              <div className="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between text-[10px] font-mono text-blue-400">
+              <div className="mt-3 pt-2.5 border-t border-[#262F3D] flex items-center justify-between text-[10px] font-mono text-blue-400">
                 <span>77% Deficit Avoided</span>
                 <span>Daily: +{calculated.dailyRecoveredTonnes} T</span>
               </div>
             </div>
 
             {/* 3. Fuel & Haul Savings */}
-            <div className="rounded-2xl border border-amber-500/30 bg-[#0E131F]/90 p-5 shadow-card">
+            <div className="rounded-2xl border border-amber-500/30 bg-[#131720]/90 p-5 shadow-card">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-mono font-bold uppercase text-amber-400 tracking-wider">
                   Fuel & Haul Saved
@@ -462,14 +461,14 @@ export default function ROIDashboard() {
               <p className="text-[11px] text-slate-400 mt-1">
                 Value: ₹{calculated.fuelLakhs} Lakhs @ ₹{customDieselRate}/L Diesel
               </p>
-              <div className="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between text-[10px] font-mono text-amber-400">
+              <div className="mt-3 pt-2.5 border-t border-[#262F3D] flex items-center justify-between text-[10px] font-mono text-amber-400">
                 <span>Idle Cut: -4.2 hrs/day</span>
                 <span>Haul Optimization</span>
               </div>
             </div>
 
             {/* 4. Drilling Avoided */}
-            <div className="rounded-2xl border border-cyan-500/30 bg-[#0E131F]/90 p-5 shadow-card">
+            <div className="rounded-2xl border border-cyan-500/30 bg-[#131720]/90 p-5 shadow-card">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-mono font-bold uppercase text-cyan-400 tracking-wider">
                   Drilling Avoided
@@ -485,7 +484,7 @@ export default function ROIDashboard() {
               <p className="text-[11px] text-slate-400 mt-1">
                 6 non-productive 150m diamond core holes avoided
               </p>
-              <div className="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between text-[10px] font-mono text-cyan-400">
+              <div className="mt-3 pt-2.5 border-t border-[#262F3D] flex items-center justify-between text-[10px] font-mono text-cyan-400">
                 <span>AI Spectral Targeting</span>
                 <span>₹8,500/m Avoidance</span>
               </div>
@@ -495,8 +494,8 @@ export default function ROIDashboard() {
           {/* Value Stream Distribution & Enterprise Matrix */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left: Financial Stream Breakdown Table */}
-            <div className="lg:col-span-7 rounded-2xl border border-slate-800/90 bg-[#0E131F]/85 p-6 shadow-card">
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+            <div className="lg:col-span-7 rounded-2xl border border-[#262F3D] bg-[#131720]/85 p-6 shadow-card">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#262F3D]">
                 <div>
                   <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
                     Annual Financial Value Breakdown ({activeMineData.name})
@@ -550,7 +549,7 @@ export default function ROIDashboard() {
                 ].map((item) => (
                   <div
                     key={item.name}
-                    className="p-3.5 rounded-xl bg-[#080B11] border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                    className="p-3.5 rounded-xl bg-[#0B0D12] border border-[#262F3D] flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
@@ -576,9 +575,9 @@ export default function ROIDashboard() {
             </div>
 
             {/* Right: Multi-Mine MOIL Enterprise Network Projection */}
-            <div className="lg:col-span-5 rounded-2xl border border-slate-800/90 bg-[#0E131F]/85 p-6 shadow-card flex flex-col justify-between">
+            <div className="lg:col-span-5 rounded-2xl border border-[#262F3D] bg-[#131720]/85 p-6 shadow-card flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#262F3D]">
                   <div className="flex items-center gap-2">
                     <Building2 size={16} className="text-blue-400" />
                     <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
@@ -596,16 +595,16 @@ export default function ROIDashboard() {
 
                 <div className="space-y-2">
                   {[
-                    { name: 'Gumgaon (Pilot)', cap: '10k TPD', value: '₹18.42 Cr', status: 'Active Pilot' },
-                    { name: 'Balaghat (Deep)', cap: '14k TPD', value: '₹25.80 Cr', status: 'Phase 2' },
-                    { name: 'Dongri Buzurg', cap: '12k TPD', value: '₹22.10 Cr', status: 'Phase 2' },
-                    { name: 'Kandri Mine', cap: '8k TPD', value: '₹14.75 Cr', status: 'Phase 3' },
-                    { name: 'Chikla Mine', cap: '7.5k TPD', value: '₹13.80 Cr', status: 'Phase 3' },
-                    { name: 'Tirodi Mine', cap: '6k TPD', value: '₹11.05 Cr', status: 'Phase 3' },
+                    { name: 'Gumgaon (Pilot)', cap: '10k TPD', value: '₹21.36 Cr', status: 'Active Pilot' },
+                    { name: 'Balaghat (Deep)', cap: '14k TPD', value: '₹29.90 Cr', status: 'Phase 2' },
+                    { name: 'Dongri Buzurg', cap: '12k TPD', value: '₹25.63 Cr', status: 'Phase 2' },
+                    { name: 'Kandri Mine', cap: '8k TPD', value: '₹17.08 Cr', status: 'Phase 3' },
+                    { name: 'Chikla Mine', cap: '7.5k TPD', value: '₹16.02 Cr', status: 'Phase 3' },
+                    { name: 'Tirodi Mine', cap: '6k TPD', value: '₹12.81 Cr', status: 'Phase 3' },
                   ].map((m) => (
                     <div
                       key={m.name}
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#080B11] border border-slate-800/80 text-xs"
+                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D] text-xs"
                     >
                       <div>
                         <span className="font-semibold text-slate-200">{m.name}</span>
@@ -613,7 +612,7 @@ export default function ROIDashboard() {
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-mono font-bold text-emerald-400">{m.value}</span>
-                        <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                        <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#1A202C] text-slate-300 border border-[#262F3D]">
                           {m.status}
                         </span>
                       </div>
@@ -622,13 +621,13 @@ export default function ROIDashboard() {
                 </div>
               </div>
 
-              <div className="mt-4 pt-3.5 border-t border-slate-800 bg-blue-950/20 p-3 rounded-xl border border-blue-500/20 flex items-center justify-between">
+              <div className="mt-4 pt-3.5 border-t border-[#262F3D] bg-[#1A202C] p-3 rounded-xl border border-[#262F3D] flex items-center justify-between">
                 <div>
-                  <div className="text-[10px] text-blue-300 font-mono uppercase font-bold">
+                  <div className="text-[10px] text-[#C7B59F] font-mono uppercase font-bold">
                     MOIL Total Potential Value
                   </div>
                   <div className="text-lg font-bold font-display text-white">
-                    ₹98.75 to ₹105.92 Crores / Year
+                    ₹126.20 Crores / Year
                   </div>
                 </div>
                 <button
@@ -649,7 +648,7 @@ export default function ROIDashboard() {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {/* Pillar 1: Production Recovered */}
-            <div className="rounded-2xl border border-blue-500/30 bg-[#0E131F]/90 p-6 shadow-card space-y-4">
+            <div className="rounded-2xl border border-blue-500/30 bg-[#131720]/90 p-6 shadow-card space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                   <TrendingUp size={20} />
@@ -664,7 +663,7 @@ export default function ROIDashboard() {
                   Mixed Integer Linear Programming (MILP) dynamically rebalances bench excavator allocation, recovering 77% of production deficit before it reaches processing plants.
                 </p>
               </div>
-              <div className="p-3 rounded-xl bg-[#080B11] border border-slate-800 space-y-1.5 text-xs font-mono">
+              <div className="p-3 rounded-xl bg-[#0B0D12] border border-[#262F3D] space-y-1.5 text-xs font-mono">
                 <div className="flex justify-between text-slate-400">
                   <span>Daily Tonnage Recovered:</span>
                   <span className="text-white font-bold">+{calculated.dailyRecoveredTonnes} T/day</span>
@@ -673,7 +672,7 @@ export default function ROIDashboard() {
                   <span>Annual Output Retained:</span>
                   <span className="text-blue-400 font-bold">{calculated.annualRecoveredTonnes.toLocaleString()} T/yr</span>
                 </div>
-                <div className="flex justify-between text-slate-400 border-t border-slate-800/80 pt-1.5">
+                <div className="flex justify-between text-slate-400 border-t border-[#262F3D] pt-1.5">
                   <span>Revenue Impact:</span>
                   <span className="text-emerald-400 font-bold">₹{calculated.productionCrores} Crores</span>
                 </div>
@@ -681,7 +680,7 @@ export default function ROIDashboard() {
             </div>
 
             {/* Pillar 2: Fuel Saved */}
-            <div className="rounded-2xl border border-amber-500/30 bg-[#0E131F]/90 p-6 shadow-card space-y-4">
+            <div className="rounded-2xl border border-amber-500/30 bg-[#131720]/90 p-6 shadow-card space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
                   <Fuel size={20} />
@@ -696,7 +695,7 @@ export default function ROIDashboard() {
                   Optimized haul truck dispatching reduces excavator choke queues and haul idling, saving ~228 Litres of High Speed Diesel (HSD) per operational day.
                 </p>
               </div>
-              <div className="p-3 rounded-xl bg-[#080B11] border border-slate-800 space-y-1.5 text-xs font-mono">
+              <div className="p-3 rounded-xl bg-[#0B0D12] border border-[#262F3D] space-y-1.5 text-xs font-mono">
                 <div className="flex justify-between text-slate-400">
                   <span>Daily HSD Saved:</span>
                   <span className="text-white font-bold">228.0 Litres</span>
@@ -705,7 +704,7 @@ export default function ROIDashboard() {
                   <span>Annual Diesel Conserved:</span>
                   <span className="text-amber-400 font-bold">{calculated.annualFuelSavedLitres.toLocaleString()} L</span>
                 </div>
-                <div className="flex justify-between text-slate-400 border-t border-slate-800/80 pt-1.5">
+                <div className="flex justify-between text-slate-400 border-t border-[#262F3D] pt-1.5">
                   <span>Financial Savings:</span>
                   <span className="text-emerald-400 font-bold">₹{calculated.fuelLakhs} Lakhs</span>
                 </div>
@@ -713,7 +712,7 @@ export default function ROIDashboard() {
             </div>
 
             {/* Pillar 3: Drilling Expenditure Avoided */}
-            <div className="rounded-2xl border border-cyan-500/30 bg-[#0E131F]/90 p-6 shadow-card space-y-4">
+            <div className="rounded-2xl border border-cyan-500/30 bg-[#131720]/90 p-6 shadow-card space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
                   <Drill size={20} />
@@ -728,7 +727,7 @@ export default function ROIDashboard() {
                   Replacing speculative 50m diamond grid exploration with satellite multispectral NDVI / SWIR targeting avoids dry, barren exploratory holes.
                 </p>
               </div>
-              <div className="p-3 rounded-xl bg-[#080B11] border border-slate-800 space-y-1.5 text-xs font-mono">
+              <div className="p-3 rounded-xl bg-[#0B0D12] border border-[#262F3D] space-y-1.5 text-xs font-mono">
                 <div className="flex justify-between text-slate-400">
                   <span>Dry Holes Avoided/Yr:</span>
                   <span className="text-white font-bold">6 Deep Core Holes</span>
@@ -737,7 +736,7 @@ export default function ROIDashboard() {
                   <span>Average Metres Avoided:</span>
                   <span className="text-cyan-400 font-bold">900 Metres Core</span>
                 </div>
-                <div className="flex justify-between text-slate-400 border-t border-slate-800/80 pt-1.5">
+                <div className="flex justify-between text-slate-400 border-t border-[#262F3D] pt-1.5">
                   <span>Capital Expenditure Saved:</span>
                   <span className="text-emerald-400 font-bold">₹{calculated.drillLakhs} Lakhs</span>
                 </div>
@@ -745,12 +744,12 @@ export default function ROIDashboard() {
             </div>
 
             {/* Pillar 4: Equipment Utilization Improvement */}
-            <div className="rounded-2xl border border-purple-500/30 bg-[#0E131F]/90 p-6 shadow-card space-y-4">
+            <div className="rounded-2xl border border-[#C7B59F]/30 bg-[#131720]/90 p-6 shadow-card space-y-4">
               <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                <div className="w-10 h-10 rounded-xl bg-[#C7B59F]/10 border border-[#C7B59F]/20 flex items-center justify-center text-[#D9CBBA]">
                   <Zap size={20} />
                 </div>
-                <span className="text-[10px] font-mono font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2.5 py-1 rounded-full">
+                <span className="text-[10px] font-mono font-bold bg-[#C7B59F]/15 text-[#D9CBBA] border border-[#C7B59F]/30 px-2.5 py-1 rounded-full">
                   PILLAR 04
                 </span>
               </div>
@@ -760,16 +759,16 @@ export default function ROIDashboard() {
                   Predictive telematics and early hydraulic pressure anomaly detection lifts overall heavy machinery availability across excavators and haul dumpers.
                 </p>
               </div>
-              <div className="p-3 rounded-xl bg-[#080B11] border border-slate-800 space-y-1.5 text-xs font-mono">
+              <div className="p-3 rounded-xl bg-[#0B0D12] border border-[#262F3D] space-y-1.5 text-xs font-mono">
                 <div className="flex justify-between text-slate-400">
                   <span>Before AI Utilization:</span>
                   <span className="text-slate-300 font-bold">93.4%</span>
                 </div>
                 <div className="flex justify-between text-slate-400">
                   <span>With Predictive Telematics:</span>
-                  <span className="text-purple-400 font-bold">95.8% (+2.4%)</span>
+                  <span className="text-[#D9CBBA] font-bold">95.8% (+2.4%)</span>
                 </div>
-                <div className="flex justify-between text-slate-400 border-t border-slate-800/80 pt-1.5">
+                <div className="flex justify-between text-slate-400 border-t border-[#262F3D] pt-1.5">
                   <span>Fleet Availability:</span>
                   <span className="text-emerald-400 font-bold">+172 Machine-Hours/Yr</span>
                 </div>
@@ -777,7 +776,7 @@ export default function ROIDashboard() {
             </div>
 
             {/* Pillar 5: Downtime Reduction */}
-            <div className="rounded-2xl border border-rose-500/30 bg-[#0E131F]/90 p-6 shadow-card space-y-4">
+            <div className="rounded-2xl border border-rose-500/30 bg-[#131720]/90 p-6 shadow-card space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
                   <Wrench size={20} />
@@ -792,7 +791,7 @@ export default function ROIDashboard() {
                   Prevents catastrophic mechanical breakdowns by triggering scheduled micro-maintenance before critical hydraulic lines rupture.
                 </p>
               </div>
-              <div className="p-3 rounded-xl bg-[#080B11] border border-slate-800 space-y-1.5 text-xs font-mono">
+              <div className="p-3 rounded-xl bg-[#0B0D12] border border-[#262F3D] space-y-1.5 text-xs font-mono">
                 <div className="flex justify-between text-slate-400">
                   <span>Breakdowns Avoided:</span>
                   <span className="text-white font-bold">28 Major Failures/Yr</span>
@@ -801,7 +800,7 @@ export default function ROIDashboard() {
                   <span>Downtime Hours Eliminated:</span>
                   <span className="text-rose-400 font-bold">345.6 Hours/Yr</span>
                 </div>
-                <div className="flex justify-between text-slate-400 border-t border-slate-800/80 pt-1.5">
+                <div className="flex justify-between text-slate-400 border-t border-[#262F3D] pt-1.5">
                   <span>Repair & Idle Savings:</span>
                   <span className="text-emerald-400 font-bold">₹{calculated.downtimeLakhs} Lakhs</span>
                 </div>
@@ -809,7 +808,7 @@ export default function ROIDashboard() {
             </div>
 
             {/* Pillar 6: Haul Road Rework Prevention */}
-            <div className="rounded-2xl border border-emerald-500/30 bg-[#0E131F]/90 p-6 shadow-card space-y-4">
+            <div className="rounded-2xl border border-emerald-500/30 bg-[#131720]/90 p-6 shadow-card space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                   <ShieldCheck size={20} />
@@ -824,7 +823,7 @@ export default function ROIDashboard() {
                   NASA GPM precipitation radar and SMAP soil moisture telemetry alert pit engineers 48 hours prior to severe road saturation, avoiding washouts.
                 </p>
               </div>
-              <div className="p-3 rounded-xl bg-[#080B11] border border-slate-800 space-y-1.5 text-xs font-mono">
+              <div className="p-3 rounded-xl bg-[#0B0D12] border border-[#262F3D] space-y-1.5 text-xs font-mono">
                 <div className="flex justify-between text-slate-400">
                   <span>Road Washouts Prevented:</span>
                   <span className="text-white font-bold">8 Events / Year</span>
@@ -833,7 +832,7 @@ export default function ROIDashboard() {
                   <span>Cost per Grader Rework:</span>
                   <span className="text-emerald-400 font-bold">₹1.20 Lakhs</span>
                 </div>
-                <div className="flex justify-between text-slate-400 border-t border-slate-800/80 pt-1.5">
+                <div className="flex justify-between text-slate-400 border-t border-[#262F3D] pt-1.5">
                   <span>Annual Rework Avoided:</span>
                   <span className="text-emerald-400 font-bold">₹{calculated.roadLakhs} Lakhs</span>
                 </div>
@@ -857,8 +856,8 @@ export default function ROIDashboard() {
                     onClick={() => setSelectedPhase(p.phase)}
                     className={`w-full text-left p-4 rounded-2xl border transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-[#141C2E] border-blue-500/80 shadow-glow-blue'
-                        : 'bg-[#0E131F]/80 border-slate-800 hover:border-slate-700'
+                        ? 'bg-[#1A202C] border-blue-500/80 shadow-glow-blue'
+                        : 'bg-[#131720]/80 border-[#262F3D] hover:border-slate-700'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
@@ -873,7 +872,7 @@ export default function ROIDashboard() {
                             ? 'bg-blue-500/10 text-blue-300 border-blue-500/30'
                             : p.statusColor === 'amber'
                             ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
-                            : 'bg-purple-500/10 text-purple-300 border-purple-500/30'
+                            : 'bg-[#C7B59F]/15 text-[#D9CBBA] border-[#C7B59F]/30'
                         }`}
                       >
                         {p.status}
@@ -883,9 +882,9 @@ export default function ROIDashboard() {
                     <h4 className="text-xs font-bold text-white leading-snug">{p.name}</h4>
 
                     <div className="mt-3 flex items-center gap-2">
-                      <div className="flex-1 h-1.5 bg-[#080B11] rounded-full overflow-hidden border border-slate-800">
+                      <div className="flex-1 h-1.5 bg-[#0B0D12] rounded-full overflow-hidden border border-[#262F3D]">
                         <div
-                          className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
+                          className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"
                           style={{ width: `${p.progress}%` }}
                         />
                       </div>
@@ -903,9 +902,9 @@ export default function ROIDashboard() {
               {(() => {
                 const phase = roadmapPhases.find((p) => p.phase === selectedPhase) || roadmapPhases[0];
                 return (
-                  <div className="rounded-2xl border border-slate-800/90 bg-[#0E131F]/90 p-6 shadow-card h-full flex flex-col justify-between space-y-6">
+                  <div className="rounded-2xl border border-[#262F3D] bg-[#131720]/90 p-6 shadow-card h-full flex flex-col justify-between space-y-6">
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                      <div className="flex items-center justify-between pb-3 border-b border-[#262F3D]">
                         <div>
                           <span className="text-[10px] font-mono uppercase font-bold text-blue-400">
                             ROADMAP STAGE 0{phase.phase}
@@ -914,7 +913,7 @@ export default function ROIDashboard() {
                             {phase.name}
                           </h3>
                         </div>
-                        <span className="text-xs font-mono text-slate-400 font-semibold bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700">
+                        <span className="text-xs font-mono text-slate-400 font-semibold bg-[#1A202C] px-2.5 py-1 rounded-lg border border-[#262F3D]">
                           {phase.timeline}
                         </span>
                       </div>
@@ -929,7 +928,7 @@ export default function ROIDashboard() {
                           {phase.milestones.map((m, idx) => (
                             <div
                               key={idx}
-                              className="flex items-start gap-2.5 p-3 rounded-xl bg-[#080B11] border border-slate-800/80 text-xs text-slate-200"
+                              className="flex items-start gap-2.5 p-3 rounded-xl bg-[#0B0D12] border border-[#262F3D] text-xs text-slate-200"
                             >
                               <CheckCircle2 size={15} className="text-emerald-400 shrink-0 mt-0.5" />
                               <span>{m}</span>
@@ -939,7 +938,7 @@ export default function ROIDashboard() {
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-800">
+                    <div className="pt-4 border-t border-[#262F3D]">
                       <h4 className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">
                         Target Performance Indicators
                       </h4>
@@ -967,8 +966,8 @@ export default function ROIDashboard() {
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left: Sliders */}
-            <div className="lg:col-span-6 rounded-2xl border border-slate-800/90 bg-[#0E131F]/85 p-6 shadow-card space-y-5">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div className="lg:col-span-6 rounded-2xl border border-[#262F3D] bg-[#131720]/85 p-6 shadow-card space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-[#262F3D]">
                 <div className="flex items-center gap-2">
                   <Sliders size={16} className="text-blue-400" />
                   <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
@@ -997,7 +996,7 @@ export default function ROIDashboard() {
                   step="250"
                   value={customOrePrice}
                   onChange={(e) => setCustomOrePrice(+e.target.value)}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  className="w-full h-1.5 bg-slate-850 rounded-lg appearance-none cursor-pointer accent-blue-500"
                 />
                 <div className="flex justify-between text-[10px] font-mono text-slate-400">
                   <span>₹8,000</span>
@@ -1019,7 +1018,7 @@ export default function ROIDashboard() {
                   step="1"
                   value={customDieselRate}
                   onChange={(e) => setCustomDieselRate(+e.target.value)}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                  className="w-full h-1.5 bg-slate-850 rounded-lg appearance-none cursor-pointer accent-amber-500"
                 />
                 <div className="flex justify-between text-[10px] font-mono text-slate-400">
                   <span>₹75/L</span>
@@ -1041,7 +1040,7 @@ export default function ROIDashboard() {
                   step="500"
                   value={customDrillCost}
                   onChange={(e) => setCustomDrillCost(+e.target.value)}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                  className="w-full h-1.5 bg-slate-850 rounded-lg appearance-none cursor-pointer accent-cyan-500"
                 />
                 <div className="flex justify-between text-[10px] font-mono text-slate-400">
                   <span>₹5,000</span>
@@ -1063,7 +1062,7 @@ export default function ROIDashboard() {
                   step="1"
                   value={customRecoveryRate}
                   onChange={(e) => setCustomRecoveryRate(+e.target.value)}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                  className="w-full h-1.5 bg-slate-850 rounded-lg appearance-none cursor-pointer accent-emerald-500"
                 />
                 <div className="flex justify-between text-[10px] font-mono text-slate-400">
                   <span>50%</span>
@@ -1074,9 +1073,9 @@ export default function ROIDashboard() {
             </div>
 
             {/* Right: Dynamic Calculated Outcome */}
-            <div className="lg:col-span-6 rounded-2xl border border-slate-800/90 bg-[#0E131F]/85 p-6 shadow-card flex flex-col justify-between">
+            <div className="lg:col-span-6 rounded-2xl border border-[#262F3D] bg-[#131720]/85 p-6 shadow-card flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#262F3D] mb-4">
                   <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
                     Real-Time Simulated Financial Impact
                   </h3>
@@ -1086,7 +1085,7 @@ export default function ROIDashboard() {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="p-4 rounded-xl bg-[#080B11] border border-slate-800 flex items-center justify-between">
+                  <div className="p-4 rounded-xl bg-[#0B0D12] border border-[#262F3D] flex items-center justify-between">
                     <div>
                       <div className="text-[11px] text-slate-400 font-mono">Net Annual Financial Impact</div>
                       <div className="text-2xl font-bold font-display text-emerald-400 mt-0.5">
@@ -1102,7 +1101,7 @@ export default function ROIDashboard() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="p-3.5 rounded-xl bg-[#080B11] border border-slate-800">
+                    <div className="p-3.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
                       <div className="text-[10px] text-slate-400 font-mono">Production Recovered Value</div>
                       <div className="text-base font-bold font-mono text-blue-400 mt-1">
                         ₹{calculated.productionCrores} Cr
@@ -1112,7 +1111,7 @@ export default function ROIDashboard() {
                       </div>
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-[#080B11] border border-slate-800">
+                    <div className="p-3.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
                       <div className="text-[10px] text-slate-400 font-mono">Fuel Savings Realized</div>
                       <div className="text-base font-bold font-mono text-amber-400 mt-1">
                         ₹{calculated.fuelLakhs} Lakhs
@@ -1122,7 +1121,7 @@ export default function ROIDashboard() {
                       </div>
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-[#080B11] border border-slate-800">
+                    <div className="p-3.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
                       <div className="text-[10px] text-slate-400 font-mono">Drilling Avoidance</div>
                       <div className="text-base font-bold font-mono text-cyan-400 mt-1">
                         ₹{calculated.drillLakhs} Lakhs
@@ -1132,7 +1131,7 @@ export default function ROIDashboard() {
                       </div>
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-[#080B11] border border-slate-800">
+                    <div className="p-3.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
                       <div className="text-[10px] text-slate-400 font-mono">Downtime & Repairs Saved</div>
                       <div className="text-base font-bold font-mono text-rose-400 mt-1">
                         ₹{calculated.downtimeLakhs} Lakhs

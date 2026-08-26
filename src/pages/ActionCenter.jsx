@@ -13,7 +13,7 @@ import RecoveryPanel from '../components/actions/RecoveryPanel';
 import { useScenario } from '../context/ScenarioContext';
 
 export default function ActionCenter() {
-  const { scenarioData } = useScenario();
+  const { scenarioData, activeMineData } = useScenario();
   const [executedActions, setExecutedActions] = useState([]);
   const [notification, setNotification] = useState(null);
 
@@ -28,7 +28,7 @@ export default function ActionCenter() {
   return (
     <PageLayout
       title="Corrective Action Optimization"
-      subtitle="Prioritized operational interventions computed via Mixed Integer Linear Programming (MILP) to recover production deficit."
+      subtitle={`Prioritized operational interventions computed via Mixed Integer Linear Programming (MILP) to recover production deficit for ${activeMineData.name}.`}
     >
       {/* Toast Notification */}
       <AnimatePresence>
@@ -37,7 +37,7 @@ export default function ActionCenter() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="fixed top-16 right-8 z-[2000] bg-[#0E131F] border border-slate-700 text-slate-100 text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 backdrop-blur-md"
+            className="fixed top-16 right-8 z-[2000] bg-[#131720] border border-[#262F3D] text-slate-100 text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 backdrop-blur-md"
           >
             <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
             <span>{notification}</span>
@@ -83,8 +83,8 @@ export default function ActionCenter() {
           />
 
           {/* Predict-Explain-Act Pipeline */}
-          <div className="rounded-2xl border border-slate-800/90 bg-[#0E131F]/85 text-slate-100 shadow-card backdrop-blur-xl p-6">
-            <div className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-4 flex items-center gap-2 pb-3 border-b border-slate-800 font-mono">
+          <div className="rounded-2xl border border-[#262F3D] bg-[#131720]/85 text-slate-100 shadow-card backdrop-blur-xl p-6">
+            <div className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-4 flex items-center gap-2 pb-3 border-b border-[#262F3D] font-mono">
               <SlidersHorizontal size={14} className="text-blue-400" />
               <span>Operational Decision Pipeline</span>
             </div>
@@ -93,7 +93,7 @@ export default function ActionCenter() {
               {/* Step 1: Predict */}
               <Link
                 to="/production-forecast"
-                className="block p-3.5 rounded-xl bg-[#080B11] border border-slate-800 hover:border-slate-700 transition-colors group"
+                className="block p-3.5 rounded-xl bg-[#0B0D12] border border-[#262F3D] hover:border-slate-700 transition-colors group"
               >
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="font-mono font-bold text-sky-400 text-[11px]">
@@ -104,14 +104,16 @@ export default function ActionCenter() {
                   </span>
                 </div>
                 <div className="text-xs text-slate-300 font-semibold">
-                  {scenarioData.expectedGap.toLocaleString()} T shortfall projected ahead
+                  {scenarioData.expectedGap > 0
+                    ? `${scenarioData.expectedGap.toLocaleString()} T shortfall projected ahead`
+                    : 'Extraction nominal & stable'}
                 </div>
               </Link>
 
               {/* Step 2: Explain */}
               <Link
                 to="/risk-analysis"
-                className="block p-3.5 rounded-xl bg-[#080B11] border border-slate-800 hover:border-slate-700 transition-colors group"
+                className="block p-3.5 rounded-xl bg-[#0B0D12] border border-[#262F3D] hover:border-slate-700 transition-colors group"
               >
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="font-mono font-bold text-blue-400 text-[11px]">
@@ -127,7 +129,7 @@ export default function ActionCenter() {
               </Link>
 
               {/* Step 3: Act (Active) */}
-              <div className="p-3.5 rounded-xl bg-[#080B11] border border-emerald-500/30">
+              <div className="p-3.5 rounded-xl bg-[#0B0D12] border border-emerald-500/30">
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="font-mono font-bold text-emerald-400 text-[11px]">
                     03 &bull; ACT

@@ -9,9 +9,9 @@ export default function RecoveryPanel({
   residualRisk = 31,
 }) {
   return (
-    <div className="rounded-2xl border border-slate-800/90 bg-[#0E131F]/85 text-slate-100 shadow-card backdrop-blur-xl p-6">
+    <div className="rounded-2xl border border-[#262F3D] bg-[#131720]/85 text-slate-100 shadow-card backdrop-blur-xl p-6">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3.5 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-3.5 border-b border-[#262F3D]">
         <div className="flex items-center gap-2">
           <TrendingDown size={16} className="text-blue-400" />
           <h3 className="text-xs uppercase tracking-wider font-semibold text-slate-200 font-mono">
@@ -24,8 +24,8 @@ export default function RecoveryPanel({
       </div>
 
       {/* Metrics 2-Col Grid */}
-      <div className="grid grid-cols-2 gap-3.5 py-4 border-b border-slate-800">
-        <div className="p-3.5 bg-[#080B11] rounded-xl border border-slate-800">
+      <div className="grid grid-cols-2 gap-3.5 py-4 border-b border-[#262F3D]">
+        <div className="p-3.5 bg-[#0B0D12] rounded-xl border border-[#262F3D]">
           <div className="text-[11px] text-slate-400 font-medium mb-1">
             Projected Shortfall
           </div>
@@ -35,7 +35,7 @@ export default function RecoveryPanel({
           <div className="text-[10px] text-slate-400 mt-0.5 font-mono">Unmitigated gap</div>
         </div>
 
-        <div className="p-3.5 bg-[#080B11] rounded-xl border border-slate-800">
+        <div className="p-3.5 bg-[#0B0D12] rounded-xl border border-[#262F3D]">
           <div className="text-[11px] text-slate-400 font-medium mb-1">
             Recoverable Volume
           </div>
@@ -61,7 +61,7 @@ export default function RecoveryPanel({
             </span>
             <span className="font-mono font-bold text-rose-400">{currentRisk}% Risk</span>
           </div>
-          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-[#0B0D12] rounded-full overflow-hidden border border-[#262F3D]">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${currentRisk}%` }}
@@ -73,7 +73,7 @@ export default function RecoveryPanel({
 
         {/* Reduction Indicator */}
         <div className="flex items-center justify-center py-1">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-200 bg-[#080B11] px-3.5 py-1.5 rounded-full border border-slate-800 shadow-sm">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-200 bg-[#0B0D12] px-3.5 py-1.5 rounded-full border border-[#262F3D] shadow-sm">
             <ArrowDown size={13} className="text-blue-400" />
             <span>51% Risk Reduction via Fleet Redeployment</span>
           </div>
@@ -88,12 +88,12 @@ export default function RecoveryPanel({
             </span>
             <span className="font-mono font-bold text-emerald-400">{residualRisk}% Residual</span>
           </div>
-          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-[#0B0D12] rounded-full overflow-hidden border border-[#262F3D]">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${residualRisk}%` }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full shadow-glow-emerald"
+              className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
             />
           </div>
         </div>
