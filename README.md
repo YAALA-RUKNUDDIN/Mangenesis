@@ -1,4 +1,4 @@
-# 🛰️ MANGENESIS (SIH26009)
+# MANGENESIS (SIH26009)
 ### AI-Powered Space Intelligence for Manganese Ore Identification and Production Continuity Forecast
 **Ministry of Mines / MOIL Limited • Smart India Hackathon Grand Finale**
 
@@ -15,31 +15,31 @@
 
 ---
 
-## 📌 Executive Summary
+## 1. Executive Summary
 
-**MANGENESIS** is an enterprise-grade AI decision support platform built specifically for **MOIL Limited** (Ministry of Mines / Ministry of Steel). It establishes a closed-loop **"Predict-Explain-Act"** intelligence pipeline that solves two mission-critical mining challenges:
+**MANGENESIS** is an enterprise-grade AI decision support platform engineered specifically for **MOIL Limited** (Ministry of Mines / Ministry of Steel). It establishes a closed-loop **"Predict-Explain-Act"** intelligence pipeline that solves two mission-critical mining challenges:
 
-1. **Space-Borne Subsurface Mineral Exploration**: Identifies commercial-grade manganese ore deposits from orbital satellite telemetry (*Sentinel-2 SWIR band ratios 11/12 & Landsat-9 thermal inertia*) before exploratory drilling, eliminating expensive dry diamond core holes.
-2. **7-Day Production Continuity Forecasting & Recovery**: Predicts daily pit production shortfalls up to 7 days in advance using *LightGBM*, pinpoints exact root causes via *TreeSHAP (Explainable AI)*, and autonomously generates mathematically optimal recovery dispatches using *Mixed Integer Linear Programming (MILP)* to recover up to **77% of production deficits**.
+1. **Space-Borne Subsurface Mineral Exploration**: Identifies commercial-grade manganese ore deposits from orbital satellite telemetry (*Sentinel-2 SWIR band ratios 11/12 and Landsat-9 thermal inertia*) prior to exploratory drilling, eliminating expensive dry diamond core holes.
+2. **7-Day Production Continuity Forecasting & Recovery**: Predicts daily pit extraction shortfalls up to 7 days in advance using *LightGBM*, pinpoints exact root causes via *TreeSHAP (Explainable AI)*, and autonomously generates mathematically optimal recovery dispatches using *Mixed Integer Linear Programming (MILP)* to recover up to **77% of production deficits**.
 
-> **Ground-Truth Calibration Site**: Calibrated and validated on **MOIL's Gumgaon Manganese Mine, Nagpur**, utilizing physical drill core assays (DP-G01: **44.8% Mn grade** matching **96% AI confidence**) and IBM FY25 cost indices.
+> **Ground-Truth Calibration Site**: Calibrated and validated on **MOIL's Gumgaon Manganese Mine, Nagpur**, utilizing physical drill core assays (DP-G01: **44.8% Mn grade** matching **96% AI confidence**) and Indian Bureau of Mines (IBM) FY25 cost indices.
 
 ---
 
-## 💰 Quantified Business ROI & Economic Value
+## 2. Quantified Business ROI & Economic Value
 
 | Value Stream | Annual Impact (Gumgaon Mine) | Enterprise MOIL (6 Mines) | Verification Basis |
 | :--- | :--- | :--- | :--- |
-| 🚀 **Production Recovered** | **₹19.12 Crores** (15,300 T saved) | **₹114.7 Crores** | MILP reallocation @ ₹12,500/T Mn Ore |
-| ⛽ **Fuel Conserved** | **₹64.3 Lakhs** (68,400 L saved) | **₹3.86 Crores** | AI haul dispatching @ ₹94/L Industrial Diesel |
-| 💎 **Drilling Cost Avoided** | **₹76.5 Lakhs** (6 dry holes / 900m) | **₹4.59 Crores** | Orbital SWIR screening @ ₹8,500/m drilling |
-| 🔧 **Equipment Downtime Cut** | **₹79.8 Lakhs** (28 breakdowns) | **₹4.79 Crores** | Predictive telematics (345.6 machine uptime hrs) |
-| 🛣️ **Haul Road Protection** | **₹9.6 Lakhs** (8 washout events) | **₹57.6 Lakhs** | NASA GPM radar precipitation warning alerts |
+| **Production Recovered** | **₹19.12 Crores** (15,300 T saved) | **₹114.7 Crores** | MILP reallocation @ ₹12,500/T Mn Ore |
+| **Fuel Conserved** | **₹64.3 Lakhs** (68,400 L saved) | **₹3.86 Crores** | AI haul dispatching @ ₹94/L Industrial Diesel |
+| **Drilling Cost Avoided** | **₹76.5 Lakhs** (6 dry holes / 900m) | **₹4.59 Crores** | Orbital SWIR screening @ ₹8,500/m drilling |
+| **Equipment Downtime Cut** | **₹79.8 Lakhs** (28 breakdowns) | **₹4.79 Crores** | Predictive telematics (345.6 machine uptime hrs) |
+| **Haul Road Protection** | **₹9.6 Lakhs** (8 washout events) | **₹57.6 Lakhs** | NASA GPM radar precipitation warning alerts |
 | **Total Annual Realization** | **₹21.36 Crores / year** | **₹126.2 Crores / year** | **Calibrated against IBM FY25 Benchmarks** |
 
 ---
 
-## 🏗️ System Architecture & Data Pipeline
+## 3. System Architecture & Data Pipeline
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
@@ -71,18 +71,18 @@
 │  React 18 • Vite • Tailwind CSS (Mineral Beige / Charcoal Slate) • Leaflet GIS • Recharts │
 │                                                                                        │
 │ ┌──────────────────────┐ ┌──────────────────────┐ ┌──────────────────────────────────┐ │
-│ │ 🎛️ Command Center    │ │ 🗺️ Reserve Intel    │ │ 📈 Production Continuity Chart   │ │
+│ │ Command Center       │ │ Reserve Intelligence │ │ Production Continuity Forecast   │ │
 │ ├──────────────────────┤ ├──────────────────────┤ ├──────────────────────────────────┤ │
-│ │ 🔍 TreeSHAP Risk     │ │ ⚡ MILP Action Center│ │ 🚨 Multi-Channel Alert Center    │ │
+│ │ TreeSHAP Diagnostics │ │ Action Center (MILP) │ │ Multi-Channel Alert Center       │ │
 │ ├──────────────────────┴─┴──────────────────────┴─┴──────────────────────────────────┤ │
-│ │ 💼 Executive ROI & Cost-Benefit Intelligence Dashboard (PDF Export)                │ │
+│ │ Executive ROI & Cost-Benefit Intelligence Dashboard (PDF Export)                   │ │
 │ └────────────────────────────────────────────────────────────────────────────────────┘ │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🛠️ Complete Tech Stack & Justification
+## 4. Complete Tech Stack & Justification
 
 | Layer / Component | Technology | Role in System | Why Chosen & Advantage |
 | :--- | :--- | :--- | :--- |
@@ -100,40 +100,40 @@
 
 ---
 
-## 🌟 Core Modules & Capabilities
+## 5. Core Platform Modules
 
-### 1. 🎛️ Command Center (`/`)
-* **Vital Signs KPI Cards**: Daily actual production vs 10,000 TPD target, shortfall risk index, active sectors.
+### 5.1 Command Center (`/`)
+* **Vital Signs KPI Cards**: Daily actual production vs 10,000 TPD target, shortfall risk index, active deposit sectors.
 * **Interactive Mine Satellite Map**: Benches, drill cores, haul roads with clickable telemetry popovers.
 * **7-Day Forward Forecast**: Mini time-series widget showing production trajectory.
 * **Diagnostic Bottleneck Summary**: Instant AI narrative of primary pit constraints.
 
-### 2. 🛰️ Reserve Intelligence (`/reserve-intelligence`)
+### 5.2 Reserve Intelligence (`/reserve-intelligence`)
 * **Orbital Band Fusion**: Sentinel-2 SWIR (11/12), Landsat-9 thermal inertia, SMAP soil moisture, NDVI.
 * **Geological Ground-Truth**: Mansar Formation lithology cross-referenced with physical core assay DP-G01 (44.8% Mn).
 * **Exploration Zone Inspector**: High/Med/Low commercial deposit probabilities with drill recommendations.
 
-### 3. 📈 Production Continuity Forecast (`/production-forecast`)
+### 5.3 Production Continuity Forecast (`/production-forecast`)
 * **14-Day Actual + 7-Day Forecast Chart**: High-contrast area chart with 10,000 T target line and highlighted deficit.
 * **Scenario Simulator Bar**: Test *Normal, Excavator Breakdown, Monsoon Inundation, or Blasting Delays* live.
 * **Risk Window Classification**: Categorizes upcoming shifts into Low, Medium, and High-Risk operational windows.
 
-### 4. 🔍 Risk Analysis & Root Causes (`/risk-analysis`)
+### 5.4 Risk Analysis & Root Causes (`/risk-analysis`)
 * **Shortfall Status Banner**: Displays exact deficit (e.g. -2,200 Tonnes) and risk score (84%).
 * **Radial Donut Breakdown**: Percentage risk contribution (42% Excavator Hydraulic, 28% Haul Saturation, 18% Blast Delay).
 * **TreeSHAP Attribution Bars**: Mathematical Shapley proof for DGMS inspectors and mining auditors.
 
-### 5. ⚡ Action Center (`/action-center`)
+### 5.5 Action Center (`/action-center`)
 * **MILP Ranked Interventions**: Priority 01, 02, 03 mathematical dispatches (e.g., Reassign Shovel #04, Reroute 45T Dumpers).
 * **Instant Dispatch Command**: One-click simulated API transmission to Fleet Management System (FMS).
 * **Recovery Impact Panel**: Quantifies shortfall mitigation (+1,700 T recovered, risk reduced from 84% to 33%).
 
-### 6. 🚨 Multi-Channel Alert Center (`/alert-center`)
+### 5.6 Alert Center (`/alert-center`)
 * **Multi-Channel Matrix**: Email, SMS, and Browser Push toggles with recipient management.
 * **Dynamic Thresholds**: Configurable Warning (50%) and Critical (80%) shortfall limit sliders.
 * **Live Broadcast Simulator**: Functional test buttons to broadcast SMS and Email live during presentations.
 
-### 7. 💼 ROI & Cost-Benefit Intelligence (`/roi-dashboard`)
+### 5.7 ROI & Cost-Benefit Intelligence (`/roi-dashboard`)
 * **Big 4 Financial KPI Cards**: Total Annual Realization (₹21.36 Cr), Output Preserved (15,300 T/yr), Fuel Saved (68,400 L), Drilling Avoided (₹76.5L).
 * **6 Deep-Dive Value Pillars**: Transparent formulas grounded in IBM FY25 cost indices.
 * **Interactive Sensitivity Sliders**: Live sliders for Ore Price, Diesel Rate, Drilling Rate, and Optimizer Efficiency.
@@ -141,7 +141,7 @@
 
 ---
 
-## 🗺️ 4-Phase Commercialization Roadmap
+## 6. Four-Phase Commercialization Roadmap
 
 ```
 Phase 1 (Immediate)   ──► Gumgaon Pilot Calibrated & Validated against DP-G01 core assays (100% COMPLETE)
@@ -152,20 +152,20 @@ Phase 4 (Months 15–24)──► MOIL-Wide Command Center & Inter-PSU Expansion
 
 ---
 
-## 🚀 Quickstart & Installation
+## 7. Quickstart & Installation
 
 ### Prerequisites
 * **Node.js**: v18.0 or higher
 * **Python**: v3.10 or higher
 * **Git**
 
-### 1. Clone Repository
+### Step 1: Clone Repository
 ```bash
 git clone https://github.com/YAALA-RUKNUDDIN/mangenesis.git
 cd mangenesis
 ```
 
-### 2. Frontend Setup
+### Step 2: Frontend Setup
 ```bash
 # Install NPM dependencies
 npm install
@@ -175,7 +175,7 @@ npm run dev
 # Dashboard opens at: http://localhost:5173
 ```
 
-### 3. Backend Setup
+### Step 3: Backend Setup
 ```bash
 # Create and activate virtual environment
 python -m venv venv
@@ -194,10 +194,11 @@ python -m uvicorn backend.main:app --reload --port 8000
 
 ---
 
-## 👥 Project Team & Acknowledgments
+## 8. Project Information & Acknowledgments
 
 * **Project**: MANGENESIS (SIH26009)
 * **Problem Statement**: AI-Powered Space Intelligence for Manganese Ore Identification & Production Continuity Forecast
 * **Nodal Organization**: Ministry of Mines / MOIL Limited (Nagpur, Maharashtra)
 * **Hackathon**: Smart India Hackathon (SIH) 2024–2025
+
 
