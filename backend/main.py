@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.routers import satellite, zones, production, risk, actions, mines, supabase_router, alerts
+from backend.models.train_models import train_all_models
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Train models on startup if artifacts not present
