@@ -31,6 +31,7 @@ import AnimatedNumber from '../components/shared/AnimatedNumber';
 import StatusBadge from '../components/shared/StatusBadge';
 import { useScenario } from '../context/ScenarioContext';
 import { fetchSingleMineROI, fetchEnterpriseROI } from '../services/api';
+import { jsPDF } from 'jspdf';
 
 export default function ROIDashboard() {
   const { activeMine, activeMineData, scenarioData } = useScenario();
@@ -151,45 +152,185 @@ export default function ROIDashboard() {
   ]);
 
   const handleExportBrief = () => {
-    const reportData = {
-      title: 'MANGENESIS Executive ROI & Cost-Benefit Brief',
-      organization: 'MOIL Ltd. / Ministry of Steel',
-      mine: activeMineData.name,
-      district: `${activeMineData.district}, ${activeMineData.state}`,
-      scenario: scenarioData.label,
-      generatedAt: new Date().toISOString(),
-      financialSummary: {
-        totalAnnualSavings: `₹${calculated.totalCrores} Crores`,
-        productionRecoveredValue: `₹${calculated.productionCrores} Crores (${calculated.annualRecoveredTonnes.toLocaleString()} Tonnes/yr)`,
-        fuelSavings: `₹${calculated.fuelLakhs} Lakhs (${calculated.annualFuelSavedLitres.toLocaleString()} L/yr)`,
-        drillingAvoidance: `₹${calculated.drillLakhs} Lakhs (6 holes avoided)`,
-        downtimeReductionSavings: `₹${calculated.downtimeLakhs} Lakhs (345.6 hrs saved)`,
-        roadReworkAvoidance: `₹${calculated.roadLakhs} Lakhs (8 washouts avoided)`,
-      },
-      costAssumptions: {
-        manganeseOrePrice: `₹${customOrePrice}/T`,
-        industrialDiesel: `₹${customDieselRate}/L`,
-        diamondCoreDrilling: `₹${customDrillCost}/m`,
-        optimizerRecoveryRate: `${customRecoveryRate}%`,
-      },
-      priorityRoadmap: {
-        currentPhase: 'Phase 1 (Immediate) - Gumgaon Pilot Calibrated & Validated',
-        phase2: 'FMS/ERP Integration & Safety Governance',
-        phase3: 'Digital Twin & Multi-Mine Edge Deployment',
-        phase4: 'MOIL-wide Rollout & Inter-PSU Expansion',
-      },
-    };
+    try {
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: 'a4',
+      });
 
-    const blob = new Blob([JSON.stringify(reportData, null, 2)], {
-      type: 'application/json',
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `MANGENESIS_ROI_Brief_${activeMine}_${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('Executive ROI Report downloaded successfully.');
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const margin = 40;
+      let y = 40;
+
+      // Top Banner Box
+      doc.setFillColor(26, 32, 44); // Charcoal Slate
+      doc.rect(margin, y, pageWidth - 2 * margin, 54, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(15);
+      doc.setTextColor(232, 223, 209); // Mineral beige
+      doc.text('MANGENESIS (SIH26009)', margin + 14, y + 22);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(199, 181, 159);
+      doc.text('Executive ROI & Cost-Benefit Brief — Ministry of Mines / MOIL Limited', margin + 14, y + 39);
+
+      y += 70;
+
+      // Metadata Row
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(30, 41, 59);
+      doc.text(`Mine Site: ${activeMineData?.name || 'Gumgaon Mine'} (${activeMineData?.state || 'Nagpur, Maharashtra'})`, margin, y);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(100, 116, 139);
+      const dateStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      doc.text(`Active Scenario: ${scenarioData?.label || 'Equipment Failure'}  |  Date: ${dateStr}`, margin, y + 14);
+
+      y += 28;
+      doc.setDrawColor(203, 213, 225);
+      doc.setLineWidth(0.75);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 16;
+
+      // Big Savings Callout Card
+      doc.setFillColor(241, 245, 249);
+      doc.setDrawColor(199, 181, 159);
+      doc.roundedRect(margin, y, pageWidth - 2 * margin, 46, 4, 4, 'FD');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(29, 78, 216); // Deep Blue
+      doc.text('ESTIMATED ANNUAL VALUE REALIZATION', margin + 14, y + 17);
+
+      doc.setFontSize(18);
+      doc.setTextColor(4, 120, 87); // Emerald Green
+      doc.text(`Rs. ${calculated.totalCrores} Crores / Year`, margin + 14, y + 36);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(71, 85, 105);
+      doc.text('(Rs. 126.2 Cr across all 6 MOIL operating mines)', pageWidth - margin - 205, y + 36);
+
+      y += 60;
+
+      // Section 1: 6 Value Streams
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(26, 32, 44);
+      doc.text('1. Quantified Financial Value Streams', margin, y);
+      y += 12;
+
+      const pillars = [
+        ['Production Recovered', `Rs. ${calculated.productionCrores} Cr`, `${calculated.annualRecoveredTonnes.toLocaleString()} Tonnes/yr preserved via MILP recovery`],
+        ['Fuel Conserved', `Rs. ${calculated.fuelLakhs} Lakhs`, `${calculated.annualFuelSavedLitres.toLocaleString()} Litres diesel saved via AI dispatching`],
+        ['Drilling Cost Avoided', `Rs. ${calculated.drillLakhs} Lakhs`, '6 dry exploratory diamond core holes avoided (900m)'],
+        ['Equipment Downtime Cut', `Rs. ${calculated.downtimeLakhs} Lakhs`, '28 hydraulic breakdowns avoided (345.6 hrs machine uptime)'],
+        ['Haul Road Rework Saved', `Rs. ${calculated.roadLakhs} Lakhs`, '8 monsoon washout repairs avoided via radar alert warnings'],
+        ['Equipment Utilization Gain', '+2.4% Net OEE', 'Fleet cycle time reduced from 22.4 min to 19.8 min'],
+      ];
+
+      doc.setFontSize(8.5);
+      pillars.forEach(([title, val, desc], i) => {
+        const rowY = y + i * 20;
+        doc.setFillColor(i % 2 === 0 ? 248 : 255, i % 2 === 0 ? 250 : 255, i % 2 === 0 ? 252 : 255);
+        doc.rect(margin, rowY - 9, pageWidth - 2 * margin, 18, 'F');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(30, 41, 59);
+        doc.text(title, margin + 8, rowY + 3);
+
+        doc.setTextColor(4, 120, 87);
+        doc.text(val, margin + 175, rowY + 3);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(100, 116, 139);
+        doc.text(desc, margin + 250, rowY + 3);
+      });
+
+      y += pillars.length * 20 + 14;
+
+      // Section 2: Cost Parameters
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(26, 32, 44);
+      doc.text('2. Cost Assumptions & Benchmarks (IBM / MOIL FY25)', margin, y);
+      y += 12;
+
+      const assumptions = [
+        ['Manganese Ore Price', `Rs. ${customOrePrice.toLocaleString()} / Tonne`],
+        ['Industrial Diesel Fuel', `Rs. ${customDieselRate} / Litre`],
+        ['Diamond Core Drilling', `Rs. ${customDrillCost.toLocaleString()} / Metre`],
+        ['Optimizer Recovery Efficiency', `${customRecoveryRate}% Shortfall Mitigated`],
+      ];
+
+      doc.setFontSize(8.5);
+      assumptions.forEach(([label, val], i) => {
+        const col = i % 2;
+        const row = Math.floor(i / 2);
+        const itemX = margin + col * 260;
+        const itemY = y + row * 16;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(71, 85, 105);
+        doc.text(`${label}:`, itemX, itemY);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(26, 32, 44);
+        doc.text(val, itemX + 130, itemY);
+      });
+
+      y += 44;
+
+      // Section 3: 4-Phase Roadmap
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(26, 32, 44);
+      doc.text('3. Four-Phase Commercialization Roadmap', margin, y);
+      y += 12;
+
+      const phases = [
+        ['Phase 1 (Immediate)', 'Gumgaon Pilot & Ground-Truth Calibration (Completed — 100%)'],
+        ['Phase 2 (Months 4–8)', 'FMS / SAP ERP Integration & Safety Governance (In Execution — 65%)'],
+        ['Phase 3 (Months 9–14)', '3D Voxel Digital Twin & Multi-Mine Edge Rollout (Balaghat, Dongri, etc.)'],
+        ['Phase 4 (Months 15–24)', 'MOIL-wide Command Center & Expansion to NMDC / Coal India Ltd.'],
+      ];
+
+      doc.setFontSize(8);
+      phases.forEach(([pName, pDesc], i) => {
+        const rowY = y + i * 16;
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(29, 78, 216);
+        doc.text(pName, margin + 8, rowY);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(51, 65, 85);
+        doc.text(pDesc, margin + 115, rowY);
+      });
+
+      y += phases.length * 16 + 18;
+
+      // Footer
+      doc.setDrawColor(226, 232, 240);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 12;
+
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(7.5);
+      doc.setTextColor(148, 163, 184);
+      doc.text('Generated via MANGENESIS AI Platform for Smart India Hackathon & MOIL Evaluation.', margin, y);
+      doc.text('Confidential Executive Report', pageWidth - margin - 100, y);
+
+      // Trigger Download
+      doc.save(`MANGENESIS_ROI_Brief_${activeMine}_${new Date().toISOString().slice(0, 10)}.pdf`);
+      showToast('Executive ROI Brief downloaded as PDF successfully.');
+    } catch (err) {
+      console.error('PDF export failed:', err);
+      showToast('Failed to generate PDF. Please try again.');
+    }
   };
 
   const handleResetDefaults = () => {
