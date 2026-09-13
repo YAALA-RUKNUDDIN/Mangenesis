@@ -199,3 +199,44 @@ export async function fetchEnterpriseROI() {
     return null;
   }
 }
+
+export async function fetchEquipment(mineId = 'gumgaon') {
+  try {
+    const res = await fetch(`${API_BASE_URL}/equipment?mine_id=${encodeURIComponent(mineId)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function fetchSafety(mineId = 'gumgaon') {
+  try {
+    const res = await fetch(`${API_BASE_URL}/safety?mine_id=${encodeURIComponent(mineId)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function fetchIncidents(mineId = 'gumgaon') {
+  try {
+    const res = await fetch(`${API_BASE_URL}/incidents?mine_id=${encodeURIComponent(mineId)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function fetchAuditLog(mineId = 'gumgaon') {
+  try {
+    const res = await fetch(`${API_BASE_URL}/audit?mine_id=${encodeURIComponent(mineId)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    return null;
+  }
+}
+

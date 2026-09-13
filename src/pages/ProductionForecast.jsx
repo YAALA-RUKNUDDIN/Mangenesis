@@ -11,6 +11,7 @@ import ProductionForecastChart from '../components/charts/ProductionForecastChar
 import StatusBadge from '../components/shared/StatusBadge';
 import AnimatedNumber from '../components/shared/AnimatedNumber';
 import DataFlowViz from '../components/shared/DataFlowViz';
+import MineSceneCanvas from '../components/3d/MineSceneCanvas';
 import { useScenario } from '../context/ScenarioContext';
 import { historicalProduction, timelineEvents } from '../data/mockData';
 
@@ -142,6 +143,18 @@ export default function ProductionForecast() {
             </span>
           )}
         </div>
+      </div>
+
+      {/* 3D Bench Extraction & Fleet Simulation */}
+      <div className="rounded-2xl border border-blue-500/30 overflow-hidden shadow-2xl bg-[#0B0D12] relative mt-5">
+        <div className="absolute top-3 left-4 z-20 px-3 py-1.5 rounded-xl bg-[#0B0F19]/90 backdrop-blur-xl border border-blue-500/40 text-xs font-mono font-semibold text-blue-300 flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+          <span>3D BENCH EXTRACTION & HAULAGE DISPATCH SIMULATION</span>
+        </div>
+        <MineSceneCanvas
+          height="340px"
+          showTelemetryHUD={false}
+        />
       </div>
 
       {/* Three Risk Period Cards */}

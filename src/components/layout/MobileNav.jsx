@@ -1,40 +1,41 @@
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
-  Map,
+  Layers,
   TrendingUp,
-  ShieldAlert,
+  Truck,
   Zap,
-  Bell,
-  CircleDollarSign,
+  FileCheck2,
 } from 'lucide-react';
 import { navItems } from '../../data/mockData';
 
 const iconMap = {
   'command-center': LayoutDashboard,
-  'reserve-intelligence': Map,
+  'digital-twin': Layers,
   'production-forecast': TrendingUp,
-  'risk-analysis': ShieldAlert,
+  'equipment': Truck,
   'action-center': Zap,
-  'alert-center': Bell,
-  'roi-dashboard': CircleDollarSign,
+  'incidents': FileCheck2,
 };
 
 const shortLabels = {
   'command-center': 'Command',
-  'reserve-intelligence': 'Reserves',
+  'digital-twin': 'Twin',
   'production-forecast': 'Forecast',
-  'risk-analysis': 'Risk',
+  'equipment': 'Fleet',
   'action-center': 'Actions',
-  'alert-center': 'Alerts',
-  'roi-dashboard': 'ROI',
+  'incidents': 'Incidents',
 };
 
+const mobileActiveIds = ['command-center', 'digital-twin', 'equipment', 'action-center', 'incidents'];
+
 export default function MobileNav() {
+  const visibleNav = navItems.filter(item => mobileActiveIds.includes(item.id));
+
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[2500] bg-[#131720]/95 backdrop-blur-xl border-t border-[#262F3D] py-1.5 px-2 select-none shadow-2xl safe-bottom">
       <nav className="flex items-center justify-around max-w-lg mx-auto">
-        {navItems.map((item) => {
+        {visibleNav.map((item) => {
           const Icon = iconMap[item.id] || LayoutDashboard;
           const label = shortLabels[item.id] || item.label;
 

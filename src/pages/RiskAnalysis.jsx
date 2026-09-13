@@ -19,6 +19,7 @@ import RiskContributionChart from '../components/charts/RiskContributionChart';
 import StatusBadge from '../components/shared/StatusBadge';
 import AIInsightPanel from '../components/shared/AIInsightPanel';
 import AnimatedNumber from '../components/shared/AnimatedNumber';
+import MineSceneCanvas from '../components/3d/MineSceneCanvas';
 import { useScenario } from '../context/ScenarioContext';
 
 export default function RiskAnalysis() {
@@ -152,6 +153,18 @@ export default function RiskAnalysis() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* 3D Geotechnical & Hazard Digital Twin Map */}
+      <div className="mb-6 rounded-2xl border border-rose-500/30 overflow-hidden shadow-2xl bg-[#0B0D12] relative">
+        <div className="absolute top-3 left-4 z-20 px-3 py-1.5 rounded-xl bg-[#0B0F19]/90 backdrop-blur-xl border border-rose-500/40 text-xs font-mono font-semibold text-rose-300 flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse" />
+          <span>3D GEOTECHNICAL HAZARD & DISPLACEMENT SCAN</span>
+        </div>
+        <MineSceneCanvas
+          height="350px"
+          showTelemetryHUD={false}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

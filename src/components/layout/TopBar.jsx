@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Building2,
@@ -18,6 +19,10 @@ import {
   Menu,
   Activity,
   Sliders,
+  UserCheck,
+  Play,
+  Pause,
+  RotateCcw,
 } from 'lucide-react';
 import { useScenario } from '../../context/ScenarioContext';
 import { fetchSupabaseStatus, seedSupabaseDatabase } from '../../services/api';
@@ -34,10 +39,22 @@ export default function TopBar() {
     scenarioData,
     liveSatellite,
     setMobileMenuOpen,
+    activeRole,
+    switchRole,
+    roleProfile,
+    allRoleProfiles,
+    simulationActive,
+    simulationStep,
+    simulationPaused,
+    startSimulation,
+    pauseSimulation,
+    resumeSimulation,
+    resetSimulation,
   } = useScenario();
 
   const [mineDropdownOpen, setMineDropdownOpen] = useState(false);
   const [scenarioDropdownOpen, setScenarioDropdownOpen] = useState(false);
+  const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [supabaseModalOpen, setSupabaseModalOpen] = useState(false);
   const [supabaseInfo, setSupabaseInfo] = useState(null);
@@ -298,6 +315,130 @@ export default function TopBar() {
             )}
           </AnimatePresence>
         </div>
+
+        {/* Operational Role Switcher (Mine Manager / Safety / Maintenance / Operations) */}
+        <div className="relative z-[2100]">
+          <button
+            onClick={() => {
+              setRoleDropdownOpen(!roleDropdownOpen);
+              setScenarioDropdownOpen(false);
+              setMineDropdownOpen(false);
+            }}
+            className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-xs text-slate-100 transition-all duration-200 shadow-card cursor-pointer group"
+            title="Switch Operational Role Perspective"
+          >
+            <UserCheck size={13} className="text-[#C7B59F]" />
+            <div className="text-left hidden lg:block">
+              <span className="text-[9px] uppercase font-mono font-bold text-slate-400 block -mb-0.5">Role View</span>
+              <span className="font-semibold text-slate-200 text-xs truncate block">
+                {roleProfile.label}
+              </span>
+            </div>
+            <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-[#C7B59F]/15 text-[#D9CBBA] border border-[#C7B59F]/30 hidden sm:inline-block">
+              {roleProfile.badge}
+            </span>
+            <ChevronDown size={13} className="text-slate-400 group-hover:text-slate-200 transition-colors" />
+          </button>
+
+          {/* Role Dropdown Popover */}
+          <AnimatePresence>
+            {roleDropdownOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-[2150] bg-black/60 backdrop-blur-xs"
+                  onClick={() => setRoleDropdownOpen(false)}
+                />
+                <motion.div
+                  initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute left-0 mt-2 w-72 bg-[#131720] border border-[#262F3D] rounded-2xl py-2 shadow-popover z-[2200] overflow-hidden"
+                >
+                  <div className="px-3.5 pb-2 border-b border-[#262F3D] flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                      Operational Role Perspective
+                    </span>
+                    <span className="text-[9px] font-mono text-[#D9CBBA] bg-[#C7B59F]/10 px-1.5 py-0.5 rounded border border-[#C7B59F]/20">
+                      Role Filter
+                    </span>
+                  </div>
+
+                  <div className="p-1.5 space-y-1">
+                    {Object.values(allRoleProfiles).map((role) => {
+                      const isSelected = activeRole === role.id;
+                      return (
+                        <button
+                          key={role.id}
+                          onClick={() => {
+                            switchRole(role.id);
+                            setRoleDropdownOpen(false);
+                          }}
+                          className={`w-full text-left p-2.5 rounded-xl transition-all flex items-center justify-between cursor-pointer ${
+                            isSelected
+                              ? 'bg-gradient-to-r from-[#C7B59F]/20 to-transparent border border-[#C7B59F]/40'
+                              : 'hover:bg-white/[0.04] border border-transparent'
+                          }`}
+                        >
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-xs text-white">{role.label}</span>
+                              <span className="text-[8.5px] font-mono px-1 py-0.2 rounded bg-white/10 text-slate-300">
+                                {role.badge}
+                              </span>
+                            </div>
+                            <div className="text-[10px] text-slate-400 mt-0.5">{role.subtitle}</div>
+                          </div>
+                          {isSelected && <Check size={13} className="text-[#C7B59F]" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Center: SIH Demo Simulation Control Cluster */}
+      <div className="hidden md:flex items-center gap-2">
+        {!simulationActive ? (
+          <button
+            onClick={startSimulation}
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#C7B59F]/20 via-amber-500/15 to-[#C7B59F]/10 hover:from-[#C7B59F]/30 hover:to-amber-500/25 border border-[#C7B59F]/50 text-[#E8DFD1] hover:text-white text-xs font-semibold shadow-sm transition-all cursor-pointer group"
+            title="Launch interactive 14-step closed-loop decision simulation for SIH Jury"
+          >
+            <Play size={13} className="text-amber-400 fill-amber-400 group-hover:scale-110 transition-transform" />
+            <span>Run SIH Demo</span>
+            <span className="text-[9px] font-mono font-bold bg-amber-500/25 text-amber-300 px-1.5 py-0.2 rounded border border-amber-500/40">
+              JURY FLOW
+            </span>
+          </button>
+        ) : (
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-[#1A202C] border border-amber-500/50 shadow-lg text-xs font-mono">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+            <span className="text-amber-300 font-bold tracking-tight">
+              DEMO SIMULATION ACTIVE &bull; STEP {simulationStep}/5
+            </span>
+            <div className="flex items-center gap-1 border-l border-[#262F3D] pl-2">
+              <button
+                onClick={simulationPaused ? resumeSimulation : pauseSimulation}
+                className="p-1 rounded bg-black/40 hover:bg-black/60 text-amber-200 cursor-pointer"
+                title={simulationPaused ? 'Resume Simulation' : 'Pause Simulation'}
+              >
+                {simulationPaused ? <Play size={11} className="fill-amber-300 text-amber-300" /> : <Pause size={11} />}
+              </button>
+              <button
+                onClick={resetSimulation}
+                className="p-1 rounded bg-black/40 hover:bg-black/60 text-slate-300 hover:text-rose-400 cursor-pointer"
+                title="Reset to Ground Truth Baseline"
+              >
+                <RotateCcw size={11} />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Right: Actions & System Status */}
@@ -307,6 +448,7 @@ export default function TopBar() {
           <Calendar size={13} className="text-slate-400" />
           <span>18 Aug 2026</span>
         </div>
+
 
         {/* Space Data Active Badge */}
         <div className="hidden sm:flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
@@ -414,6 +556,16 @@ export default function TopBar() {
             )}
           </AnimatePresence>
         </div>
+
+        {/* Landing Portal Link */}
+        <Link
+          to="/"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#C7B59F]/30 text-[#E8DFD1] hover:text-white text-xs font-medium transition-all shadow-sm group"
+          title="Back to Landing Portal"
+        >
+          <Sparkles size={13} className="text-[#C7B59F] group-hover:rotate-12 transition-transform" />
+          <span className="hidden sm:inline">Landing Portal</span>
+        </Link>
 
         {/* Live Swagger API Docs Link (Desktop) */}
         <a

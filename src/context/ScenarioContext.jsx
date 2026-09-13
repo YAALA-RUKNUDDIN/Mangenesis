@@ -1,8 +1,13 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import {
   mines as localMines,
   historicalProduction as defaultHistorical,
   forecastProduction as defaultForecast,
+  equipmentAssets as defaultEquipment,
+  safetyHazards as defaultSafety,
+  initialIncidents as defaultIncidents,
+  initialAuditLog as defaultAuditLog,
+  roleProfiles,
 } from '../data/mockData';
 import {
   fetchMines,
@@ -19,6 +24,20 @@ export function ScenarioProvider({ children }) {
   const [minesList, setMinesList] = useState(localMines);
   const [activeMine, setActiveMine] = useState('gumgaon');
   const [activeScenario, setActiveScenario] = useState('equipment_failure');
+  const [activeRole, setActiveRole] = useState('manager'); // 'manager' | 'safety' | 'maintenance' | 'operations'
+
+  // Dynamic Operational Datasets (Mutable for closed-loop lifecycle)
+  const [equipmentList, setEquipmentList] = useState(defaultEquipment);
+  const [safetyList, setSafetyList] = useState(defaultSafety);
+  const [incidentsList, setIncidentsList] = useState(defaultIncidents);
+  const [auditLogList, setAuditLogList] = useState(defaultAuditLog);
+  const [executedActionIds, setExecutedActionIds] = useState([]);
+
+  // Simulation Mode State (For SIH Jury Presentation)
+  const [simulationActive, setSimulationActive] = useState(false);
+  const [simulationStep, setSimulationStep] = useState(0); // 0 to 5
+  const [simulationPaused, setSimulationPaused] = useState(false);
+  const simulationTimerRef = useRef(null);
 
   const [liveSatellite, setLiveSatellite] = useState(null);
   const [liveZones, setLiveZones] = useState(null);
@@ -36,15 +55,15 @@ export function ScenarioProvider({ children }) {
     ...fallbackMine,
     ...remoteMine,
     drill_points:
-      (remoteMine.drill_points && remoteMine.drill_points.length > 0)
+      remoteMine.drill_points && remoteMine.drill_points.length > 0
         ? remoteMine.drill_points
         : fallbackMine.drill_points || [],
     zones:
-      (remoteMine.zones && remoteMine.zones.length > 0)
+      remoteMine.zones && remoteMine.zones.length > 0
         ? remoteMine.zones
         : fallbackMine.zones || [],
     roads:
-      (remoteMine.roads && remoteMine.roads.length > 0)
+      remoteMine.roads && remoteMine.roads.length > 0
         ? remoteMine.roads
         : fallbackMine.roads || [],
   };
@@ -55,6 +74,17 @@ export function ScenarioProvider({ children }) {
     { id: 'heavy_rainfall', label: 'Heavy Rainfall', description: 'Monsoon downpour causing haul road saturation.' },
     { id: 'blasting_delay', label: 'Blasting Delay', description: 'DGMS safety clearance delay holding bench fragmentation.' },
   ];
+
+  // Helper to append immutable audit entry
+  const addAuditEntry = useCallback((entry) => {
+    const newEntry = {
+      id: `AUD-${Date.now().toString().slice(-4)}`,
+      timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19),
+      ...entry,
+    };
+    setAuditLogList((prev) => [newEntry, ...prev]);
+    return newEntry;
+  }, []);
 
   // Fetch all backend data for active mine & scenario
   const refreshData = useCallback(async (mineId, scenarioId) => {
@@ -68,9 +98,7 @@ export function ScenarioProvider({ children }) {
         fetchActions(scenarioId, mineId),
       ]);
 
-      if (minesRes && minesRes.length > 0) {
-        setMinesList(minesRes);
-      }
+      if (minesRes && minesRes.length > 0) setMinesList(minesRes);
       if (satRes) setLiveSatellite(satRes);
       if (zonesRes) setLiveZones(zonesRes);
       if (prodRes) setLiveProduction(prodRes);
@@ -90,16 +118,332 @@ export function ScenarioProvider({ children }) {
 
   const switchScenario = (scenarioId) => {
     setActiveScenario(scenarioId);
+    addAuditEntry({
+      eventType: 'SCENARIO_SWITCHED',
+      severity: 'INFO',
+      actor: 'Control Room Operator',
+      entity: 'Pit Simulation Engine',
+      description: `Scenario shifted to "${availableScenarios.find((s) => s.id === scenarioId)?.label || scenarioId}". Operational models recalibrating.`,
+      evidence: `Target capacity: ${activeMineData.capacity_tpd || 10000} TPD.`,
+      sourceSystem: 'Scenario Context Controller',
+    });
   };
 
   const switchMine = (mineId) => {
     setActiveMine(mineId);
+    addAuditEntry({
+      eventType: 'MINE_SWITCHED',
+      severity: 'INFO',
+      actor: 'Enterprise Executive',
+      entity: 'Mine Geofence',
+      description: `Active mine viewport switched to ${localMines.find((m) => m.id === mineId)?.name || mineId}.`,
+      evidence: 'Geospatial coordinates and remote sensing indices re-centered.',
+      sourceSystem: 'Enterprise Multi-Mine Network',
+    });
+  };
+
+  const switchRole = (roleId) => {
+    if (roleProfiles[roleId]) {
+      setActiveRole(roleId);
+    }
   };
 
   // Base capacity from active mine
   const targetTonnes = activeMineData.capacity_tpd || 10000;
 
-  // Local fallback scenario computation scaled to active mine
+  // Closed-loop Incident Lifecycle Handlers
+  const acknowledgeIncident = (incidentId) => {
+    setIncidentsList((prev) =>
+      prev.map((inc) =>
+        inc.id === incidentId ? { ...inc, status: 'ACKNOWLEDGED' } : inc
+      )
+    );
+    const inc = incidentsList.find((i) => i.id === incidentId);
+    addAuditEntry({
+      eventType: 'OPERATOR_ACKNOWLEDGED',
+      severity: 'INFO',
+      actor: `${roleProfiles[activeRole]?.label || 'Shift Operator'}`,
+      entity: `Incident ${incidentId}`,
+      description: `Incident acknowledged for ${inc?.title || incidentId}. Dispatch team mobilized.`,
+      evidence: `AI confidence: ${inc?.aiConfidence || 94.2}%.`,
+      sourceSystem: 'Incident Lifecycle Manager',
+    });
+  };
+
+  const startWorkOrder = (incidentId) => {
+    setIncidentsList((prev) =>
+      prev.map((inc) =>
+        inc.id === incidentId ? { ...inc, status: 'IN_PROGRESS' } : inc
+      )
+    );
+    addAuditEntry({
+      eventType: 'WORK_ORDER_STARTED',
+      severity: 'INFO',
+      actor: 'Maintenance Lead R. Verma',
+      entity: `Work Order ${incidentId}`,
+      description: `Field technician commenced active repair/intervention protocol on ${incidentId}.`,
+      evidence: 'Maintenance crew on site with parts kit.',
+      sourceSystem: 'Fleet Management System',
+    });
+  };
+
+  const resolveIncident = (incidentId, notes = 'Repair completed and telemetry verified nominal.') => {
+    setIncidentsList((prev) =>
+      prev.map((inc) =>
+        inc.id === incidentId
+          ? {
+              ...inc,
+              status: 'RESOLVED',
+              resolutionNotes: notes,
+              resolvedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            }
+          : inc
+      )
+    );
+
+    // Normalize equipment health if asset was linked
+    const targetInc = incidentsList.find((i) => i.id === incidentId);
+    if (targetInc && targetInc.assetId) {
+      setEquipmentList((prev) =>
+        prev.map((eq) =>
+          eq.id === targetInc.assetId
+            ? {
+                ...eq,
+                status: 'OPERATIONAL',
+                healthScore: 92,
+                engineTempC: 84.0,
+                vibrationMmS: 3.5,
+                hydraulicPressureBar: 275,
+                riskScore: 15,
+                failureRiskDescription: 'Post-overhaul operating parameters certified nominal by maintenance engineer.',
+              }
+            : eq
+        )
+      );
+    }
+
+    addAuditEntry({
+      eventType: 'RESOLUTION_VERIFIED',
+      severity: 'SUCCESS',
+      actor: `${roleProfiles[activeRole]?.label || 'Maintenance Engineer'}`,
+      entity: `Incident ${incidentId}`,
+      description: `Incident ${incidentId} marked RESOLVED: ${notes}`,
+      evidence: `Recovered throughput: ~${targetInc?.impactRecoveredTonnes || 1240} T. Telemetry verified nominal.`,
+      sourceSystem: 'Closed-Loop Verification Engine',
+    });
+  };
+
+  const executePrescriptiveAction = (action) => {
+    const actionKey = action.priority || action.title;
+    if (!executedActionIds.includes(actionKey)) {
+      setExecutedActionIds((prev) => [...prev, actionKey]);
+
+      const newIncId = `INC-${843 + executedActionIds.length}`;
+      const newIncident = {
+        id: newIncId,
+        title: action.title,
+        severity: action.urgency || 'HIGH',
+        category: 'Prescriptive Dispatch',
+        assetId: action.title?.includes('Shovel') ? 'EXC-02' : 'TRK-09',
+        zone: activeMineData.name,
+        detectedAt: 'Just Now',
+        status: 'IN_PROGRESS',
+        assignedTeam: 'Shift A Haulage Dispatch',
+        assignedLead: 'Operator Dispatch Desk',
+        aiConfidence: 96.4,
+        rootCause: 'MILP Solver optimized reallocation to counter pit extraction deficit.',
+        recommendedAction: action.description,
+        actionTaken: 'Automated FMS dispatch order broadcast to Caterpillar/Komatsu in-cab terminals.',
+        resolutionNotes: 'Active fleet in transit.',
+        auditId: `AUD-${Date.now().toString().slice(-4)}`,
+        impactRecoveredTonnes: parseInt(action.impact?.replace(/[^0-9]/g, '')) || 950,
+      };
+
+      setIncidentsList((prev) => [newIncident, ...prev]);
+
+      addAuditEntry({
+        eventType: 'DISPATCH_EXECUTED',
+        severity: 'INFO',
+        actor: `${roleProfiles[activeRole]?.label || 'Operator Desk'}`,
+        entity: `Action: ${action.title}`,
+        description: `MILP Prescriptive Recommendation dispatched: ${action.description}`,
+        evidence: `Expected recovery: ${action.impact}. Solved in <120ms.`,
+        sourceSystem: 'PuLP MILP Dispatch Engine',
+      });
+    }
+  };
+
+  // Manual Anomaly Injection (For SIH Demonstration)
+  const triggerManualAnomaly = (assetId = 'TRK-17') => {
+    setEquipmentList((prev) =>
+      prev.map((eq) =>
+        eq.id === assetId
+          ? {
+              ...eq,
+              status: 'CRITICAL',
+              healthScore: 48,
+              engineTempC: 106.8,
+              vibrationMmS: 15.4,
+              fuelEfficiencyLph: 68.2,
+              riskScore: 92,
+              predictedFailureWindow: '4 - 8 Hours',
+              failureRiskDescription: '[INJECTED DEMO ANOMALY] Sudden high-amplitude vibration and turbocharger overheat detected by telemetry gateway.',
+            }
+          : eq
+      )
+    );
+
+    const newIncId = `INC-${900 + Math.floor(Math.random() * 90)}`;
+    const newInc = {
+      id: newIncId,
+      title: `Telemetry Anomaly Triggered — ${assetId}`,
+      severity: 'CRITICAL',
+      category: 'Equipment Telemetry Anomaly',
+      assetId: assetId,
+      zone: 'Sector A-12',
+      detectedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      status: 'DETECTED',
+      assignedTeam: 'Heavy Equipment Maintenance Team B',
+      assignedLead: 'Engineer Rajesh Verma',
+      aiConfidence: 97.2,
+      rootCause: `High-frequency vibration spike (15.4 mm/s) on ${assetId} drive axle. Risk score: 92/100.`,
+      recommendedAction: `Halt ${assetId} loaded cycles immediately. Perform bearing and hydraulic inspection.`,
+      actionTaken: 'AI alert dispatched to control room and mobile units.',
+      resolutionNotes: 'Pending maintenance acknowledgement.',
+      auditId: `AUD-${Date.now().toString().slice(-4)}`,
+      impactRecoveredTonnes: 750,
+    };
+
+    setIncidentsList((prev) => [newInc, ...prev]);
+
+    addAuditEntry({
+      eventType: 'AI_DETECTION',
+      severity: 'CRITICAL',
+      actor: 'CAN-bus IoT Edge Gateway',
+      entity: `Asset ${assetId}`,
+      description: `[DEMO ANOMALY INJECTED] Sensor telemetry threshold exceeded on ${assetId}. Temperature: 106.8°C, Vibration: 15.4 mm/s.`,
+      evidence: 'Instantaneous CAN-bus alert packet dispatched.',
+      sourceSystem: 'IoT Telemetry Gateway',
+    });
+  };
+
+  // Automated 14-Step SIH Demo Simulation Sequence
+  const startSimulation = () => {
+    setSimulationActive(true);
+    setSimulationPaused(false);
+    setSimulationStep(1);
+
+    addAuditEntry({
+      eventType: 'SIMULATION_STARTED',
+      severity: 'INFO',
+      actor: 'SIH Jury Presentation Mode',
+      entity: 'Full Mine Digital Twin',
+      description: 'Interactive demo simulation initiated. Demonstrating 14-step closed-loop decision intelligence.',
+      evidence: 'Step 1 of 5: Injecting telemetry anomaly into Haul Truck T-17.',
+      sourceSystem: 'SIH Demo Simulator',
+    });
+
+    triggerManualAnomaly('TRK-17');
+
+    if (simulationTimerRef.current) clearInterval(simulationTimerRef.current);
+
+    let currentStep = 1;
+    simulationTimerRef.current = setInterval(() => {
+      currentStep += 1;
+      setSimulationStep(currentStep);
+
+      if (currentStep === 2) {
+        addAuditEntry({
+          eventType: 'RISK_CLASSIFICATION',
+          severity: 'HIGH',
+          actor: 'TreeSHAP Engine',
+          entity: 'Shortfall Model',
+          description: 'AI detected high risk: Shortfall probability surged to 87%. Root cause: 42% engine thermal stress, 28% vibration.',
+          evidence: 'TreeSHAP Shapley value decomposition verified.',
+          sourceSystem: 'XAI Diagnostic Core',
+        });
+      } else if (currentStep === 3) {
+        addAuditEntry({
+          eventType: 'RECOMMENDATION_GENERATED',
+          severity: 'INFO',
+          actor: 'MILP Prescriptive Optimizer',
+          entity: 'Action Center',
+          description: 'Optimal prescription generated: Reroute Standby Dumper T-09 and shift loader EX-02 (+1,700 T recovery).',
+          evidence: 'PuLP branch-and-cut solver completed in 118ms.',
+          sourceSystem: 'MILP Action Engine',
+        });
+      } else if (currentStep === 4) {
+        setIncidentsList((prev) =>
+          prev.map((inc) =>
+            inc.assetId === 'TRK-17' ? { ...inc, status: 'IN_PROGRESS' } : inc
+          )
+        );
+        addAuditEntry({
+          eventType: 'WORK_ORDER_STARTED',
+          severity: 'INFO',
+          actor: 'Maintenance Dispatcher',
+          entity: 'Work Order for TRK-17',
+          description: 'Maintenance crew dispatched to Truck T-17 on Ramp Sector 3.',
+          evidence: 'Technician on site; replacement turbo coupling deployed.',
+          sourceSystem: 'Fleet Maintenance System',
+        });
+      } else if (currentStep >= 5) {
+        resolveIncident(
+          incidentsList.find((i) => i.assetId === 'TRK-17')?.id || 'INC-900',
+          'Demo simulation overhaul completed: bearing replaced, temperature normalized to 84°C.'
+        );
+        clearInterval(simulationTimerRef.current);
+      }
+    }, 4500);
+  };
+
+  const pauseSimulation = () => {
+    setSimulationPaused(true);
+    if (simulationTimerRef.current) clearInterval(simulationTimerRef.current);
+  };
+
+  const resumeSimulation = () => {
+    setSimulationPaused(false);
+    simulationTimerRef.current = setInterval(() => {
+      setSimulationStep((s) => {
+        if (s >= 5) {
+          clearInterval(simulationTimerRef.current);
+          return 5;
+        }
+        return s + 1;
+      });
+    }, 4500);
+  };
+
+  const resetSimulation = () => {
+    if (simulationTimerRef.current) clearInterval(simulationTimerRef.current);
+    setSimulationActive(false);
+    setSimulationPaused(false);
+    setSimulationStep(0);
+    setEquipmentList(defaultEquipment);
+    setSafetyList(defaultSafety);
+    setIncidentsList(defaultIncidents);
+    setAuditLogList(defaultAuditLog);
+    setExecutedActionIds([]);
+
+    addAuditEntry({
+      eventType: 'SIMULATION_RESET',
+      severity: 'INFO',
+      actor: 'Control Room Supervisor',
+      entity: 'All Mine Systems',
+      description: 'Simulation state reset. All equipment, safety sensors, and production parameters restored to nominal ground-truth baseline.',
+      evidence: 'Gumgaon Mine ground-truth baseline re-established.',
+      sourceSystem: 'System Reset Controller',
+    });
+  };
+
+  useEffect(() => {
+    return () => {
+      if (simulationTimerRef.current) clearInterval(simulationTimerRef.current);
+    };
+  }, []);
+
+  // Compute live scenario data scaled to active mine
   const getScenarioData = () => {
     const isLive = Boolean(liveProduction && liveRisk && liveActions);
 
@@ -145,8 +489,8 @@ export function ScenarioProvider({ children }) {
       currentProduction: currentProd,
       productionChange: prodChange,
       targetProduction: targetTonnes,
-      shortfallRisk: cur.risk,
-      riskLevel: cur.level,
+      shortfallRisk: simulationActive && simulationStep >= 1 && simulationStep < 5 ? 89 : cur.risk,
+      riskLevel: simulationActive && simulationStep >= 1 && simulationStep < 5 ? 'CRITICAL' : cur.level,
       expectedGap: gap,
       primaryCause: cur.cause,
       forecastConfidence: 94,
@@ -216,7 +560,22 @@ export function ScenarioProvider({ children }) {
     actual: Math.round((h.actual / 10000) * targetTonnes),
   }));
 
+  // Overall Mine Health Score (computed dynamically from equipment, safety, and production)
+  const computeMineHealthScore = () => {
+    const avgEquipHealth = Math.round(
+      equipmentList.reduce((acc, eq) => acc + (eq.healthScore || 80), 0) / (equipmentList.length || 1)
+    );
+    const activeHazardsCount = safetyList.filter((s) => s.status === 'ACTIVE').length;
+    const safetyDeduction = activeHazardsCount * 4;
+    const productionHealth = scenarioData.shortfallRisk > 50 ? 65 : 95;
+
+    return Math.max(40, Math.min(99, Math.round(avgEquipHealth * 0.4 + productionHealth * 0.4 + (100 - safetyDeduction) * 0.2)));
+  };
+
+  const mineHealthScore = computeMineHealthScore();
+
   const value = {
+    // Mine & Scenario Selection
     minesList,
     activeMine,
     activeMineData,
@@ -233,6 +592,35 @@ export function ScenarioProvider({ children }) {
     mobileMenuOpen,
     setMobileMenuOpen,
     refreshData,
+
+    // Role-Based Experience
+    activeRole,
+    switchRole,
+    roleProfile: roleProfiles[activeRole] || roleProfiles.manager,
+    allRoleProfiles: roleProfiles,
+
+    // Closed-Loop Datasets & Actions
+    equipmentList,
+    safetyList,
+    incidentsList,
+    auditLogList,
+    mineHealthScore,
+    acknowledgeIncident,
+    startWorkOrder,
+    resolveIncident,
+    executePrescriptiveAction,
+    executedActionIds,
+    triggerManualAnomaly,
+    addAuditEntry,
+
+    // SIH Demo Simulation
+    simulationActive,
+    simulationStep,
+    simulationPaused,
+    startSimulation,
+    pauseSimulation,
+    resumeSimulation,
+    resetSimulation,
   };
 
   return (
