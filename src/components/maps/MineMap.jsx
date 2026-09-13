@@ -154,6 +154,7 @@ export default function MineMap({
   className = '',
 }) {
   const { activeMineData, liveZones } = useScenario();
+  const mapCenter = activeMineData.center || [activeMineData.lat || 21.155, activeMineData.lon || 79.090];
   const [layers, setLayers] = useState(initialLayers);
   const [internalSelectedZone, setInternalSelectedZone] = useState(null);
 
@@ -265,7 +266,6 @@ export default function MineMap({
     ? '&copy; Esri &mdash; High-Resolution Earth Imagery'
     : '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
-  const mapCenter = activeMineData.center || [activeMineData.lat || 21.155, activeMineData.lon || 79.090];
   const drillPoints = activeMineData.drill_points || [];
   const mineRoads = activeMineData.roads || [];
 
