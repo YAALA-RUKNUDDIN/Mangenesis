@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   mines as localMines,
   historicalProduction as defaultHistorical,
@@ -21,6 +22,7 @@ import {
 const ScenarioContext = createContext();
 
 export function ScenarioProvider({ children }) {
+  const navigate = useNavigate();
   const [minesList, setMinesList] = useState(localMines);
   const [activeMine, setActiveMine] = useState('gumgaon');
   const [activeScenario, setActiveScenario] = useState('equipment_failure');
@@ -334,6 +336,7 @@ export function ScenarioProvider({ children }) {
   const startSimulation = () => {
     setSimulationStatus('RUNNING');
     setSimulationStep(1);
+    navigate('/equipment'); // Step 1: Tour begins at Equipment Intelligence
 
     addAuditEntry({
       eventType: 'SIMULATION_STARTED',
@@ -355,6 +358,7 @@ export function ScenarioProvider({ children }) {
       setSimulationStep(currentStep);
 
       if (currentStep === 2) {
+        navigate('/risk-analysis'); // Step 2: Auto-tour TreeSHAP diagnostics
         addAuditEntry({
           eventType: 'RISK_CLASSIFICATION',
           severity: 'HIGH',
@@ -365,6 +369,7 @@ export function ScenarioProvider({ children }) {
           sourceSystem: 'XAI Diagnostic Core',
         });
       } else if (currentStep === 3) {
+        navigate('/action-center'); // Step 3: Auto-tour MILP Prescriptive Dispatch
         addAuditEntry({
           eventType: 'RECOMMENDATION_GENERATED',
           severity: 'INFO',
@@ -375,6 +380,7 @@ export function ScenarioProvider({ children }) {
           sourceSystem: 'MILP Action Engine',
         });
       } else if (currentStep === 4) {
+        navigate('/incidents'); // Step 4: Auto-tour Incident Work Order Lifecycle
         setIncidentsList((prev) =>
           prev.map((inc) =>
             inc.assetId === 'TRK-17' ? { ...inc, status: 'IN_PROGRESS' } : inc
@@ -392,6 +398,10 @@ export function ScenarioProvider({ children }) {
       } else if (currentStep >= 5) {
         setSimulationStatus('COMPLETED');
         setSimulationStep(5);
+        navigate('/audit-log'); // Step 5: Auto-tour Cryptographic Audit Trail
+        setTimeout(() => {
+          navigate('/command-center'); // Return to Command Center with resolved state
+        }, 5500);
         resolveIncident(
           incidentsList.find((i) => i.assetId === 'TRK-17')?.id || 'INC-900',
           'Demo simulation overhaul completed: bearing replaced, temperature normalized to 84°C.'

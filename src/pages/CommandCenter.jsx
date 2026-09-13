@@ -231,21 +231,128 @@ export default function CommandCenter() {
         </motion.div>
       )}
 
-      {/* 2. ROLE PERSPECTIVE STRIP */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-[#131720]/80 border border-[#262F3D] text-xs text-slate-300">
-        <div className="flex items-center gap-2.5">
-          <span className="text-[10px] font-mono uppercase font-bold text-[#C7B59F] tracking-wider px-2 py-0.5 rounded bg-[#C7B59F]/10 border border-[#C7B59F]/20">
-            ACTIVE PERSPECTIVE: {roleProfile.label.toUpperCase()}
-          </span>
-          <span className="text-slate-400 text-xs hidden sm:inline">&bull; {roleProfile.subtitle}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] text-slate-400 uppercase font-mono mr-1">Focus Areas:</span>
-          {roleProfile.primaryFocus.slice(0, 3).map((f) => (
-            <span key={f} className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#1A202C] text-slate-200 border border-[#262F3D]">
-              {f}
+      {/* 2. FUNCTIONAL ROLE PERSPECTIVE STRIP & ROLE-SPECIFIC MISSION COMMAND */}
+      <div className="rounded-2xl border border-[#262F3D] bg-[#131720]/90 p-4 shadow-xl space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <span className="text-[10px] font-mono uppercase font-bold text-[#0B0D12] tracking-wider px-2.5 py-1 rounded bg-[#C7B59F] shadow-sm">
+              ROLE VIEW: {roleProfile.label.toUpperCase()}
             </span>
-          ))}
+            <span className="text-slate-300 text-xs font-mono hidden sm:inline">{roleProfile.subtitle}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-slate-400 uppercase font-mono hidden md:inline">Quick Switch:</span>
+            {['manager', 'safety', 'maintenance', 'operations'].map((rId) => {
+              const isActive = activeRole === rId;
+              const labels = {
+                manager: 'Executive',
+                safety: 'Safety / DGMS',
+                maintenance: 'Maintenance',
+                operations: 'In-Pit Dispatch',
+              };
+              return (
+                <button
+                  key={rId}
+                  onClick={() => switchRole(rId)}
+                  className={`px-2.5 py-1 rounded-lg text-[10.5px] font-mono transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-[#C7B59F]/20 text-[#E8DFD1] font-bold border border-[#C7B59F]/50 shadow-sm'
+                      : 'text-slate-400 hover:text-white hover:bg-white/[0.04] border border-transparent'
+                  }`}
+                >
+                  {labels[rId]}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Dynamic Role-Specific Focus Feed */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#262F3D] text-xs font-mono">
+          {activeRole === 'manager' && (
+            <>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
+                <span className="text-[10px] text-slate-400 block">DAILY REVENUE TARGET</span>
+                <span className="font-bold text-white text-sm">₹3.12 Cr / Day</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-rose-500/30">
+                <span className="text-[10px] text-slate-400 block">ESTIMATED GAP LOSS</span>
+                <span className="font-bold text-rose-400 text-sm">₹68.6 Lakhs</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
+                <span className="text-[10px] text-slate-400 block">LIGHTGBM CONFIDENCE</span>
+                <span className="font-bold text-sky-400 text-sm">94.8% (R² 0.942)</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-emerald-500/30">
+                <span className="text-[10px] text-slate-400 block">MILP RECOVERY VALUE</span>
+                <span className="font-bold text-emerald-400 text-sm">₹53.0 Lakhs (+1,700 T)</span>
+              </div>
+            </>
+          )}
+
+          {activeRole === 'safety' && (
+            <>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-emerald-500/30">
+                <span className="text-[10px] text-slate-400 block">GLOBAL PIT SLOPE FOS</span>
+                <span className="font-bold text-emerald-400 text-sm">FoS 1.48 (DGMS OK)</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-amber-500/30">
+                <span className="text-[10px] text-slate-400 block">SECTOR A-12 ADVISORY</span>
+                <span className="font-bold text-amber-300 text-sm">FoS 1.18 (4.8 mm/day)</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
+                <span className="text-[10px] text-slate-400 block">BLAST GEOFENCE BUFFER</span>
+                <span className="font-bold text-sky-400 text-sm">500m Clearance Ready</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
+                <span className="text-[10px] text-slate-400 block">HAUL ROAD TRACTION</span>
+                <span className="font-bold text-slate-200 text-sm">Friction 0.72 (Wet Alert)</span>
+              </div>
+            </>
+          )}
+
+          {activeRole === 'maintenance' && (
+            <>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-rose-500/30">
+                <span className="text-[10px] text-slate-400 block">EXC-04 HYDRAULIC PRESSURE</span>
+                <span className="font-bold text-rose-400 text-sm">142 bar (Rated 280)</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-amber-500/30">
+                <span className="text-[10px] text-slate-400 block">TRK-17 BEARING VIBRATION</span>
+                <span className="font-bold text-amber-300 text-sm">15.4 mm/s (Alert)</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
+                <span className="text-[10px] text-slate-400 block">RUL BREAKDOWN WINDOW</span>
+                <span className="font-bold text-rose-300 text-sm">&lt; 12 Hours</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
+                <span className="text-[10px] text-slate-400 block">WORK ORDERS STATUS</span>
+                <span className="font-bold text-emerald-400 text-sm">2 In-Progress</span>
+              </div>
+            </>
+          )}
+
+          {activeRole === 'operations' && (
+            <>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-emerald-500/30">
+                <span className="text-[10px] text-slate-400 block">FLEET IN-PIT ALLOCATION</span>
+                <span className="font-bold text-emerald-400 text-sm">7 / 7 Units Online</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-amber-500/30">
+                <span className="text-[10px] text-slate-400 block">DUMPER CYCLE TIME</span>
+                <span className="font-bold text-amber-300 text-sm">22.4 mins (+4.2 min delay)</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-[#262F3D]">
+                <span className="text-[10px] text-slate-400 block">TRAFFIC BYPASS ACTION</span>
+                <span className="font-bold text-sky-400 text-sm">Ramp 3 Diversion Active</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-[#0B0D12] border border-emerald-500/30">
+                <span className="text-[10px] text-slate-400 block">MILP TPD MITIGATION</span>
+                <span className="font-bold text-emerald-400 text-sm">+1,700 T Recoverable</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
 

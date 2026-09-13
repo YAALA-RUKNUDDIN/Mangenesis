@@ -105,6 +105,9 @@ export default function RealLifeGeological3D({
   selectedZone = null,
   onSelectZone = null,
   height = '640px',
+  selectedStrata = 'all',
+  depthSlice = 72,
+  onSelectCore = null,
 }) {
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
@@ -117,6 +120,18 @@ export default function RealLifeGeological3D({
   const [selectedCore, setSelectedCore] = useState(null);
   const [isRotating, setIsRotating] = useState(true);
   const [viewMode, setViewMode] = useState('lithology'); // 'lithology' | 'block_model' | 'surface'
+
+  useEffect(() => {
+    if (selectedStrata) setActiveFilter(selectedStrata);
+  }, [selectedStrata]);
+
+  useEffect(() => {
+    if (depthSlice !== undefined) setSliceDepth(Math.round((depthSlice / 120) * 100));
+  }, [depthSlice]);
+
+  useEffect(() => {
+    if (onSelectCore && selectedCore) onSelectCore(selectedCore);
+  }, [selectedCore, onSelectCore]);
 
   const strataMeshesRef = useRef([]);
   const voxelGroupRef = useRef(null);
@@ -462,18 +477,21 @@ export default function RealLifeGeological3D({
   // Update Layer Filter
   useEffect(() => {
     strataMeshesRef.current.forEach(({ mesh, def }) => {
-      if (activeFilter === 'all') {
-        mesh.visible = true;
-        mesh.material.opacity = 1.0;
-        mesh.material.transparent = false;
-      } else if (activeFilter === def.id) {
+      const isMatch =
+        activeFilter === 'all' ||
+        (activeFilter === 'braunite' && (def.id === 'ore' || def.isOre)) ||
+        (activeFilter === 'schist' && def.id === 'schist') ||
+        (activeFilter === 'quartzite' && def.id === 'topsoil') ||
+        activeFilter === def.id;
+
+      if (isMatch) {
         mesh.visible = true;
         mesh.material.opacity = 1.0;
         mesh.material.transparent = false;
       } else {
         mesh.visible = true;
         mesh.material.transparent = true;
-        mesh.material.opacity = 0.18; // Translucent ghosting for contrast
+        mesh.material.opacity = 0.15; // Translucent ghosting for contrast
       }
     });
   }, [activeFilter]);

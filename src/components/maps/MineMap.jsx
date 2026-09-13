@@ -98,8 +98,53 @@ function createDrillIcon(dp) {
   });
 }
 
+// Custom High-Visibility Sensor Station Marker Icon
+function createSensorIcon(station) {
+  const isCrit = station.status === 'CRITICAL';
+  const isWarn = station.status === 'WARNING';
+  const color = isCrit ? '#EF4444' : isWarn ? '#F59E0B' : '#10B981';
+
+  return L.divIcon({
+    className: 'custom-sensor-marker',
+    html: `
+      <div style="
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: #0B0D12;
+        border: 2px solid ${color};
+        padding: 3px 8px;
+        border-radius: 8px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.9);
+        color: #FFFFFF;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+        pointer-events: auto;
+        cursor: pointer;
+      ">
+        <span style="
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: ${color};
+          display: inline-block;
+          box-shadow: 0 0 8px ${color};
+          animation: pulse 1.5s infinite;
+        "></span>
+        <span style="color: #F1F5F9;">${station.id}</span>
+        <span style="color: ${color}; font-size: 9px;">${station.metric}</span>
+      </div>
+    `,
+    iconSize: [110, 26],
+    iconAnchor: [55, 13],
+  });
+}
+
 export default function MineMap({
   height = '480px',
+  activeMode = 'OPERATIONAL',
   showControls = true,
   showLegend = true,
   showZonePanel = true,
@@ -114,6 +159,89 @@ export default function MineMap({
 
   const activeZones = propZones || liveZones || activeMineData.zones || [];
   const selectedZone = propSelectedZone !== undefined ? propSelectedZone : internalSelectedZone;
+
+  // Sync default layers with activeMode
+  useEffect(() => {
+    if (activeMode === 'SENSORS') {
+      setLayers((prev) =>
+        prev.map((l) =>
+          l.id === 'soilMoisture' || l.id === 'hazards' || l.id === 'satellite'
+            ? { ...l, active: true }
+            : l
+        )
+      );
+    }
+  }, [activeMode]);
+
+  // Geotechnical & In-Pit IoT Sensors for SENSORS mode
+  const sensorStations = [
+    {
+      id: 'EXT-01',
+      name: 'Extensometer EXT-01',
+      type: 'Slope Extensometer',
+      zone: 'Sector A-12 (North Ridge)',
+      coords: [mapCenter[0] + 0.007, mapCenter[1] + 0.009],
+      metric: '4.8 mm/day',
+      status: 'CRITICAL',
+      subtext: 'Exceeds DGMS limit (3.0 mm/day) • FoS 1.18 Marginal',
+      color: '#EF4444',
+    },
+    {
+      id: 'PIZ-04',
+      name: 'Piezometer PIZ-04',
+      type: 'Pore Pressure Transducer',
+      zone: 'Ramp Bench 3',
+      coords: [mapCenter[0] - 0.004, mapCenter[1] - 0.005],
+      metric: '184 kPa',
+      status: 'NORMAL',
+      subtext: 'Hydrostatic pore pressure stable',
+      color: '#10B981',
+    },
+    {
+      id: 'SSM-03',
+      name: 'Seismograph SSM-03',
+      type: 'Triaxial Blast Monitor',
+      zone: 'Buffer Perimeter',
+      coords: [mapCenter[0] - 0.008, mapCenter[1] + 0.012],
+      metric: '4.2 mm/s PPV',
+      status: 'NORMAL',
+      subtext: 'Compliant with DGMS Circular 7 of 1997',
+      color: '#10B981',
+    },
+    {
+      id: 'WXR-01',
+      name: 'Weather Station WXR-01',
+      type: 'Ultrasonic Meteorological',
+      zone: 'Pit Crest Vantage',
+      coords: [mapCenter[0] + 0.011, mapCenter[1] - 0.008],
+      metric: '4.2 mm / hr',
+      status: 'NORMAL',
+      subtext: 'Wind 12 km/h NE • Amb 28.4°C',
+      color: '#38BDF8',
+    },
+    {
+      id: 'CAN-EXC04',
+      name: 'Excavator EX-04 Telemetry',
+      type: 'CAN-bus Edge Gateway',
+      zone: 'Sector D-04 Bench',
+      coords: [mapCenter[0] + 0.002, mapCenter[1] + 0.004],
+      metric: '142 bar Pressure',
+      status: 'CRITICAL',
+      subtext: 'Hydraulic gradient drop • Breakdown window <12h',
+      color: '#EF4444',
+    },
+    {
+      id: 'CAN-TRK17',
+      name: 'Dumper T-17 Telemetry',
+      type: 'CAN-bus Edge Gateway',
+      zone: 'Main Haul Ramp',
+      coords: [mapCenter[0] - 0.002, mapCenter[1] - 0.002],
+      metric: '106.8°C Turbo',
+      status: 'WARNING',
+      subtext: 'Vibration 15.4 mm/s • Bearing thermal spike',
+      color: '#F59E0B',
+    },
+  ];
 
   const handleZoneSelect = (zone) => {
     setInternalSelectedZone(zone);
@@ -282,7 +410,7 @@ export default function MineMap({
           />
         ))}
 
-        {/* 6. Drill Hole Core Assay Markers (High-Visibility DivIcons) */}
+        {/* 6. Drill Hole Core Assay Markers */}
         {isLayerActive('drillData') &&
           drillPoints.map((dp) => (
             <Marker
@@ -307,6 +435,41 @@ export default function MineMap({
                       Assay: {dp.grade}
                     </div>
                   )}
+                </div>
+              </Tooltip>
+            </Marker>
+          ))}
+
+        {/* 6B. Dedicated IoT Sensor Stations (Rendered in SENSORS mode) */}
+        {activeMode === 'SENSORS' &&
+          sensorStations.map((station) => (
+            <Marker
+              key={station.id}
+              position={station.coords}
+              icon={createSensorIcon(station)}
+              zIndexOffset={950}
+            >
+              <Tooltip sticky className="dark-map-tooltip">
+                <div className="text-xs text-slate-200 p-1 min-w-[200px]">
+                  <div className="flex items-center justify-between gap-2 border-b border-[#242C3E] pb-1 mb-1">
+                    <span className="font-bold text-white font-mono">{station.name}</span>
+                    <span className={`text-[9px] font-bold font-mono px-1.5 py-0.2 rounded ${
+                      station.status === 'CRITICAL' ? 'bg-rose-500/20 text-rose-300' :
+                      station.status === 'WARNING' ? 'bg-amber-500/20 text-amber-300' :
+                      'bg-emerald-500/20 text-emerald-300'
+                    }`}>
+                      {station.status}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-slate-300 font-mono">
+                    Zone: <span className="text-slate-100">{station.zone}</span>
+                  </div>
+                  <div className="text-[11px] font-mono mt-0.5 text-white font-bold">
+                    Reading: <span style={{ color: station.color }}>{station.metric}</span>
+                  </div>
+                  <div className="text-[10px] text-slate-400 mt-1 italic border-t border-[#242C3E]/60 pt-1">
+                    {station.subtext}
+                  </div>
                 </div>
               </Tooltip>
             </Marker>

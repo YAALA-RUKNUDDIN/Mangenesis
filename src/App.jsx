@@ -18,6 +18,7 @@ import AIIntelligence from './pages/AIIntelligence';
 import AuditLog from './pages/AuditLog';
 import SystemArchitecture from './pages/SystemArchitecture';
 import GlobalBackgroundCanvas from './components/3d/GlobalBackgroundCanvas';
+import DemoTourHUD from './components/shared/DemoTourHUD';
 
 function App() {
   const location = useLocation();
@@ -52,6 +53,9 @@ function App() {
             </Routes>
           </AnimatePresence>
         </main>
+        {/* Floating Presentation Demo Tour HUD */}
+        <DemoTourHUD />
+
         {/* Mobile bottom navigation for handheld devices */}
         <MobileNav />
       </div>
