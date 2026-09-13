@@ -43,9 +43,11 @@ export default function TopBar() {
     switchRole,
     roleProfile,
     allRoleProfiles,
+    simulationStatus,
     simulationActive,
     simulationStep,
     simulationPaused,
+    simulationCompleted,
     startSimulation,
     pauseSimulation,
     resumeSimulation,
@@ -401,37 +403,92 @@ export default function TopBar() {
         </div>
       </div>
 
-      {/* Center: SIH Demo Simulation Control Cluster */}
+      {/* Center: SIH Demo Simulation Control Cluster (State-Aware) */}
       <div className="hidden md:flex items-center gap-2">
-        {!simulationActive ? (
+        {simulationStatus === 'IDLE' && (
           <button
             onClick={startSimulation}
             className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#C7B59F]/20 via-amber-500/15 to-[#C7B59F]/10 hover:from-[#C7B59F]/30 hover:to-amber-500/25 border border-[#C7B59F]/50 text-[#E8DFD1] hover:text-white text-xs font-semibold shadow-sm transition-all cursor-pointer group"
-            title="Launch interactive 14-step closed-loop decision simulation for SIH Jury"
+            title="Launch interactive 5-stage closed-loop decision simulation for SIH Jury"
           >
             <Play size={13} className="text-amber-400 fill-amber-400 group-hover:scale-110 transition-transform" />
             <span>Run SIH Demo</span>
             <span className="text-[9px] font-mono font-bold bg-amber-500/25 text-amber-300 px-1.5 py-0.2 rounded border border-amber-500/40">
-              JURY FLOW
+              5 STAGES
             </span>
           </button>
-        ) : (
+        )}
+
+        {simulationStatus === 'RUNNING' && (
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-[#1A202C] border border-amber-500/50 shadow-lg text-xs font-mono">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
             <span className="text-amber-300 font-bold tracking-tight">
-              DEMO SIMULATION ACTIVE &bull; STEP {simulationStep}/5
+              DEMO RUNNING &bull; STEP {simulationStep}/5
             </span>
             <div className="flex items-center gap-1 border-l border-[#262F3D] pl-2">
               <button
-                onClick={simulationPaused ? resumeSimulation : pauseSimulation}
-                className="p-1 rounded bg-black/40 hover:bg-black/60 text-amber-200 cursor-pointer"
-                title={simulationPaused ? 'Resume Simulation' : 'Pause Simulation'}
+                onClick={pauseSimulation}
+                className="px-2 py-0.5 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 text-[10px] font-mono flex items-center gap-1 cursor-pointer"
+                title="Pause Simulation"
               >
-                {simulationPaused ? <Play size={11} className="fill-amber-300 text-amber-300" /> : <Pause size={11} />}
+                <Pause size={10} />
+                <span>Pause</span>
               </button>
               <button
                 onClick={resetSimulation}
-                className="p-1 rounded bg-black/40 hover:bg-black/60 text-slate-300 hover:text-rose-400 cursor-pointer"
+                className="p-1 rounded bg-black/40 hover:bg-black/60 text-slate-400 hover:text-rose-400 cursor-pointer"
+                title="Reset to Ground Truth Baseline"
+              >
+                <RotateCcw size={11} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {simulationStatus === 'PAUSED' && (
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-[#1A202C] border border-amber-500/30 shadow-lg text-xs font-mono">
+            <span className="w-2 h-2 rounded-full bg-amber-400" />
+            <span className="text-amber-200 font-bold tracking-tight">
+              DEMO PAUSED &bull; STEP {simulationStep}/5
+            </span>
+            <div className="flex items-center gap-1 border-l border-[#262F3D] pl-2">
+              <button
+                onClick={resumeSimulation}
+                className="px-2 py-0.5 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono flex items-center gap-1 cursor-pointer"
+                title="Resume Simulation"
+              >
+                <Play size={10} className="fill-emerald-300" />
+                <span>Resume</span>
+              </button>
+              <button
+                onClick={resetSimulation}
+                className="p-1 rounded bg-black/40 hover:bg-black/60 text-slate-400 hover:text-rose-400 cursor-pointer"
+                title="Reset to Ground Truth Baseline"
+              >
+                <RotateCcw size={11} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {simulationStatus === 'COMPLETED' && (
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/40 shadow-lg text-xs font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span className="text-emerald-300 font-bold tracking-tight">
+              DEMO COMPLETE &bull; 5/5
+            </span>
+            <div className="flex items-center gap-1 border-l border-[#262F3D] pl-2">
+              <button
+                onClick={startSimulation}
+                className="px-2 py-0.5 rounded bg-[#C7B59F]/20 hover:bg-[#C7B59F]/30 text-[#E8DFD1] border border-[#C7B59F]/40 text-[10px] font-mono flex items-center gap-1 cursor-pointer"
+                title="Replay Demo"
+              >
+                <RotateCcw size={10} />
+                <span>Replay</span>
+              </button>
+              <button
+                onClick={resetSimulation}
+                className="p-1 rounded bg-black/40 hover:bg-black/60 text-slate-400 hover:text-rose-400 cursor-pointer"
                 title="Reset to Ground Truth Baseline"
               >
                 <RotateCcw size={11} />
@@ -442,32 +499,31 @@ export default function TopBar() {
       </div>
 
       {/* Right: Actions & System Status */}
-      <div className="flex items-center gap-1.5 sm:gap-3">
-        {/* Date Display (Desktop only) */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Date Display with explicit Year & Shift Provenance */}
         <div className="hidden xl:flex items-center gap-2 text-xs text-slate-300 font-mono px-3 py-1.5 rounded-xl bg-[#1A202C] border border-[#262F3D] shadow-card">
           <Calendar size={13} className="text-slate-400" />
-          <span>18 Aug 2026</span>
+          <span>18 Aug 2026 (Shift A)</span>
         </div>
 
-
-        {/* Space Data Active Badge */}
-        <div className="hidden sm:flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+        {/* Space Telemetry Ingest Badge */}
+        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          <span className="hidden md:inline">Telemetry Active</span>
+          <span className="hidden md:inline font-mono text-[11px]">Telemetry Active</span>
         </div>
 
         {/* Live Supabase DB Status Badge */}
         <div className="relative z-[2100]">
           <button
             onClick={() => setSupabaseModalOpen(!supabaseModalOpen)}
-            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-slate-200 text-xs font-mono transition-all cursor-pointer shadow-card"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] border border-[#262F3D] text-slate-200 text-xs font-mono transition-all cursor-pointer shadow-card"
             title="Supabase PostgreSQL + PostGIS Status"
           >
             <Database size={13} className="text-emerald-400 shrink-0" />
-            <span className="font-semibold text-slate-200 hidden sm:inline">Supabase DB</span>
+            <span className="font-semibold text-slate-200 hidden sm:inline text-[11px]">Supabase DB</span>
           </button>
 
           {/* Supabase Status Modal */}

@@ -279,7 +279,15 @@ export default function MineSceneCanvas({
         container.removeChild(renderer.domElement);
       }
     };
-  }, [activeMode, isAutoRotate]);
+  }, [activeMode]);
+
+  // Dedicated Auto-Orbit Effect (avoids tearing down and rebuilding WebGL canvas)
+  useEffect(() => {
+    if (controlsRef.current) {
+      controlsRef.current.autoRotate = isAutoRotate;
+      controlsRef.current.autoRotateSpeed = 1.0;
+    }
+  }, [isAutoRotate]);
 
   return (
     <div
@@ -348,9 +356,9 @@ export default function MineSceneCanvas({
 
           {/* Live Sensor Metrics */}
           <div className="flex items-center gap-2 p-1.5 px-3 rounded-xl bg-[#0B0F19]/85 backdrop-blur-xl border border-slate-750/70 shadow-2xl pointer-events-auto ml-auto">
-            <div className="flex items-center gap-1.5 text-xs text-purple-300">
-              <Sparkles size={13} className="text-purple-400" />
-              <span className="font-mono font-semibold">46.8% Braunite Peak</span>
+            <div className="flex items-center gap-1.5 text-xs text-[#E8DFD1]">
+              <Sparkles size={13} className="text-[#C7B59F]" />
+              <span className="font-mono font-semibold">44.8% Mn Core DP-G01</span>
             </div>
             <span className="text-slate-600">•</span>
             <div className="flex items-center gap-1.5 text-xs text-blue-300">
@@ -358,9 +366,11 @@ export default function MineSceneCanvas({
               <span className="font-mono">3 Haul Trucks Active</span>
             </div>
             <span className="text-slate-600">•</span>
-            <div className="flex items-center gap-1.5 text-xs text-emerald-300">
-              <ShieldAlert size={13} className="text-emerald-400" />
-              <span className="font-mono">Slope FOS 1.48 (Stable)</span>
+            <div className="flex items-center gap-1.5 text-xs text-amber-300">
+              <ShieldAlert size={13} className="text-amber-400" />
+              <span className="font-mono" title="Pit Average FoS is 1.48 (Stable), but Sector A-12 has a localized deformation advisory (FoS 1.18)">
+                Pit FoS: 1.48 (A-12: 1.18 Adv)
+              </span>
             </div>
           </div>
         </div>

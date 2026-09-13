@@ -72,7 +72,7 @@ export default function CameraControlsHUD({
                 title={`Filter: ${filter.label}`}
                 className={`p-1.5 rounded-lg text-xs transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? 'bg-purple-600/90 text-white shadow-md shadow-purple-500/30 border border-purple-400/40'
+                    ? 'bg-[#C7B59F] text-[#0B0D12] font-bold shadow-md border border-[#E8DFD1]/50'
                     : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
                 }`}
               >

@@ -33,10 +33,9 @@ export function ScenarioProvider({ children }) {
   const [auditLogList, setAuditLogList] = useState(defaultAuditLog);
   const [executedActionIds, setExecutedActionIds] = useState([]);
 
-  // Simulation Mode State (For SIH Jury Presentation)
-  const [simulationActive, setSimulationActive] = useState(false);
+  // Simulation Mode State (Single Source of Truth: 'IDLE' | 'RUNNING' | 'PAUSED' | 'COMPLETED')
+  const [simulationStatus, setSimulationStatus] = useState('IDLE');
   const [simulationStep, setSimulationStep] = useState(0); // 0 to 5
-  const [simulationPaused, setSimulationPaused] = useState(false);
   const simulationTimerRef = useRef(null);
 
   const [liveSatellite, setLiveSatellite] = useState(null);
@@ -327,10 +326,9 @@ export function ScenarioProvider({ children }) {
     });
   };
 
-  // Automated 14-Step SIH Demo Simulation Sequence
+  // Automated 5-Stage SIH Demo Simulation Sequence
   const startSimulation = () => {
-    setSimulationActive(true);
-    setSimulationPaused(false);
+    setSimulationStatus('RUNNING');
     setSimulationStep(1);
 
     addAuditEntry({
@@ -338,7 +336,7 @@ export function ScenarioProvider({ children }) {
       severity: 'INFO',
       actor: 'SIH Jury Presentation Mode',
       entity: 'Full Mine Digital Twin',
-      description: 'Interactive demo simulation initiated. Demonstrating 14-step closed-loop decision intelligence.',
+      description: 'Interactive demo simulation initiated. Demonstrating 5-stage closed-loop decision intelligence.',
       evidence: 'Step 1 of 5: Injecting telemetry anomaly into Haul Truck T-17.',
       sourceSystem: 'SIH Demo Simulator',
     });
@@ -388,6 +386,8 @@ export function ScenarioProvider({ children }) {
           sourceSystem: 'Fleet Maintenance System',
         });
       } else if (currentStep >= 5) {
+        setSimulationStatus('COMPLETED');
+        setSimulationStep(5);
         resolveIncident(
           incidentsList.find((i) => i.assetId === 'TRK-17')?.id || 'INC-900',
           'Demo simulation overhaul completed: bearing replaced, temperature normalized to 84°C.'
@@ -398,27 +398,29 @@ export function ScenarioProvider({ children }) {
   };
 
   const pauseSimulation = () => {
-    setSimulationPaused(true);
+    setSimulationStatus('PAUSED');
     if (simulationTimerRef.current) clearInterval(simulationTimerRef.current);
   };
 
   const resumeSimulation = () => {
-    setSimulationPaused(false);
+    setSimulationStatus('RUNNING');
+    if (simulationTimerRef.current) clearInterval(simulationTimerRef.current);
     simulationTimerRef.current = setInterval(() => {
       setSimulationStep((s) => {
-        if (s >= 5) {
+        const next = s + 1;
+        if (next >= 5) {
+          setSimulationStatus('COMPLETED');
           clearInterval(simulationTimerRef.current);
           return 5;
         }
-        return s + 1;
+        return next;
       });
     }, 4500);
   };
 
   const resetSimulation = () => {
     if (simulationTimerRef.current) clearInterval(simulationTimerRef.current);
-    setSimulationActive(false);
-    setSimulationPaused(false);
+    setSimulationStatus('IDLE');
     setSimulationStep(0);
     setEquipmentList(defaultEquipment);
     setSafetyList(defaultSafety);
@@ -542,15 +544,15 @@ export function ScenarioProvider({ children }) {
 
   const scenarioData = getScenarioData();
 
-  // Forecast data scaled to active mine target
+  // Forecast data scaled to active mine target with explicit 2026 date provenance
   const forecastData = (liveProduction && liveProduction.forecast) || [
-    { day: 1, date: 'Aug 19', predicted: Math.round(targetTonnes * 1.01), target: targetTonnes, risk: 'low' },
-    { day: 2, date: 'Aug 20', predicted: Math.round(targetTonnes * 0.98), target: targetTonnes, risk: 'low' },
-    { day: 3, date: 'Aug 21', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 0.99 : 0.91)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'medium' },
-    { day: 4, date: 'Aug 22', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 1.02 : 0.72)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'high' },
-    { day: 5, date: 'Aug 23', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 1.00 : 0.74)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'high' },
-    { day: 6, date: 'Aug 24', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 1.01 : 0.81)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'high' },
-    { day: 7, date: 'Aug 25', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 1.03 : 0.94)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'medium' },
+    { day: 1, date: '19 Aug 2026', predicted: Math.round(targetTonnes * 1.01), target: targetTonnes, risk: 'low' },
+    { day: 2, date: '20 Aug 2026', predicted: Math.round(targetTonnes * 0.98), target: targetTonnes, risk: 'low' },
+    { day: 3, date: '21 Aug 2026', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 0.99 : 0.91)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'medium' },
+    { day: 4, date: '22 Aug 2026', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 1.02 : 0.72)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'high' },
+    { day: 5, date: '23 Aug 2026', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 1.00 : 0.74)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'high' },
+    { day: 6, date: '24 Aug 2026', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 1.01 : 0.81)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'high' },
+    { day: 7, date: '25 Aug 2026', predicted: Math.round(targetTonnes * (activeScenario === 'normal' ? 1.03 : 0.94)), target: targetTonnes, risk: activeScenario === 'normal' ? 'low' : 'medium' },
   ];
 
   // Historical data scaled to active mine target
@@ -575,11 +577,11 @@ export function ScenarioProvider({ children }) {
   const mineHealthScore = computeMineHealthScore();
 
   const simulationSteps = [
-    { step: 1, title: 'Asset Telemetry Spike', desc: 'High-vibration & temperature anomaly injected into TRK-17 CAN-bus stream.' },
-    { step: 2, title: 'TreeSHAP Mathematical Attribution', desc: 'Attributing 42% of extraction risk to equipment hydraulic degradation.' },
-    { step: 3, title: 'MILP Linear Prescriptive Dispatch', desc: 'PuLP solver computing optimal dumper rerouting and backup shovel deployment.' },
-    { step: 4, title: 'Incident Lifecycle Work Order', desc: 'Automated work order INC-842 created and dispatched to maintenance lead.' },
-    { step: 5, title: 'Immutable Audit Trail Verification', desc: 'Forensic cryptographic log recorded with timestamp and DGMS compliance notes.' },
+    { step: 1, title: 'Asset Telemetry Spike', desc: 'CAN-bus sensor anomaly injected into TRK-17: High-amplitude vibration (15.4 mm/s) & turbo temperature (106.8°C).' },
+    { step: 2, title: 'TreeSHAP Mathematical Attribution', desc: 'AI decomposes extraction deficit: 42% equipment hydraulic degradation, 28% haul road saturation, 18% blast delay.' },
+    { step: 3, title: 'MILP Prescriptive Dispatch', desc: 'PuLP branch-and-cut solver computes fleet reallocations in 118ms, recovering 1,700 TPD (77% deficit mitigation).' },
+    { step: 4, title: 'Work Order Issued & In-Progress', desc: 'Automated work order INC-842 created; mechanical maintenance crew dispatched to TRK-17 on Ramp Sector 3.' },
+    { step: 5, title: 'Resolution Verified & Audited', desc: 'Telemetry verified nominal (<3.5 mm/s vibration); tamper-evident cryptographic log stamped in DGMS ledger.' },
   ];
   const currentSimulationStep = simulationSteps[(simulationStep - 1) % simulationSteps.length] || simulationSteps[0];
   const activeAnomalies = equipmentList.filter((e) => e.status === 'CRITICAL');
@@ -627,10 +629,14 @@ export function ScenarioProvider({ children }) {
     triggerManualAnomaly,
     addAuditEntry,
 
-    // SIH Demo Simulation
-    simulationActive,
+    // SIH Demo Simulation (Unified Single Source of Truth)
+    simulationStatus, // 'IDLE' | 'RUNNING' | 'PAUSED' | 'COMPLETED'
+    simulationActive: simulationStatus === 'RUNNING' || simulationStatus === 'PAUSED',
+    simulationPaused: simulationStatus === 'PAUSED',
+    simulationCompleted: simulationStatus === 'COMPLETED',
     simulationStep,
-    simulationPaused,
+    TOTAL_SIMULATION_STEPS: 5,
+    simulationSteps,
     currentSimulationStep,
     activeAnomalies,
     startSimulation,

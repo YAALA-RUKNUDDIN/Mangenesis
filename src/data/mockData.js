@@ -404,30 +404,30 @@ export const mapLayers = [
 ];
 
 export const historicalProduction = [
-  { day: 1, date: 'Aug 04', actual: 9850, target: 10000 },
-  { day: 2, date: 'Aug 05', actual: 10120, target: 10000 },
-  { day: 3, date: 'Aug 06', actual: 9940, target: 10000 },
-  { day: 4, date: 'Aug 07', actual: 10200, target: 10000 },
-  { day: 5, date: 'Aug 08', actual: 9780, target: 10000 },
-  { day: 6, date: 'Aug 09', actual: 10050, target: 10000 },
-  { day: 7, date: 'Aug 10', actual: 9920, target: 10000 },
-  { day: 8, date: 'Aug 11', actual: 10300, target: 10000 },
-  { day: 9, date: 'Aug 12', actual: 10150, target: 10000 },
-  { day: 10, date: 'Aug 13', actual: 9890, target: 10000 },
-  { day: 11, date: 'Aug 14', actual: 10080, target: 10000 },
-  { day: 12, date: 'Aug 15', actual: 9650, target: 10000 },
-  { day: 13, date: 'Aug 16', actual: 10100, target: 10000 },
-  { day: 14, date: 'Aug 17', actual: 9980, target: 10000 },
+  { day: 1, date: '04 Aug 2026', actual: 9850, target: 10000 },
+  { day: 2, date: '05 Aug 2026', actual: 10120, target: 10000 },
+  { day: 3, date: '06 Aug 2026', actual: 9940, target: 10000 },
+  { day: 4, date: '07 Aug 2026', actual: 10200, target: 10000 },
+  { day: 5, date: '08 Aug 2026', actual: 9780, target: 10000 },
+  { day: 6, date: '09 Aug 2026', actual: 10050, target: 10000 },
+  { day: 7, date: '10 Aug 2026', actual: 9920, target: 10000 },
+  { day: 8, date: '11 Aug 2026', actual: 10300, target: 10000 },
+  { day: 9, date: '12 Aug 2026', actual: 10150, target: 10000 },
+  { day: 10, date: '13 Aug 2026', actual: 9890, target: 10000 },
+  { day: 11, date: '14 Aug 2026', actual: 10080, target: 10000 },
+  { day: 12, date: '15 Aug 2026', actual: 9650, target: 10000 },
+  { day: 13, date: '16 Aug 2026', actual: 10100, target: 10000 },
+  { day: 14, date: '17 Aug 2026', actual: 9980, target: 10000 },
 ];
 
 export const forecastProduction = [
-  { day: 1, date: 'Aug 19', predicted: 10050, target: 10000, risk: 'low' },
-  { day: 2, date: 'Aug 20', predicted: 9800, target: 10000, risk: 'low' },
-  { day: 3, date: 'Aug 21', predicted: 9100, target: 10000, risk: 'medium' },
-  { day: 4, date: 'Aug 22', predicted: 7200, target: 10000, risk: 'high' },
-  { day: 5, date: 'Aug 23', predicted: 7400, target: 10000, risk: 'high' },
-  { day: 6, date: 'Aug 24', predicted: 8100, target: 10000, risk: 'high' },
-  { day: 7, date: 'Aug 25', predicted: 9400, target: 10000, risk: 'medium' },
+  { day: 1, date: '19 Aug 2026', predicted: 10050, target: 10000, risk: 'low' },
+  { day: 2, date: '20 Aug 2026', predicted: 9800, target: 10000, risk: 'low' },
+  { day: 3, date: '21 Aug 2026', predicted: 9100, target: 10000, risk: 'medium' },
+  { day: 4, date: '22 Aug 2026', predicted: 7200, target: 10000, risk: 'high' },
+  { day: 5, date: '23 Aug 2026', predicted: 7400, target: 10000, risk: 'high' },
+  { day: 6, date: '24 Aug 2026', predicted: 8100, target: 10000, risk: 'high' },
+  { day: 7, date: '25 Aug 2026', predicted: 9400, target: 10000, risk: 'medium' },
 ];
 
 export const timelineEvents = [
