@@ -29,19 +29,35 @@ export default class ErrorBoundary extends React.Component {
             <p className="text-xs text-slate-300 font-mono">
               An operational view error occurred. The application state has been preserved.
             </p>
-            <div className="p-3 rounded-lg bg-[#0B0D12] border border-[#262F3D] text-[11px] font-mono text-rose-300 text-left overflow-auto max-h-32">
-              {this.state.error?.message || 'Unknown runtime error'}
+            <div className="p-3 rounded-lg bg-[#0B0D12] border border-[#262F3D] text-[11px] font-mono text-rose-300 text-left overflow-auto max-h-40 whitespace-pre-wrap">
+              <div className="font-bold text-rose-400 mb-1">
+                {this.state.error?.name || 'Error'}: {this.state.error?.message || 'Unknown runtime error'}
+              </div>
+              {this.state.error?.stack && (
+                <div className="text-[10px] text-slate-500 mt-2 font-mono border-t border-[#1F2937] pt-1">
+                  {this.state.error.stack.split('\n').slice(0, 4).join('\n')}
+                </div>
+              )}
             </div>
-            <button
-              onClick={() => {
-                this.setState({ hasError: false, error: null });
-                window.location.href = '/command-center';
-              }}
-              className="w-full py-2.5 rounded-xl bg-[#C7B59F] hover:bg-[#E8DFD1] text-[#0B0D12] text-xs font-bold font-mono transition-colors flex items-center justify-center gap-2 shadow-lg"
-            >
-              <RotateCcw size={14} />
-              <span>Reload Command Center</span>
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  window.location.href = `/command-center?reload=${Date.now()}`;
+                }}
+                className="flex-1 py-2.5 rounded-xl bg-[#C7B59F] hover:bg-[#E8DFD1] text-[#0B0D12] text-xs font-bold font-mono transition-colors flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+              >
+                <RotateCcw size={14} />
+                <span>Hard Reload Page</span>
+              </button>
+              <button
+                onClick={() => {
+                  window.location.href = `/?reload=${Date.now()}`;
+                }}
+                className="px-4 py-2.5 rounded-xl bg-[#1A202C] hover:bg-[#262F3D] text-slate-300 text-xs font-mono transition-colors cursor-pointer border border-[#262F3D]"
+              >
+                Home
+              </button>
+            </div>
           </div>
         </div>
       );

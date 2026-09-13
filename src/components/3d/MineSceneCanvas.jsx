@@ -39,6 +39,7 @@ export default function MineSceneCanvas({
   const [activePreset, setActivePreset] = useState('pit');
   const [activeMode, setActiveMode] = useState('day');
   const [isAutoRotate, setIsAutoRotate] = useState(false);
+  const isAutoRotateRef = useRef(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [hoveredZone, setHoveredZone] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
@@ -244,7 +245,7 @@ export default function MineSceneCanvas({
       }
 
       // Auto-Orbit
-      if (isAutoRotate && !targetCameraPosRef.current) {
+      if (isAutoRotateRef.current && !targetCameraPosRef.current) {
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.8;
       } else {
@@ -283,9 +284,10 @@ export default function MineSceneCanvas({
 
   // Dedicated Auto-Orbit Effect (avoids tearing down and rebuilding WebGL canvas)
   useEffect(() => {
+    isAutoRotateRef.current = isAutoRotate;
     if (controlsRef.current) {
       controlsRef.current.autoRotate = isAutoRotate;
-      controlsRef.current.autoRotateSpeed = 1.0;
+      controlsRef.current.autoRotateSpeed = 0.8;
     }
   }, [isAutoRotate]);
 
