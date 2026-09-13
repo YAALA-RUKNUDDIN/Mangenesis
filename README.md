@@ -201,4 +201,14 @@ python -m uvicorn backend.main:app --reload --port 8000
 * **Nodal Organization**: Ministry of Mines / MOIL Limited (Nagpur, Maharashtra)
 * **Hackathon**: Smart India Hackathon (SIH) 2024–2025
 
+---
+
+## 9. Contributors & Core Team
+
+* **Lead Architect & Developer**: **Yaala Ruknuddin** ([@YAALA-RUKNUDDIN](https://github.com/YAALA-RUKNUDDIN))
+* **Team**: MANGENESIS SIH Team
+* **Repository**: [https://github.com/YAALA-RUKNUDDIN/mangenesis](https://github.com/YAALA-RUKNUDDIN/mangenesis)
+* **License**: MIT License
+
+
 

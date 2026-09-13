@@ -1,7 +1,15 @@
 {
   "name": "mangenesis",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "AI-Powered Space Intelligence for Manganese Ore Identification and Production Continuity Forecast for MOIL Limited",
+  "author": "Yaala Ruknuddin <https://github.com/YAALA-RUKNUDDIN>",
+  "contributors": [
+    {
+      "name": "Yaala Ruknuddin",
+      "url": "https://github.com/YAALA-RUKNUDDIN"
+    }
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
