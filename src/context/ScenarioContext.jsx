@@ -38,6 +38,10 @@ export function ScenarioProvider({ children }) {
   const [simulationStep, setSimulationStep] = useState(0); // 0 to 5
   const simulationTimerRef = useRef(null);
 
+  const simulationActive = simulationStatus === 'RUNNING' || simulationStatus === 'PAUSED';
+  const simulationPaused = simulationStatus === 'PAUSED';
+  const simulationCompleted = simulationStatus === 'COMPLETED';
+
   const [liveSatellite, setLiveSatellite] = useState(null);
   const [liveZones, setLiveZones] = useState(null);
   const [liveProduction, setLiveProduction] = useState(null);
@@ -631,9 +635,9 @@ export function ScenarioProvider({ children }) {
 
     // SIH Demo Simulation (Unified Single Source of Truth)
     simulationStatus, // 'IDLE' | 'RUNNING' | 'PAUSED' | 'COMPLETED'
-    simulationActive: simulationStatus === 'RUNNING' || simulationStatus === 'PAUSED',
-    simulationPaused: simulationStatus === 'PAUSED',
-    simulationCompleted: simulationStatus === 'COMPLETED',
+    simulationActive,
+    simulationPaused,
+    simulationCompleted,
     simulationStep,
     TOTAL_SIMULATION_STEPS: 5,
     simulationSteps,
