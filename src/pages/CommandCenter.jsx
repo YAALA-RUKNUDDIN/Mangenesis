@@ -207,10 +207,14 @@ export default function CommandCenter() {
 
   const zonesCount = (liveZones && liveZones.length) || (activeMineData.zones && activeMineData.zones.length) || 4;
 
+  const fleetList = equipment || equipmentList || [];
+  const hazardsList = safetyHazards || safetyList || [];
+  const incList = incidents || incidentsList || [];
+
   // Urgent triage items calculation
-  const urgentEquip = equipment.find(e => e.status === 'CRITICAL' || e.status === 'WARNING');
-  const urgentHazard = safetyHazards.find(h => h.severity === 'CRITICAL' || h.severity === 'HIGH');
-  const openIncidentsCount = incidents.filter(i => i.status !== 'RESOLVED').length;
+  const urgentEquip = fleetList.find(e => e.status === 'CRITICAL' || e.status === 'WARNING');
+  const urgentHazard = hazardsList.find(h => h.severity === 'CRITICAL' || h.severity === 'HIGH');
+  const openIncidentsCount = incList.filter(i => i.status !== 'RESOLVED').length;
 
   return (
     <PageLayout
@@ -418,7 +422,7 @@ export default function CommandCenter() {
             {openIncidentsCount}
           </div>
           <p className="text-[10px] text-slate-400 font-mono mt-2">
-            {equipment.length} Fleet Units &bull; {safetyHazards.length} Hazard Zones
+            {fleetList.length} Fleet Units &bull; {hazardsList.length} Hazard Zones
           </p>
         </OriginCard>
       </div>
@@ -451,7 +455,7 @@ export default function CommandCenter() {
                 {urgentEquip ? `${urgentEquip.name} (${urgentEquip.healthScore}% Health)` : 'Excavator EX-04 Pressure Loss'}
               </h4>
               <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">
-                {urgentEquip ? `${urgentEquip.failureRisk} failure risk. ${urgentEquip.sensors.pressure} bar vs 280 bar rated.` : 'Hydraulic pump cartridge degradation. Risk of unrecoverable 3,200 T shortfall.'}
+                {urgentEquip ? `Risk Score ${urgentEquip.riskScore || 89}/100. Pressure: ${urgentEquip.hydraulicPressureBar || 142} bar vs 280 bar rated.` : 'Hydraulic pump cartridge degradation. Risk of unrecoverable 3,200 T shortfall.'}
               </p>
             </div>
             <div className="mt-3 pt-2 border-t border-[#1F2937] flex items-center justify-between">
@@ -472,13 +476,13 @@ export default function CommandCenter() {
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold">
                   SAFETY ADVISORY
                 </span>
-                <span className="text-[11px] font-mono text-slate-400">{urgentHazard?.location || 'Ramp Sector 3'}</span>
+                <span className="text-[11px] font-mono text-slate-400">{urgentHazard?.zone || 'Ramp Sector 3'}</span>
               </div>
               <h4 className="text-xs font-semibold text-white">
-                {urgentHazard?.hazardType || 'Haul Road Friction Degradation'}
+                {urgentHazard?.title || 'Haul Road Friction Degradation'}
               </h4>
               <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">
-                SMAP radar soil saturation at 78.5%. Friction coefficient dropped to 0.28 (DGMS baseline 0.35).
+                {urgentHazard?.recommendedAction || 'SMAP radar soil saturation at 78.5%. Friction coefficient dropped to 0.28 (DGMS baseline 0.35).'}
               </p>
             </div>
             <div className="mt-3 pt-2 border-t border-[#1F2937] flex items-center justify-between">

@@ -574,6 +574,16 @@ export function ScenarioProvider({ children }) {
 
   const mineHealthScore = computeMineHealthScore();
 
+  const simulationSteps = [
+    { step: 1, title: 'Asset Telemetry Spike', desc: 'High-vibration & temperature anomaly injected into TRK-17 CAN-bus stream.' },
+    { step: 2, title: 'TreeSHAP Mathematical Attribution', desc: 'Attributing 42% of extraction risk to equipment hydraulic degradation.' },
+    { step: 3, title: 'MILP Linear Prescriptive Dispatch', desc: 'PuLP solver computing optimal dumper rerouting and backup shovel deployment.' },
+    { step: 4, title: 'Incident Lifecycle Work Order', desc: 'Automated work order INC-842 created and dispatched to maintenance lead.' },
+    { step: 5, title: 'Immutable Audit Trail Verification', desc: 'Forensic cryptographic log recorded with timestamp and DGMS compliance notes.' },
+  ];
+  const currentSimulationStep = simulationSteps[(simulationStep - 1) % simulationSteps.length] || simulationSteps[0];
+  const activeAnomalies = equipmentList.filter((e) => e.status === 'CRITICAL');
+
   const value = {
     // Mine & Scenario Selection
     minesList,
@@ -599,11 +609,15 @@ export function ScenarioProvider({ children }) {
     roleProfile: roleProfiles[activeRole] || roleProfiles.manager,
     allRoleProfiles: roleProfiles,
 
-    // Closed-Loop Datasets & Actions
+    // Closed-Loop Datasets & Actions (dual aliases to prevent undefined errors)
     equipmentList,
+    equipment: equipmentList,
     safetyList,
+    safetyHazards: safetyList,
     incidentsList,
+    incidents: incidentsList,
     auditLogList,
+    auditLog: auditLogList,
     mineHealthScore,
     acknowledgeIncident,
     startWorkOrder,
@@ -617,6 +631,8 @@ export function ScenarioProvider({ children }) {
     simulationActive,
     simulationStep,
     simulationPaused,
+    currentSimulationStep,
+    activeAnomalies,
     startSimulation,
     pauseSimulation,
     resumeSimulation,

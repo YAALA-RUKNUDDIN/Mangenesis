@@ -3,16 +3,19 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { ScenarioProvider } from './context/ScenarioContext';
+import ErrorBoundary from './components/shared/ErrorBoundary';
 import './index.css';
 import '../styles.css';
 import 'leaflet/dist/leaflet.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ScenarioProvider>
-        <App />
-      </ScenarioProvider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <ScenarioProvider>
+          <App />
+        </ScenarioProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );

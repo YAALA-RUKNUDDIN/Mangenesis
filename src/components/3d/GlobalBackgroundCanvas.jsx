@@ -15,21 +15,23 @@ export default function GlobalBackgroundCanvas() {
     if (!container) return;
 
     // 1. Scene & Camera
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      1,
-      1000
-    );
-    camera.position.z = 240;
+    let renderer;
+    try {
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        1,
+        1000
+      );
+      camera.position.z = 240;
 
-    // 2. Renderer
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    container.appendChild(renderer.domElement);
+      // 2. Renderer
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      container.appendChild(renderer.domElement);
 
     // 3. Particle Grid (Subterranean Mineral Constellation)
     const particleCount = 700;
@@ -149,25 +151,28 @@ export default function GlobalBackgroundCanvas() {
       // Gentle undulating horizon grid
       horizonMesh.position.z = -50 + Math.sin(elapsed * 0.5) * 8;
 
-      renderer.render(scene, camera);
-    };
+        renderer.render(scene, camera);
+      };
 
-    animate();
+      animate();
 
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
-      geometry.dispose();
-      material.dispose();
-      planeGeo.dispose();
-      planeMat.dispose();
-      pointTexture.dispose();
-      renderer.dispose();
-    };
+      return () => {
+        cancelAnimationFrame(animId);
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('resize', handleResize);
+        if (renderer && renderer.domElement && container.contains(renderer.domElement)) {
+          container.removeChild(renderer.domElement);
+        }
+        geometry.dispose();
+        material.dispose();
+        planeGeo.dispose();
+        planeMat.dispose();
+        pointTexture.dispose();
+        if (renderer) renderer.dispose();
+      };
+    } catch (err) {
+      console.warn('WebGL GlobalBackgroundCanvas initialization skipped:', err);
+    }
   }, []);
 
   return (
