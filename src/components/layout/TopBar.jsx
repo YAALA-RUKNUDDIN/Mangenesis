@@ -60,15 +60,20 @@ export default function TopBar() {
   const [isSeeding, setIsSeeding] = useState(false);
   const [seedMessage, setSeedMessage] = useState('');
   const [unreadCount, setUnreadCount] = useState(3);
-  const [backendOnline, setBackendOnline] = useState(true);
+  const [backendOnline, setBackendOnline] = useState(false);
+  const [apiDocsModalOpen, setApiDocsModalOpen] = useState(false);
+
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+  const isLocalBackend = API_BASE.includes('localhost') || API_BASE.includes('127.0.0.1');
 
   useEffect(() => {
     fetchSupabaseStatus().then((res) => {
       if (res) setSupabaseInfo(res);
     });
 
-    // Check backend health
-    fetch('http://localhost:8000/docs', { method: 'HEAD', mode: 'no-cors' })
+    // Check backend health with proper API base
+    const healthUrl = API_BASE.replace(/\/api$/, '') + '/docs';
+    fetch(healthUrl, { method: 'HEAD', mode: 'no-cors' })
       .then(() => setBackendOnline(true))
       .catch(() => setBackendOnline(false));
   }, []);
@@ -113,6 +118,7 @@ export default function TopBar() {
   ];
 
   return (
+    <>
     <header className="h-16 min-h-[64px] bg-[#0E1322]/95 backdrop-blur-xl border-b border-[#262F3D] flex items-center justify-between px-3 sm:px-5 z-[2000] relative select-none">
       {/* LEFT: Mobile Menu + Unified Operational Context Cluster (Mine • Scenario • Role) */}
       <div className="flex items-center gap-2">
@@ -410,18 +416,23 @@ export default function TopBar() {
           <span className="text-[10.5px]">Telemetry Live</span>
         </div>
 
-        {/* Live FastAPI Swagger Documentation Link */}
-        <a
-          href="http://localhost:8000/docs"
-          target="_blank"
-          rel="noreferrer"
+        {/* API Documentation - Intelligent Status-Aware */}
+        <button
+          onClick={() => {
+            if (backendOnline) {
+              const docsUrl = API_BASE.replace(/\/api$/, '') + '/docs';
+              window.open(docsUrl, '_blank');
+            } else {
+              setApiDocsModalOpen(true);
+            }
+          }}
           className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#131720] hover:bg-[#1A202C] border border-[#262F3D] hover:border-[#C7B59F]/40 text-xs font-mono text-slate-200 transition-colors cursor-pointer shadow-sm"
-          title="Interactive FastAPI Swagger API Docs (Port 8000)"
+          title={backendOnline ? 'Open FastAPI Swagger UI' : 'View API Specification (Backend Offline)'}
         >
           <Code2 size={13} className="text-[#C7B59F]" />
           <span className="hidden md:inline text-[11px]">API Docs</span>
-          <span className={`w-1.5 h-1.5 rounded-full ${backendOnline ? 'bg-emerald-400' : 'bg-amber-400'}`} />
-        </a>
+          <span className={`w-1.5 h-1.5 rounded-full ${backendOnline ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'}`} />
+        </button>
 
         {/* Supabase Database Modal Trigger */}
         <div className="relative z-[2100]">
@@ -529,5 +540,65 @@ export default function TopBar() {
         </div>
       </div>
     </header>
+
+    {/* API Specification Modal - In-App (Cloud/Offline Fallback) */}
+    <AnimatePresence>
+      {apiDocsModalOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+          onClick={() => setApiDocsModalOpen(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            className="bg-[#0F1117] border border-[#262F3D] rounded-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-[#262F3D] sticky top-0 bg-[#0F1117] z-10">
+              <div>
+                <h3 className="text-sm font-bold text-white font-mono">MANGENESIS REST API v1.0</h3>
+                <p className="text-[10px] text-amber-400 mt-0.5">Backend Offline — Showing Embedded Specification</p>
+              </div>
+              <button onClick={() => setApiDocsModalOpen(false)} className="text-slate-400 hover:text-white cursor-pointer">
+                <X size={16} />
+              </button>
+            </div>
+            <div className="p-4 space-y-2 text-xs font-mono">
+              {[
+                { method: 'GET', path: '/api/mines', desc: 'List all MOIL mine sites with metadata' },
+                { method: 'GET', path: '/api/zones', desc: 'Exploration zones with XGBoost probability' },
+                { method: 'GET', path: '/api/satellite/live', desc: 'Live Sentinel-2 & SMAP telemetry' },
+                { method: 'GET', path: '/api/production', desc: 'LightGBM 7-day forecast with confidence' },
+                { method: 'GET', path: '/api/risk', desc: 'TreeSHAP root-cause attribution' },
+                { method: 'GET', path: '/api/actions', desc: 'PuLP MILP fleet dispatch optimization' },
+                { method: 'GET', path: '/api/roi/calculate', desc: 'Financial ROI sensitivity model' },
+                { method: 'GET', path: '/api/alerts/config', desc: 'Alert threshold configuration' },
+                { method: 'PUT', path: '/api/alerts/config', desc: 'Update alert thresholds' },
+                { method: 'POST', path: '/api/alerts/test', desc: 'Send test alert notification' },
+                { method: 'GET', path: '/api/alerts/history', desc: 'Alert dispatch audit history' },
+                { method: 'GET', path: '/api/supabase/status', desc: 'Cloud database connection status' },
+                { method: 'POST', path: '/api/supabase/seed', desc: 'Seed PostgreSQL with mine data' },
+              ].map((ep, i) => (
+                <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-[#131720] border border-[#1E2530]">
+                  <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${ep.method === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ep.method === 'POST' ? 'bg-blue-500/20 text-blue-400' : 'bg-amber-500/20 text-amber-400'}`}>
+                    {ep.method}
+                  </span>
+                  <span className="text-slate-200 flex-1">{ep.path}</span>
+                  <span className="text-slate-500 text-[10px]">{ep.desc}</span>
+                </div>
+              ))}
+              <div className="mt-3 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[10px]">
+                <strong>Note:</strong> Start the FastAPI backend locally with <code className="bg-black/30 px-1 rounded">python -m uvicorn backend.main:app --port 8000</code> for live Swagger UI and real-time ML inference.
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 }

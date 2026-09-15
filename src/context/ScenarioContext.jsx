@@ -482,6 +482,11 @@ export function ScenarioProvider({ children }) {
         recoveryPotential: liveActions.recovery_potential,
         residualRisk: liveActions.residual_risk,
         actions: liveActions.actions || [],
+        shapMetrics: liveRisk.shap_metrics || null,
+        milpSolver: liveActions.milp_solver || null,
+        isGenuineShap: Boolean(liveRisk.is_genuine_shap),
+        isGenuineMILP: Boolean(liveActions.is_genuine_milp),
+        isGenuineML: Boolean(liveProduction.is_genuine_ml),
       };
     }
 
@@ -524,6 +529,11 @@ export function ScenarioProvider({ children }) {
       ],
       recoveryPotential: recovery,
       residualRisk: Math.max(14, Math.round(cur.risk * 0.38)),
+      shapMetrics: null,
+      milpSolver: null,
+      isGenuineShap: false,
+      isGenuineMILP: false,
+      isGenuineML: false,
       actions: [
         {
           priority: 1,

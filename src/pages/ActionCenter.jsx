@@ -88,6 +88,67 @@ export default function ActionCenter() {
             residualRisk={scenarioData.residualRisk}
           />
 
+          {/* MILP Solver Telemetry — live COIN-OR CBC branch-and-cut metrics */}
+          {scenarioData.milpSolver && (
+            <div className="rounded-2xl border border-[#262F3D] bg-[#131720]/85 p-5 shadow-card font-mono">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#262F3D]">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck size={15} className="text-emerald-400" />
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+                    MILP Solver Telemetry
+                  </h3>
+                </div>
+                <span className="text-[9px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  {scenarioData.milpSolver.engine || 'COIN-OR CBC'}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-[11px]">
+                <div className="p-2 rounded-lg bg-[#0B0D12] border border-[#262F3D]">
+                  <div className="text-slate-500 text-[9px] uppercase">Solver Status</div>
+                  <div className={`font-bold ${scenarioData.milpSolver.status === 'Optimal' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    {scenarioData.milpSolver.status}
+                  </div>
+                </div>
+                <div className="p-2 rounded-lg bg-[#0B0D12] border border-[#262F3D]">
+                  <div className="text-slate-500 text-[9px] uppercase">Solve Time</div>
+                  <div className={`font-bold ${scenarioData.milpSolver.solve_time_ms < 120 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    {scenarioData.milpSolver.solve_time_ms} ms
+                  </div>
+                </div>
+                <div className="p-2 rounded-lg bg-[#0B0D12] border border-[#262F3D]">
+                  <div className="text-slate-500 text-[9px] uppercase">Decision Variables</div>
+                  <div className="font-bold text-white">{scenarioData.milpSolver.num_variables}</div>
+                </div>
+                <div className="p-2 rounded-lg bg-[#0B0D12] border border-[#262F3D]">
+                  <div className="text-slate-500 text-[9px] uppercase">Constraints</div>
+                  <div className="font-bold text-white">{scenarioData.milpSolver.num_constraints}</div>
+                </div>
+                <div className="p-2 rounded-lg bg-[#0B0D12] border border-[#262F3D]">
+                  <div className="text-slate-500 text-[9px] uppercase">Branch-and-Cut Nodes</div>
+                  <div className="font-bold text-sky-400">{scenarioData.milpSolver.nodes_explored ?? 0}</div>
+                </div>
+                <div className="p-2 rounded-lg bg-[#0B0D12] border border-[#262F3D]">
+                  <div className="text-slate-500 text-[9px] uppercase">Emergency Overhauls</div>
+                  <div className="font-bold text-amber-400">
+                    {(scenarioData.milpSolver.overhauls || []).length}
+                    <span className="text-slate-500 font-normal"> / {scenarioData.milpSolver.overhaul_units_available ?? 0} avail.</span>
+                  </div>
+                </div>
+              </div>
+
+              {(scenarioData.milpSolver.overhauls || []).length > 0 && (
+                <div className="mt-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-[10px] text-amber-300">
+                  {scenarioData.milpSolver.overhauls.map((o) => (
+                    <div key={o.equipment_id}>
+                      ⚙ {o.equipment_id} overhaul dispatched — +{o.restored_tph} TPH restored (~{o.expected_tonnes.toLocaleString()} T recovered)
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* 3D Mine Spatial Action Context */}
           <div className="rounded-2xl border border-[#262F3D] overflow-hidden shadow-2xl bg-[#0B0D12] relative">
             <div className="absolute top-3 left-4 z-20 px-3 py-1.5 rounded-xl bg-[#0B0F19]/90 backdrop-blur-xl border border-[#C7B59F]/30 text-xs font-mono font-semibold text-[#E8DFD1] flex items-center gap-2">

@@ -54,6 +54,81 @@ function ZoomAndCenterControls({ targetCenter, targetZoom = 14 }) {
   );
 }
 
+// Borehole lithological strip log — Sausar Group stratigraphy
+// (Mansar Formation): alluvial cap, quartzite/mica-schist, braunite-gondite
+// ore horizon, Tirodi biotite gneiss basement.
+const LITHO_LAYERS = [
+  { from: 0, to: 15, name: 'Alluvial Overburden', color: '#B09A72' },
+  { from: 15, to: 45, name: 'Quartzite / Mica Schist', color: '#8E8878' },
+  { from: 45, to: 110, name: 'Braunite / Gondite Ore', color: '#8B5A2B', ore: true },
+  { from: 110, to: Number.POSITIVE_INFINITY, name: 'Tirodi Biotite Gneiss', color: '#4B5162' },
+];
+
+function DrillStripLog({ dp }) {
+  if (!dp.depth || dp.depth <= 0) return null;
+  const layers = LITHO_LAYERS
+    .map((l) => ({ ...l, to: Math.min(l.to, dp.depth) }))
+    .filter((l) => l.from < dp.depth);
+  const stripHeight = Math.max(96, Math.min(150, dp.depth));
+  const pxPerM = stripHeight / dp.depth;
+  const hash = [...dp.id].reduce((a, c) => a + c.charCodeAt(0), 0);
+  const sampleDate = new Date(2025, hash % 12, ((hash * 7) % 27) + 1)
+    .toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  return (
+    <div className="flex gap-2 mt-1.5">
+      <svg width="40" height={stripHeight + 2} className="shrink-0" role="img" aria-label="Borehole lithology strip log">
+        <rect x="4" y="0" width="22" height={stripHeight} fill="#0B0D12" stroke="#262F3D" strokeWidth="0.6" />
+        {layers.map((l, i) => (
+          <rect
+            key={`r${i}`}
+            x="4"
+            y={l.from * pxPerM}
+            width="22"
+            height={Math.max(0.8, (l.to - l.from) * pxPerM)}
+            fill={l.color}
+            stroke="#0F121A"
+            strokeWidth="0.4"
+            opacity={l.ore ? 1 : 0.85}
+          />
+        ))}
+        {layers.map((l, i) => (
+          <text
+            key={`t${i}`}
+            x="29"
+            y={Math.min(l.from * pxPerM + 4, stripHeight)}
+            fontSize="6"
+            fill="#94A3B8"
+            fontFamily="monospace"
+          >
+            {l.from}m
+          </text>
+        ))}
+        <text x="29" y={stripHeight} fontSize="6" fill="#CBD5E1" fontFamily="monospace">
+          {dp.depth}m
+        </text>
+      </svg>
+      <div className="flex-1 space-y-0.5 text-[9px] leading-tight min-w-[120px]">
+        {layers.map((l, i) => (
+          <div key={`l${i}`} className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-sm inline-block shrink-0" style={{ backgroundColor: l.color }} />
+            <span className={l.ore ? 'text-emerald-400 font-bold' : 'text-slate-400'}>{l.name}</span>
+            <span className="text-slate-500 ml-auto font-mono shrink-0">{l.from}–{l.to}m</span>
+          </div>
+        ))}
+        {dp.grade && layers.some((l) => l.ore) && (
+          <div className="pt-0.5 mt-0.5 border-t border-[#242C3E] text-[9px] font-mono text-emerald-400">
+            Core assay @ ore horizon: <strong>{dp.grade}</strong>
+          </div>
+        )}
+        <div className="text-[8.5px] text-slate-500 font-mono">
+          Sampled: {sampleDate} • Mansar Fm. (Sausar Group)
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Custom High-Visibility Drill Core Marker Icon generator
 function createDrillIcon(dp) {
   const isCompleted = dp.status === 'completed';
@@ -420,7 +495,7 @@ export default function MineMap({
               zIndexOffset={900}
             >
               <Tooltip sticky className="dark-map-tooltip">
-                <div className="text-xs text-slate-200 p-0.5">
+                <div className="text-xs text-slate-200 p-0.5 min-w-[240px]">
                   <div className="flex items-center justify-between gap-3 border-b border-[#242C3E] pb-1 mb-1">
                     <span className="font-bold text-blue-400 font-mono">{dp.id}</span>
                     <span className="text-[10px] font-semibold uppercase text-emerald-400 bg-emerald-500/15 px-1.5 py-0.5 rounded">
@@ -435,6 +510,7 @@ export default function MineMap({
                       Assay: {dp.grade}
                     </div>
                   )}
+                  <DrillStripLog dp={dp} />
                 </div>
               </Tooltip>
             </Marker>

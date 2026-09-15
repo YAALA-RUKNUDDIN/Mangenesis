@@ -68,7 +68,7 @@ def train_forecast_model():
 
     rainfall = np.random.exponential(15, n_samples)
     soil_moisture = np.clip(30 + rainfall * 0.6 + np.random.normal(0, 5, n_samples), 20, 95)
-    equipment_downtime = np.random.exponential(2, n_samples)
+    equipment_avail_pct = np.clip(np.random.normal(85, 12, n_samples), 40, 98)
     blasting_delay = np.random.exponential(1, n_samples)
     target = np.random.choice([6000, 7500, 8000, 10000, 12000, 14000], n_samples)
     day_of_week = np.random.randint(0, 7, n_samples)
@@ -76,7 +76,7 @@ def train_forecast_model():
 
     loss_factor = (
         0.003 * rainfall
-        + 0.04 * equipment_downtime
+        + 0.004 * (100 - equipment_avail_pct)
         + 0.02 * blasting_delay
         + (0.002 * (soil_moisture - 40) if np.mean(soil_moisture) > 40 else 0)
     )
@@ -86,7 +86,7 @@ def train_forecast_model():
     X = pd.DataFrame({
         "rainfall_mm": rainfall,
         "soil_moisture_pct": soil_moisture,
-        "equipment_downtime_hours": equipment_downtime,
+        "equipment_avail_pct": equipment_avail_pct,
         "blasting_delay_hours": blasting_delay,
         "target_tonnes": target,
         "day_of_week": day_of_week,

@@ -54,8 +54,8 @@ class ReserveService:
                         lst_temp
                     ]])
                     prob_pred = self.model.predict_proba(features)[0][1] * 100
-                    # Blend with calibrated prior
-                    prob = int(round(0.7 * zone["probability"] + 0.3 * prob_pred))
+                    # Pure model inference — no static prior blending.
+                    prob = int(round(prob_pred))
                 except Exception:
                     pass
 
@@ -72,6 +72,7 @@ class ReserveService:
                 "center": zone["center"],
                 "coordinates": zone["coordinates"],
                 "geological_formation": zone.get("geological_formation", "Mansar Formation"),
+                "probability_source": "xgboost_inference" if self.model else "static_prior",
                 "indicators": zone.get("indicators", []),
                 "recommendation": zone.get("recommendation", "Continue regional mapping.")
             })
