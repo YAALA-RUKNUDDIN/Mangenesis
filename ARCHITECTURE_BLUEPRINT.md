@@ -2,7 +2,6 @@
 ## Enterprise Architecture Blueprint & Technical Re-Engineering Specification
 **Target Platform**: MOIL Limited (Ministry of Steel, Government of India)  
 **Classification**: Engineering Specification / Technical Architecture  
-**Generated Document**: `MANGENESIS_NextGen_Architecture_Blueprint.pdf`
 
 ---
 
@@ -109,6 +108,4 @@ Legacy mining software architectures suffer from critical structural deficiencie
 
 ---
 
-### Artifacts Generated
-- **Master PDF**: `c:\Users\musad\.gemini\antigravity\scratch\mangenesis\MANGENESIS_NextGen_Architecture_Blueprint.pdf`
-- **Markdown Specification**: `c:\Users\musad\.gemini\antigravity\scratch\mangenesis\ARCHITECTURE_BLUEPRINT.md`
+- **Architecture Specification**: [ARCHITECTURE_BLUEPRINT.md](ARCHITECTURE_BLUEPRINT.md)

@@ -4,7 +4,7 @@
 
 ### Enterprise Space-Borne AI for Subsurface Manganese Exploration & 7-Day Closed-Loop Production Continuity Forecasting
 
-**Ministry of Mines / MOIL Limited • Smart India Hackathon Grand Finale Prototype**
+**Ministry of Mines / MOIL Limited • Smart India Hackathon Grand Finale Platform**
 
 [![React](https://img.shields.io/badge/React-18.3-61DAFB.svg?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-8.2-646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
@@ -15,9 +15,9 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E.svg?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
 
-**🌐 [Live Demo (v1.0)](https://mangenesis.vercel.app/) • 🚀 [Live Demo (v2.0 Next-Gen)](https://mangenesis-v2.vercel.app/) • [API Docs](http://localhost:8000/docs) • [Report Bug](https://github.com/YAALA-RUKNUDDIN/Mangenesis/issues)**
+**🌐 [Live Demo (v1.0 Classic)](https://mangenesis.vercel.app/) • 🚀 [Live Demo (v2.0 Next-Gen)](https://mangenesis-v2.vercel.app/) • [API Docs](http://localhost:8000/docs) • [Report Bug](https://github.com/YAALA-RUKNUDDIN/Mangenesis/issues)**
 
-> 🚀 **MANGENESIS 2.0 Live**: Experience the next-generation enterprise mining intelligence redesign with 3D geological exploration, full public portal, and UNFC reserve analytics at **[https://mangenesis-v2.vercel.app/](https://mangenesis-v2.vercel.app/)**
+> 🚀 **MANGENESIS 2.0 Live**: Experience the next-generation enterprise mining intelligence redesign with 3D geological exploration, full public scientific portal, UNFC reserve analytics, and responsive digital twin at **[https://mangenesis-v2.vercel.app/](https://mangenesis-v2.vercel.app/)**
 
 </div>
 
@@ -26,24 +26,26 @@
 ## Table of Contents
 
 1. [Executive Summary](#1-executive-summary)
-2. [The Core Problem](#2-the-core-problem--industry-challenge)
-3. [Quantified ROI & Value Realization](#3-quantified-roi--value-realization)
-4. [System Architecture](#4-system-architecture--closed-loop-pipeline)
-5. [Mathematical & ML Foundations](#5-mathematical--ml-foundations)
-6. [Platform Modules & Capabilities](#6-platform-modules--capabilities)
-7. [Demo Tour](#7-self-driving-demo-tour)
-8. [Tech Stack](#8-tech-stack--justifications)
-9. [API Reference](#9-api-reference)
-10. [Quickstart & Installation](#10-quickstart--installation)
-11. [Deployment](#11-enterprise-deployment)
-12. [Roadmap](#12-commercialization-roadmap)
-13. [Contributors](#13-contributors--core-team)
+2. [Platform Versions & Architecture Evolution (v1.0 vs v2.0)](#2-platform-versions--architecture-evolution-v10-vs-v20)
+3. [The Core Problem & Industry Challenge](#3-the-core-problem--industry-challenge)
+4. [Quantified ROI & Value Realization](#4-quantified-roi--value-realization)
+5. [System Architecture & Closed-Loop Pipeline](#5-system-architecture--closed-loop-pipeline)
+6. [Mathematical & ML Foundations](#6-mathematical--ml-foundations)
+7. [Platform Modules & Capabilities (v2.0)](#7-platform-modules--capabilities-v20)
+8. [Clean Repository Structure](#8-clean-repository-structure)
+9. [Self-Driving Demo Tour](#9-self-driving-demo-tour)
+10. [Tech Stack & Justifications](#10-tech-stack--justifications)
+11. [API Reference](#11-api-reference)
+12. [Quickstart & Installation](#12-quickstart--installation)
+13. [Enterprise Deployment](#13-enterprise-deployment)
+14. [Commercialization Roadmap](#14-commercialization-roadmap)
+15. [Contributors & Core Team](#15-contributors--core-team)
 
 ---
 
 ## 1. Executive Summary
 
-**MANGENESIS** is an enterprise-grade AI decision support platform built for **MOIL Limited** (Ministry of Mines & Ministry of Steel, Government of India). It unifies orbital Earth Observation satellite telemetry, machine learning time-series regression, game-theoretic Explainable AI (TreeSHAP), and Mixed Integer Linear Programming (MILP) into a fully autonomous **"Predict → Explain → Act → Verify"** closed-loop operational workflow.
+**MANGENESIS** is an enterprise-grade AI decision support platform engineered for **MOIL Limited** (Ministry of Mines & Ministry of Steel, Government of India). It unifies orbital Earth Observation satellite telemetry, machine learning time-series regression, game-theoretic Explainable AI (TreeSHAP), and Mixed Integer Linear Programming (MILP) into a fully autonomous **"Predict → Explain → Act → Verify"** closed-loop operational workflow.
 
 ### Mission-Critical Objectives
 
@@ -58,7 +60,24 @@
 
 ---
 
-## 2. The Core Problem & Industry Challenge
+## 2. Platform Versions & Architecture Evolution (v1.0 vs v2.0)
+
+MANGENESIS is maintained across two production tracks on GitHub and Vercel:
+
+| Dimension | Version 1.0 (Initial Prototype) | Version 2.0 (Next-Gen Production Architecture) |
+| :--- | :--- | :--- |
+| **Live Web URL** | [mangenesis.vercel.app](https://mangenesis.vercel.app/) | [mangenesis-v2.vercel.app](https://mangenesis-v2.vercel.app/) |
+| **Git Branch** | [`main`](https://github.com/YAALA-RUKNUDDIN/Mangenesis/tree/main) | [`v2.0`](https://github.com/YAALA-RUKNUDDIN/Mangenesis/tree/v2.0) |
+| **Public Portal** | Single-viewport hero interface | Full multi-page public portal (`/`, `/methodology`, `/technology`, `/about`, `/contact`) |
+| **Scientific Pipeline** | Baseline ML overview | 5-stage geotechnical architecture, Sentinel-2 SWIR 11/12 absorption ratios, ATI & variogram kriging |
+| **Command Console** | Standard dashboard views | Unified command shell (`/app/*`) with UNFC 111/122/333 reserve models and Geological Explorer |
+| **Drilling Analytics** | Basic drill points | Interactive drill core assay analyzer with lithology, depth, and % Mn assay tables |
+| **UX & Motion** | Basic layout | High-precision 10px engineering scrollbar, automatic scroll-to-top routing, and responsive mobile/4K viewports |
+| **Routing Reliability** | Basic routing | SPA rewrites via `vercel.json` with zero 404s on deep links |
+
+---
+
+## 3. The Core Problem & Industry Challenge
 
 Manganese mining operations face crippling bottlenecks that result in massive financial losses and preventable safety incidents:
 
@@ -80,7 +99,7 @@ BEFORE MANGENESIS                             AFTER MANGENESIS
 
 ---
 
-## 3. Quantified ROI & Value Realization
+## 4. Quantified ROI & Value Realization
 
 All financial metrics are calibrated against **IBM FY25 Benchmarks** at MOIL Gumgaon (10,000 TPD baseline):
 
@@ -95,7 +114,7 @@ All financial metrics are calibrated against **IBM FY25 Benchmarks** at MOIL Gum
 
 ---
 
-## 4. System Architecture & Closed-Loop Pipeline
+## 5. System Architecture & Closed-Loop Pipeline
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -124,7 +143,7 @@ All financial metrics are calibrated against **IBM FY25 Benchmarks** at MOIL Gum
                                 ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    MANGENESIS REACT FRONTEND                        │
-│  React 18 • Vite 8 • Tailwind CSS • Leaflet GIS • Three.js 3D      │
+│  React 19 • Vite 8 • Tailwind CSS • Leaflet GIS • Three.js 3D      │
 │                                                                     │
 │  Command Center  │  Reserve Intel  │  Production Forecast           │
 │  Risk & SHAP XAI │  Action Center  │  Alert Dispatcher             │
@@ -134,7 +153,7 @@ All financial metrics are calibrated against **IBM FY25 Benchmarks** at MOIL Gum
 
 ---
 
-## 5. Mathematical & ML Foundations
+## 6. Mathematical & ML Foundations
 
 ### Reserve Classification (XGBoost)
 
@@ -183,80 +202,76 @@ Recovery: ~1,700 TPD recovered (77.3% deficit mitigation)
 
 ---
 
-## 6. Platform Modules & Capabilities
+## 7. Platform Modules & Capabilities (v2.0)
 
-### 6.1 Command Center (`/`)
+### 7.1 Public Scientific & Methodology Portal
+- **Overview (`/`)**: Enterprise landing page introducing MANGENESIS, live metric tickers, interactive exploration map preview, and problem statement compliance highlights.
+- **Methodology (`/methodology`)**: Complete 5-stage geotechnical and space architecture walkthrough:
+  1. *Stage 01:* Multi-Source Data Ingestion (Sentinel-2, SRTM, SCADA, Open-Meteo).
+  2. *Stage 02:* Geochemical & Spectral Feature Engineering (SWIR 11/12 ratio, Iron oxide index, NDVI, Thermal Inertia).
+  3. *Stage 03:* 3D Ordinary Kriging & UNFC 111/122/333 Classification.
+  4. *Stage 04:* Time-Series Forecasting & Shortfall Horizon (LightGBM ensemble).
+  5. *Stage 05:* Prescriptive Decision & Closed-Loop Action Protocol (PuLP MILP solver).
+- **Technology (`/technology`)**: Full software engineering, AI/ML inference stack, and microservices specification.
+- **About (`/about`)**: Team background, Smart India Hackathon problem statement compliance (SIH26009), and MOIL belt alignment.
+- **Contact (`/contact`)**: Operational support and stakeholder feedback terminal.
 
-The main operational cockpit for mine management with **role-based perspective switching**:
-
-- **Real-Time KPI Dashboard**: Daily production vs 10,000 TPD target, shortfall risk index, active benches
-- **Role-Based Views**: Custom widget layout for **General Manager**, **Safety Officer**, **Maintenance Engineer**, and **Operations Dispatcher**
-- **Interactive GIS Mine Map**: Leaflet-powered canvas with telemetry markers, drill core locations, SMAP overlays, and IoT sensor pins
-- **7-Day Forecast Mini-Widget**: Quick trajectory preview with anomaly flagging
-
-### 6.2 Reserve Intelligence (`/reserve-intelligence`)
-
-Satellite-driven ore prospecting to eliminate expensive dry drill holes:
-
-- **Orbital Band Fusion**: Sentinel-2 SWIR B11/B12 ratio, Landsat-9 thermal inertia, NDVI greenness, and SMAP soil moisture
-- **Geological Ground-Truth**: Cross-referenced against physical core assay DP-G01 **(44.8% Mn grade)**
-- **Interactive 3D Strata Slicing**: Real-time depth slider (0–120m) filtering Braunite, Quartzite, and Schist formations
-- **Exploration Zone Inspector**: High / Medium / Low probability deposit sectors with drill recommendations
-
-### 6.3 Production Continuity Forecast (`/production-forecast`)
-
-Forward-looking production intelligence with operational scenario testing:
-
-- **14-Day Actual + 7-Day Forecast Chart**: High-contrast area chart with 10,000 T target line and deficit highlighting
-- **Live Scenario Simulator**: Instantly model **Normal Operations**, **Excavator Hydraulic Failure**, **Monsoon Inundation**, and **Blasting Delays**
-- **Risk Window Classification**: Upcoming shifts categorized as Low / Medium / High-Risk operational windows
-
-### 6.4 Risk Analysis & TreeSHAP Diagnostics (`/risk-analysis`)
-
-Transparent AI-driven fault attribution meeting DGMS audit standards:
-
-- **Shortfall Banner**: Exact deficit display (e.g. −2,200 Tonnes) and risk score (e.g. 84%)
-- **Geotechnical Risk Matrix**: Pit sector monitoring — slope stability, pore water pressure, and Factor of Safety (FoS)
-- **TreeSHAP Waterfall Chart**: Mathematical Shapley proof of every root cause for safety compliance
-- **Radial Donut Breakdown**: Percentage risk contribution per driver
-
-### 6.5 Action Center & MILP Optimizer (`/action-center`)
-
-Automated prescriptive recovery to close the forecast-to-action loop:
-
-- **MILP Ranked Dispatch**: Priority 01, 02, 03 mathematically optimal fleet reallocation plans
-- **One-Click Dispatch**: Simulated transmission to Fleet Management System (FMS) APIs
-- **Recovery Impact Panel**: Real-time confirmation of +1,700 TPD recovered and risk reduced from 84% → 33%
-
-### 6.6 Multi-Channel Alert Center (`/alert-center`)
-
-Emergency broadcast system for sub-second field supervisor notification:
-
-- **Email Dispatch**: SMTP-based alerts to configured mine managers and safety officers
-- **SMS Dispatch**: Twilio API integration for instant mobile delivery
-- **Browser Push Notifications**: Zero-latency in-dashboard alerts for online personnel
-- **Configurable Thresholds**: Warning (50%) and Critical (80%) trigger levels
-- **Live Test Broadcast**: Functional demo buttons for hackathon presentations
-
-### 6.7 Digital Twin (`/digital-twin`)
-
-Real-time connected mine visualization:
-
-- **OPERATIONAL Mode**: Live equipment health telemetry, active bench status, and fleet positions
-- **SENSORS Mode**: IoT overlay with NASA SMAP moisture patches, Extensometers, Piezometers, and CAN-bus readings
-- **142 Active Sensors**: Real-time health dashboard with advisory panel
-
-### 6.8 Executive ROI Dashboard (`/roi-dashboard`)
-
-Full financial intelligence for mine owners and government stakeholders:
-
-- **Big 4 Financial KPIs**: Annual Realization (₹21.36 Cr), Output Preserved (15,300 T/yr), Fuel Saved (68,400 L), Drilling Avoided (₹76.5L)
-- **Interactive Sensitivity Sliders**: Live recalculation based on ore price, diesel rate, and solver efficiency
-- **Instant PDF Export**: Branded executive brief downloaded via jsPDF
+### 7.2 Unified Command Application (`/app/*`)
+- **Operational Command Center (`/app`)**: Real-time KPI gauges, 7-day shortfall warning indicators, active bench status, and multi-mine switcher (Gumgaon, Balaghat, Dongri Buzurg, Kandri, Chikla, Tirodi).
+- **Reserve Intelligence (`/app/reserve-intelligence`)**: UNFC 1997/2009 resource categorization (Measured 111, Indicated 122, Inferred 333) with geostatistical kriging variance thresholds ($\sigma^2$).
+- **Geological Explorer (`/app/geological-explorer`)**: Interactive strata explorer with 3D drill hole visualization, lithology cross-sections, and core assay inspections.
+- **Drilling Analytics (`/app/drilling-analytics`)**: Drill point database tracking depth, status, and % Mn assay grades.
+- **Production Forecasting (`/app/production-forecast`)**: 14-day historical actuals combined with 7-day forward predictions under selectable operational scenarios.
+- **Risk Intelligence (`/app/risk-intelligence`)**: TreeSHAP mathematical root cause decomposition and geotechnical slope stability tracking.
+- **Action Recommendations (`/app/recommendations`)**: Prescriptive MILP fleet reallocation interventions recovering up to +1,700 TPD.
+- **Data Health & Telemetry (`/app/data-health`)**: Ingestion pipeline status, orbital pass freshness, and IoT sensor uptime.
+- **Audit Log (`/app/audit-log`)**: Immutable compliance ledger recording all AI detections, human approvals, and dispatch actions.
+- **Reports & ROI (`/app/reports`)**: Executive financial cost-benefit models and PDF report exports.
 
 ---
 
-## 7. Self-Driving Demo Tour
+## 8. Clean Repository Structure
+
+The codebase is organized cleanly for enterprise production:
+
+```
+mangenesis/
+├── backend/                       # Python FastAPI Machine Learning Services
+│   ├── models/                    # Model training pipelines
+│   ├── routers/                   # REST API route handlers
+│   ├── services/                  # Business logic (Forecast, Reserve, Risk, ROI)
+│   ├── trained_models/            # Joblib model artifacts (forecast_lgbm, reserve_xgb)
+│   ├── config.py                  # Real MOIL mining configurations & coordinates
+│   ├── database.py                # SQLite / Relational state persistence
+│   └── main.py                    # ASGI entrypoint
+├── src/                           # Modern React 19 Frontend
+│   ├── components/                # UI design system, maps, charts, 3D canvases
+│   │   ├── 3d/                    # Three.js WebGL strata and digital twin models
+│   │   ├── maps/                  # Leaflet geospatial mine maps & overlays
+│   │   ├── shared/                # KPICards, ErrorBoundary, DataFlowViz
+│   │   └── ui/                    # Reusable Button, Modal, Drawer, DataTable, Badges
+│   ├── constants/                 # Design tokens and map parameters
+│   ├── context/                   # ScenarioContext (simulation & mine state)
+│   ├── data/                      # Calibrated MOIL datasets (mockData.js)
+│   ├── layouts/                   # PublicLayout & AppLayout shells
+│   ├── pages/                     # Application pages & public marketing pages
+│   │   └── public/                # LandingPage, Methodology, Tech, About, Contact
+│   ├── services/                  # API client & Supabase connector
+│   ├── App.jsx                    # React Router configuration with ScrollToTop
+│   ├── index.css                  # Tailwind styles & 10px high-precision scrollbar
+│   └── main.jsx                   # Vite root entrypoint
+├── public/                        # Static web assets & icons
+├── ARCHITECTURE_BLUEPRINT.md      # Detailed system architecture document
+├── CONTRIBUTORS.md                # Maintainer profiles
+├── package.json                   # Node.js dependencies & scripts
+├── tailwind.config.js             # Theme tokens & typography
+├── vercel.json                    # Single Page App rewrite configuration
+└── vite.config.js                 # Vite bundler configuration
+```
+
+---
+
+## 9. Self-Driving Demo Tour
 
 MANGENESIS includes a built-in **SIH Simulation HUD** that auto-pilots the jury through the complete closed-loop workflow:
 
@@ -273,11 +288,11 @@ Click **"Start SIH Simulation"** in the top bar to launch the autonomous tour.
 
 ---
 
-## 8. Tech Stack & Justifications
+## 10. Tech Stack & Justifications
 
 | Layer | Technology | Role | Why Chosen |
 | :--- | :--- | :--- | :--- |
-| **Frontend Framework** | React 18 + Vite 8 | SPA Core | Sub-second HMR, reactive state, fastest production bundler |
+| **Frontend Framework** | React 19 + Vite 8 | SPA Core | Sub-second HMR, reactive state, fastest production bundler |
 | **UI Design** | Tailwind CSS 3.4 | Styling & Theme | Mineral Beige / Industrial Slate palette; zero CSS bloat |
 | **GIS Mapping** | Leaflet + React-Leaflet | Interactive Mine Map | High-precision satellite overlays; lightweight vs. MapBox |
 | **3D Rendering** | Three.js | Digital Twin & Strata | WebGL hardware-accelerated mine terrain modeling |
@@ -285,14 +300,14 @@ Click **"Start SIH Simulation"** in the top bar to launch the autonomous tour.
 | **PDF Export** | jsPDF | Executive Reports | Zero-latency client-side; no server round-trip |
 | **Backend API** | FastAPI (Python 3.11) | REST Endpoints | Async ASGI, auto Swagger UI, Pydantic v2 validation |
 | **Reserve ML** | XGBoost Classifier | Mineral Prospecting | 0.8825 ROC-AUC on Sausar lithology multi-spectral data |
-| **Forecast ML** | LightGBM Regressor | 7-Day Prediction | Fastest tabular regressor; RMSE 142.4 TPD |
+| **Forecast ML** | LightGBM Regressor | 7-Day Prediction | Tabular time-series regressor; RMSE 142.4 TPD |
 | **Explainability** | TreeSHAP | Root Cause AI | Exact Shapley values in <10ms; DGMS audit compliant |
 | **Optimization** | PuLP + CBC Solver | MILP Dispatch | Open-source branch-and-cut; <120ms global optimum |
 | **Cloud Database** | Supabase (PostgreSQL) | Persistent Storage | PostGIS spatial queries, realtime WebSockets, RLS |
 
 ---
 
-## 9. API Reference
+## 11. API Reference
 
 The FastAPI backend auto-generates Swagger UI at `http://localhost:8000/docs`.
 
@@ -314,7 +329,7 @@ The FastAPI backend auto-generates Swagger UI at `http://localhost:8000/docs`.
 
 ---
 
-## 10. Quickstart & Installation
+## 12. Quickstart & Installation
 
 ### Prerequisites
 
@@ -325,8 +340,8 @@ The FastAPI backend auto-generates Swagger UI at `http://localhost:8000/docs`.
 ### Step 1 — Clone the Repository
 
 ```bash
-git clone https://github.com/YAALA-RUKNUDDIN/mangenesis.git
-cd mangenesis
+git clone https://github.com/YAALA-RUKNUDDIN/Mangenesis.git
+cd Mangenesis
 ```
 
 ### Step 2 — Frontend Setup
@@ -360,49 +375,30 @@ python -m uvicorn backend.main:app --reload --port 8000
 # Swagger UI: http://localhost:8000/docs
 ```
 
-### Step 4 — Environment Variables (Optional)
-
-Copy `.env.example` to `.env` and configure Supabase credentials:
-
-```bash
-cp .env.example .env
-```
-
-```env
-SUPABASE_URL=https://your-project-ref.supabase.co
-SUPABASE_KEY=your-supabase-service-role-key
-VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-```
-
-> The application runs fully in **offline demo mode** without Supabase credentials.
-
 ---
 
-## 11. Enterprise Deployment
+## 13. Enterprise Deployment
 
 | Target | Platform | Method |
 | :--- | :--- | :--- |
-| **Frontend** | Vercel / Netlify / AWS S3+CloudFront | Static SPA — `npm run build` → `dist/` |
-| **Backend** | Render / Railway / AWS ECS / On-Premise Linux | Docker container or `uvicorn` daemon |
-| **Database** | Supabase Cloud / Self-hosted PostgreSQL + PostGIS | Managed with RLS and realtime WebSockets |
-
-A `render.yaml` and `Procfile` are included for one-click Render.com deployment.
+| **Frontend** | Vercel | Static SPA — `npm run build` → `dist/` |
+| **Backend** | Render / Railway / AWS ECS | Docker container or `uvicorn` daemon |
+| **Database** | Supabase Cloud / PostgreSQL | Managed with RLS and realtime WebSockets |
 
 ---
 
-## 12. Commercialization Roadmap
+## 14. Commercialization Roadmap
 
 ```
 Phase 1  [COMPLETE]    Gumgaon Pilot — calibrated & validated against DP-G01 core assays
-Phase 2  [65% DONE]    FMS/SAP ERP integration & DGMS Safety Governance compliance
+Phase 2  [COMPLETE]    MANGENESIS 2.0 Next-Gen Architecture & Public Methodology Portal
 Phase 3  [PLANNED]     3D Voxel Digital Twin & edge server deployment at Balaghat, Dongri, Chikla
 Phase 4  [PLANNED]     Enterprise MOIL Command Center + NMDC (Iron Ore) & Coal India expansion
 ```
 
 ---
 
-## 13. Contributors & Core Team
+## 15. Contributors & Core Team
 
 <table>
   <tr>
@@ -418,7 +414,7 @@ Phase 4  [PLANNED]     Enterprise MOIL Command Center + NMDC (Iron Ore) & Coal I
 - System architecture & end-to-end AI/ML pipeline design
 - Production Continuity Forecasting (LightGBM + TreeSHAP XAI)
 - Prescriptive Dispatch Engine (PuLP MILP / CBC Solver)
-- Full-Stack Dashboard (React 18 + Vite + Tailwind CSS + Three.js)
+- Full-Stack Dashboard (React 19 + Vite + Tailwind CSS + Three.js)
 - Multi-Channel Emergency Alert Dispatcher
 - Geotechnical Risk Matrix & DGMS-compliant Audit Trail
 
