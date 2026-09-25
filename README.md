@@ -1,4 +1,4 @@
-﻿# MANGENESIS (SIH26009)
+# MANGENESIS (SIH26009)
 
 <div align="center">
 
@@ -15,7 +15,9 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E.svg?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
 
-**[Live Demo](https://mangenesis.vercel.app/) • [API Docs](http://localhost:8000/docs) • [Report Bug](https://github.com/YAALA-RUKNUDDIN/mangenesis/issues)**
+**🌐 [Live Demo (v1.0)](https://mangenesis.vercel.app/) • 🚀 [Live Demo (v2.0 Next-Gen)](https://mangenesis-v2.vercel.app/) • [API Docs](http://localhost:8000/docs) • [Report Bug](https://github.com/YAALA-RUKNUDDIN/Mangenesis/issues)**
+
+> 🚀 **MANGENESIS 2.0 Live**: Experience the next-generation enterprise mining intelligence redesign with 3D geological exploration, full public portal, and UNFC reserve analytics at **[https://mangenesis-v2.vercel.app/](https://mangenesis-v2.vercel.app/)**
 
 </div>
 
