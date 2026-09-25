@@ -19,6 +19,17 @@
     text-rendering: optimizeLegibility;
     letter-spacing: -0.012em;
     cursor: default;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-color: #2E3A4E #0A0D14;
+    scrollbar-width: thin;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
@@ -29,7 +40,8 @@
     background-attachment: fixed;
     color: #F8FAFC;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: visible;
+    overflow-y: visible;
     cursor: default;
   }
 
@@ -54,23 +66,29 @@
   }
 }
 
-/* Minimalist Modern Scrollbar */
+/* High-Precision Modern Engineering Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #0A0D14;
+  border-left: 1px solid #1C2536;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #262F3D;
-  border-radius: 9999px;
+  background: #2E3A4E;
+  border: 2px solid #0A0D14;
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #425167;
+  background: #F59E0B;
+}
+
+::-webkit-scrollbar-corner {
+  background: #0A0D14;
 }
 
 /* Leaflet Clean Minimalist Dark Overrides */
@@ -153,125 +171,54 @@
   font-weight: 500;
 }
 
-/* Glassmorphism & UI Utility Classes */
 @layer utilities {
-  .glass-card {
-    @apply bg-[#131720]/85 border border-slate-800/90 text-slate-100 rounded-2xl shadow-card backdrop-blur-xl transition-all duration-200;
+  /* Enterprise Mining Surface Hierarchy */
+  .surface-canvas {
+    @apply bg-transparent;
   }
 
-  .glass-card:hover {
-    @apply border-slate-750 shadow-card-hover;
+  .surface-panel {
+    @apply bg-[#0D111A] border border-[#1C2536] rounded-[10px];
   }
 
-  .glass-panel {
-    @apply bg-[#131720]/90 border border-slate-800/90 rounded-2xl backdrop-blur-2xl shadow-popover;
+  .surface-elevated {
+    @apply bg-[#121824] border border-[#243046] rounded-[10px] shadow-sm;
   }
 
-  .glow-button-primary {
-    @apply bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold px-4 py-2 rounded-xl text-xs transition-all shadow-glow-blue cursor-pointer;
+  /* Physical Button Micro-Interactions */
+  .btn-mineral-primary {
+    @apply bg-[#141923] text-slate-100 font-semibold border border-amber-500/40 rounded-[8px] 
+           hover:bg-[#1C2332] hover:border-amber-400/70 hover:text-white
+           active:scale-[0.985] active:translate-y-[1px]
+           transition-all duration-150 ease-out select-none shadow-sm;
   }
 
-  .glow-button-sand {
-    @apply bg-[#C7B59F] hover:bg-[#D9CBBA] text-[#1E1813] font-semibold px-4 py-2 rounded-xl text-xs transition-all shadow-glow-sand cursor-pointer;
+  .btn-mineral-secondary {
+    @apply bg-[#0F141E] text-slate-300 font-medium border border-[#243046] rounded-[8px]
+           hover:bg-[#161D2B] hover:border-[#334462] hover:text-slate-100
+           active:scale-[0.985] active:translate-y-[1px]
+           transition-all duration-150 ease-out select-none;
   }
 
-  .glow-button-secondary {
-    @apply bg-slate-900/90 hover:bg-slate-850 text-slate-200 border border-slate-800 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer;
+  .btn-minimal-text {
+    @apply text-slate-400 font-medium hover:text-amber-400 hover:underline underline-offset-4
+           active:opacity-80 transition-colors duration-150 select-none;
   }
 
-  .shadcn-card {
-    @apply bg-[#131720]/85 border border-slate-800 text-slate-100 rounded-2xl shadow-card backdrop-blur-xl transition-all duration-200;
+  /* Domain Engineering Grid lines */
+  .strata-grid {
+    background-size: 24px 24px;
+    background-image: 
+      linear-gradient(to right, rgba(36, 48, 70, 0.25) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(36, 48, 70, 0.25) 1px, transparent 1px);
   }
 
-  .shadcn-card:hover {
-    @apply border-slate-750;
-  }
-
-  .shadcn-button-primary {
-    @apply bg-[#E8DFD1] hover:bg-[#F4EFE6] text-slate-950 font-semibold px-4 py-2 rounded-xl text-xs transition-all shadow-sm cursor-pointer;
-  }
-
-  .shadcn-button-secondary {
-    @apply bg-slate-900 hover:bg-slate-850 text-slate-200 border border-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer;
-  }
-
-  .shadcn-button-outline {
-    @apply border border-slate-800 bg-slate-900/40 hover:bg-slate-850 hover:text-white text-slate-300 px-3 py-1.5 rounded-xl text-xs transition-all cursor-pointer;
-  }
-
-  .shadcn-badge {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border border-slate-800 bg-slate-850/80 text-slate-300;
-  }
-
-  .shadcn-badge-sand {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border border-sand-500/30 bg-sand-500/10 text-sand-300;
-  }
-
-  .shadcn-badge-success {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border border-emerald-500/30 bg-emerald-500/10 text-emerald-400;
-  }
-
-  .shadcn-badge-warning {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border border-amber-500/30 bg-amber-500/10 text-amber-400;
-  }
-
-  .shadcn-badge-danger {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border border-rose-500/30 bg-rose-500/10 text-rose-400;
-  }
-
-  /* 3D Sci-Fi Digital Twin & Aerospace HUD Utilities */
-  .cyber-card {
-    @apply relative bg-[#0C101A]/85 border border-slate-750/70 rounded-2xl backdrop-blur-xl shadow-2xl transition-all duration-300;
-  }
-
-  .cyber-card:hover {
-    @apply border-purple-500/40 shadow-purple-950/20;
-  }
-
-  .cyber-corner {
-    position: relative;
-  }
-  .cyber-corner::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    width: 8px;
-    height: 8px;
-    border-top: 2px solid #A855F7;
-    border-left: 2px solid #A855F7;
-    pointer-events: none;
-  }
-  .cyber-corner::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    right: -1px;
-    width: 8px;
-    height: 8px;
-    border-bottom: 2px solid #06B6D4;
-    border-right: 2px solid #06B6D4;
-    pointer-events: none;
-  }
-
-  .text-glow-purple {
-    text-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
-  }
-
-  .text-glow-cyan {
-    text-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
-  }
-
-  .text-glow-amber {
-    text-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
-  }
-
-  .badge-neon-purple {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold border border-purple-500/40 bg-purple-500/15 text-purple-300 shadow-sm shadow-purple-500/20;
-  }
-
-  .badge-neon-cyan {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold border border-cyan-500/40 bg-cyan-500/15 text-cyan-300 shadow-sm shadow-cyan-500/20;
+  /* Tabular Numerals for Precise Dashboard Reading */
+  .num-tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+    letter-spacing: -0.02em;
   }
 }
+
 

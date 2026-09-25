@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, ArrowRight, ShieldCheck, MapPin, Check, Sparkles } from 'lucide-react';
+import { X, CheckCircle2, ArrowRight, ShieldCheck, MapPin, Check, Satellite } from 'lucide-react';
 import StatusBadge from '../shared/StatusBadge';
 
 export default function ZoneInfoPanel({ zone, onClose }) {
@@ -78,8 +78,8 @@ export default function ZoneInfoPanel({ zone, onClose }) {
         {/* Space & Exploration Indicators */}
         <div className="py-2.5 border-b border-[#262F3D] text-xs">
           <div className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1.5 flex items-center gap-1">
-            <Sparkles size={11} className="text-blue-400" />
-            <span>AI Space & Assay Evidence</span>
+            <Satellite size={11} className="text-sky-400" />
+            <span>Space & Assay Evidence</span>
           </div>
           <ul className="space-y-1.5">
             {(zone.indicators || [

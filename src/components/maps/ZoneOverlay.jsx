@@ -47,17 +47,30 @@ export default function ZoneOverlay({ zone, isSelected, onSelect }) {
         }}
       >
         <Tooltip sticky className="dark-map-tooltip">
-          <div className="p-1">
-            <div className="font-bold text-xs" style={{ color: zone.color }}>
-              {zone.name}
+          <div className="font-mono text-[11px] p-0.5 space-y-1 min-w-[170px]">
+            <div className="flex items-center justify-between gap-3 border-b border-[#243046] pb-1">
+              <span className="font-bold text-white text-xs">{zone.name}</span>
+              <span
+                className="text-[10px] px-1.5 py-0.2 rounded font-semibold"
+                style={{ color: zone.color, backgroundColor: `${zone.color}20` }}
+              >
+                {zone.unfcCode || zone.status || 'UNFC 111'}
+              </span>
             </div>
-            <div className="text-[11px] text-slate-200 mt-0.5">
-              Manganese Ore Reserve Probability: <span className="font-mono font-bold" style={{ color: zone.color }}>{zone.probability}%</span>
+            <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[10px] text-slate-300">
+              <span className="text-slate-400">Reserve Prob:</span>
+              <span className="font-bold text-right" style={{ color: zone.color }}>
+                {zone.probability}%
+              </span>
+              <span className="text-slate-400">Mn Grade:</span>
+              <span className="font-bold text-white text-right">
+                {zone.grade || '41.8% Mn'}
+              </span>
+              <span className="text-slate-400">Confidence:</span>
+              <span className="font-bold text-emerald-400 text-right">
+                {zone.confidence || 'High'}
+              </span>
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">
-              Formation: {zone.geological_formation || 'Sausar Group'}
-            </div>
-            <div className="text-[9px] text-blue-400 mt-1">Click to view geological features & schedule drilling</div>
           </div>
         </Tooltip>
       </Polygon>

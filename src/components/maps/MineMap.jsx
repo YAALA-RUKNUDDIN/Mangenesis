@@ -16,6 +16,7 @@ import ZoneOverlay from './ZoneOverlay';
 import MapControls from './MapControls';
 import MapLegend from './MapLegend';
 import ZoneInfoPanel from './ZoneInfoPanel';
+import { MAP_PROVIDERS } from '../../constants/mapConfig';
 
 // Programmatic zoom control & re-centering helper
 function ZoomAndCenterControls({ targetCenter, targetZoom = 14 }) {
@@ -258,13 +259,7 @@ export default function MineMap({
   const isLayerActive = (id) => layers.find((l) => l.id === id)?.active;
 
   const showSatellite = isLayerActive('satellite');
-  const tileUrl = showSatellite
-    ? 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-    : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-
-  const attribution = showSatellite
-    ? '&copy; Esri &mdash; High-Resolution Earth Imagery'
-    : '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+  const activeBasemap = showSatellite ? MAP_PROVIDERS.satellite : MAP_PROVIDERS.dark;
 
   const drillPoints = activeMineData.drill_points || [];
   const mineRoads = activeMineData.roads || [];
@@ -287,11 +282,22 @@ export default function MineMap({
         zoomControl={false}
       >
         <TileLayer
-          url={tileUrl}
-          attribution={attribution}
-          maxZoom={18}
+          url={activeBasemap.url}
+          attribution={activeBasemap.attribution}
+          maxZoom={activeBasemap.maxZoom}
+          maxNativeZoom={activeBasemap.maxNativeZoom}
+          subdomains={activeBasemap.subdomains || 'abc'}
           opacity={showSatellite ? 0.9 : 1}
         />
+        {!showSatellite && activeBasemap.referenceUrl && (
+          <TileLayer
+            url={activeBasemap.referenceUrl}
+            attribution=""
+            maxZoom={activeBasemap.maxZoom}
+            maxNativeZoom={activeBasemap.maxNativeZoom}
+            opacity={0.85}
+          />
+        )}
 
         <ZoomAndCenterControls targetCenter={mapCenter} targetZoom={activeMineData.zoom || 14} />
 
