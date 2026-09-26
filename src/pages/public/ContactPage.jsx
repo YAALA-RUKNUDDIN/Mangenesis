@@ -94,11 +94,11 @@ export default function ContactPage() {
               <div>
                 <label className="block text-xs font-mono text-slate-400 mb-1">Target Mine or Focus Area</label>
                 <select className="w-full px-3 py-2 text-xs bg-[#121824] border border-[#243046] rounded-[8px] text-white focus:outline-none focus:border-amber-500 font-mono">
-                  <option>Gumgaon Underground & Opencast Mine</option>
-                  <option>Balaghat Deep Underground Mine</option>
-                  <option>Chikla Manganese Mine</option>
-                  <option>Dongri Buzurg Mine</option>
-                  <option>Multi-Mine Strategic Deployment</option>
+                  <option className="bg-[#0D111A] text-slate-100 py-1.5">Gumgaon Underground & Opencast Mine</option>
+                  <option className="bg-[#0D111A] text-slate-100 py-1.5">Balaghat Deep Underground Mine</option>
+                  <option className="bg-[#0D111A] text-slate-100 py-1.5">Chikla Manganese Mine</option>
+                  <option className="bg-[#0D111A] text-slate-100 py-1.5">Dongri Buzurg Mine</option>
+                  <option className="bg-[#0D111A] text-slate-100 py-1.5">Multi-Mine Strategic Deployment</option>
                 </select>
               </div>
 

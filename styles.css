@@ -5,6 +5,7 @@
 
 /* --- Exact CSS Variables --- */
 :root {
+  color-scheme: dark;
   --bg: #000000;
   --text: #ffffff;
   --muted: #8e8e8e;

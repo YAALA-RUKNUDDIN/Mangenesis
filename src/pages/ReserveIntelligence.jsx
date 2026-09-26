@@ -85,11 +85,11 @@ export default function ReserveIntelligence() {
             <select
               value={activeModel}
               onChange={(e) => setActiveModel(e.target.value)}
-              className="bg-transparent text-slate-200 focus:outline-none cursor-pointer"
+              className="bg-[#121824] text-slate-100 focus:outline-none cursor-pointer text-xs font-mono"
             >
-              <option value="kriging_xgb">3D Kriging + XGBoost (Ensemble)</option>
-              <option value="random_forest">Random Forest Classifier</option>
-              <option value="bayesian">Bayesian LST Inversion</option>
+              <option value="kriging_xgb" className="bg-[#0D111A] text-slate-100 py-1.5">3D Kriging + XGBoost (Ensemble)</option>
+              <option value="random_forest" className="bg-[#0D111A] text-slate-100 py-1.5">Random Forest Classifier</option>
+              <option value="bayesian" className="bg-[#0D111A] text-slate-100 py-1.5">Bayesian LST Inversion</option>
             </select>
           </div>
 

@@ -10,7 +10,8 @@
     border-color: #262F3D;
   }
 
-  html {
+  html, :root {
+    color-scheme: dark;
     background-color: #0B0D12;
     color: #F8FAFC;
     font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -33,6 +34,7 @@
   }
 
   body {
+    color-scheme: dark;
     background-color: #0B0D12;
     background-image: 
       radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 197, 176, 0.07), transparent 70%),
@@ -58,6 +60,18 @@
   select,
   .cursor-pointer {
     cursor: pointer;
+  }
+
+  select {
+    color-scheme: dark;
+    background-color: #121824;
+    color: #F1F5F9;
+  }
+
+  select option {
+    background-color: #0D111A !important;
+    color: #F1F5F9 !important;
+    padding: 6px 10px;
   }
 
   ::selection {

@@ -282,10 +282,10 @@ export default function AppLayout({ children }) {
                 className="text-[10px] bg-[#121824] border border-[#243046] text-slate-300 rounded px-1.5 py-1 cursor-pointer font-mono"
                 title="Switch user perspective"
               >
-                <option value="manager">Manager</option>
-                <option value="operations">Operations</option>
-                <option value="safety">Safety</option>
-                <option value="maintenance">Maintenance</option>
+                <option value="manager" className="bg-[#0D111A] text-slate-100 py-1">Manager</option>
+                <option value="operations" className="bg-[#0D111A] text-slate-100 py-1">Operations</option>
+                <option value="safety" className="bg-[#0D111A] text-slate-100 py-1">Safety</option>
+                <option value="maintenance" className="bg-[#0D111A] text-slate-100 py-1">Maintenance</option>
               </select>
             )}
           </div>
@@ -449,7 +449,7 @@ export default function AppLayout({ children }) {
                 className="w-full bg-[#121824] border border-[#243046] text-white text-xs font-mono rounded-[6px] px-2.5 py-1.5 focus:outline-none focus:border-amber-500"
               >
                 {minesList.map((m) => (
-                  <option key={m.id} value={m.id}>
+                  <option key={m.id} value={m.id} className="bg-[#0D111A] text-slate-100 py-1.5">
                     {m.name} ({m.state})
                   </option>
                 ))}

@@ -148,11 +148,11 @@ export default function ProductionForecast() {
             <select
               value={selectedPeriod}
               onChange={(e) => setSelectedPeriod(e.target.value)}
-              className="bg-transparent text-slate-200 focus:outline-none cursor-pointer"
+              className="bg-[#121824] text-slate-100 focus:outline-none cursor-pointer text-xs font-mono"
             >
-              <option value="14d">14 Days Forward</option>
-              <option value="30d">30 Days (Monthly Quota)</option>
-              <option value="90d">Quarterly Horizon</option>
+              <option value="14d" className="bg-[#0D111A] text-slate-100 py-1.5">14 Days Forward</option>
+              <option value="30d" className="bg-[#0D111A] text-slate-100 py-1.5">30 Days (Monthly Quota)</option>
+              <option value="90d" className="bg-[#0D111A] text-slate-100 py-1.5">Quarterly Horizon</option>
             </select>
           </div>
 
@@ -161,11 +161,11 @@ export default function ProductionForecast() {
             <select
               value={selectedModel}
               onChange={(e) => setSelectedModel(e.target.value)}
-              className="bg-transparent text-slate-200 focus:outline-none cursor-pointer"
+              className="bg-[#121824] text-slate-100 focus:outline-none cursor-pointer text-xs font-mono"
             >
-              <option value="prophet_lstm">Prophet + LightGBM Ensemble</option>
-              <option value="sarimax">SARIMAX with Weather Covariates</option>
-              <option value="lstm">Deep LSTM Sequence Model</option>
+              <option value="prophet_lstm" className="bg-[#0D111A] text-slate-100 py-1.5">Prophet + LightGBM Ensemble</option>
+              <option value="sarimax" className="bg-[#0D111A] text-slate-100 py-1.5">SARIMAX with Weather Covariates</option>
+              <option value="lstm" className="bg-[#0D111A] text-slate-100 py-1.5">Deep LSTM Sequence Model</option>
             </select>
           </div>
         </div>
@@ -347,9 +347,9 @@ export default function ProductionForecast() {
               onChange={(e) => setWeatherSeverity(e.target.value)}
               className="w-full bg-[#0D111A] border border-[#243046] text-white rounded p-1.5 text-xs font-mono cursor-pointer"
             >
-              <option value="dry">Dry / Fair Weather (0 mm)</option>
-              <option value="moderate">Moderate Rain (15-35 mm)</option>
-              <option value="heavy">Monsoon Downpour (&gt; 50 mm)</option>
+              <option value="dry" className="bg-[#0D111A] text-slate-100 py-1.5">Dry / Fair Weather (0 mm)</option>
+              <option value="moderate" className="bg-[#0D111A] text-slate-100 py-1.5">Moderate Rain (15-35 mm)</option>
+              <option value="heavy" className="bg-[#0D111A] text-slate-100 py-1.5">Monsoon Downpour (&gt; 50 mm)</option>
             </select>
             <span className="text-[10px] text-slate-500 block">Haul road friction penalty</span>
           </div>
