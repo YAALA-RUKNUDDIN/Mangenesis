@@ -52,9 +52,17 @@ export function ScenarioProvider({ children }) {
   const [isLiveConnected, setIsLiveConnected] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Helper to normalize mine IDs (e.g. 'dongri' -> 'dongri_buzurg')
+  const normalizeMineId = (id) => {
+    if (!id) return 'gumgaon';
+    if (id === 'dongri') return 'dongri_buzurg';
+    return id;
+  };
+
   // Active Mine Metadata with fallback guarantees
-  const fallbackMine = localMines.find((m) => m.id === activeMine) || localMines[0];
-  const remoteMine = minesList.find((m) => m.id === activeMine) || {};
+  const normActiveMine = normalizeMineId(activeMine);
+  const fallbackMine = localMines.find((m) => m.id === normActiveMine) || localMines[0];
+  const remoteMine = minesList.find((m) => m.id === normActiveMine) || {};
 
   const activeMineData = {
     ...fallbackMine,
@@ -135,14 +143,22 @@ export function ScenarioProvider({ children }) {
   };
 
   const switchMine = (mineId) => {
-    setActiveMine(mineId);
+    const normalizedId = normalizeMineId(mineId);
+    setActiveMine(normalizedId);
+    setLiveZones(null);
+    setLiveSatellite(null);
+    setLiveProduction(null);
+    setLiveRisk(null);
+    setLiveActions(null);
+
+    const targetMine = localMines.find((m) => m.id === normalizedId) || localMines[0];
     addAuditEntry({
       eventType: 'MINE_SWITCHED',
       severity: 'INFO',
       actor: 'Enterprise Executive',
       entity: 'Mine Geofence',
-      description: `Active mine viewport switched to ${localMines.find((m) => m.id === mineId)?.name || mineId}.`,
-      evidence: 'Geospatial coordinates and remote sensing indices re-centered.',
+      description: `Active mine viewport switched to ${targetMine?.name || normalizedId}.`,
+      evidence: `Geospatial coordinates [${(targetMine?.center || [21.155, 79.090]).join(', ')}] re-centered.`,
       sourceSystem: 'Enterprise Multi-Mine Network',
     });
   };
@@ -606,8 +622,10 @@ export function ScenarioProvider({ children }) {
     activeMine,
     activeMineData,
     switchMine,
+    setActiveMine: switchMine,
     activeScenario,
     switchScenario,
+    setActiveScenario: switchScenario,
     availableScenarios,
     scenarioData,
     forecastData,
@@ -622,6 +640,7 @@ export function ScenarioProvider({ children }) {
     // Role-Based Experience
     activeRole,
     switchRole,
+    setActiveRole: switchRole,
     roleProfile: roleProfiles[activeRole] || roleProfiles.manager,
     allRoleProfiles: roleProfiles,
 

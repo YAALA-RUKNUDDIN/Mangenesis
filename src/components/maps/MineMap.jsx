@@ -23,10 +23,10 @@ function ZoomAndCenterControls({ targetCenter, targetZoom = 14 }) {
   const map = useMap();
 
   useEffect(() => {
-    if (targetCenter) {
-      map.flyTo(targetCenter, targetZoom, { duration: 1.2 });
+    if (targetCenter && targetCenter[0] && targetCenter[1]) {
+      map.flyTo([targetCenter[0], targetCenter[1]], targetZoom, { duration: 1.2 });
     }
-  }, [targetCenter, targetZoom, map]);
+  }, [targetCenter?.[0], targetCenter?.[1], targetZoom, map]);
 
   return (
     <div className="absolute bottom-4 right-4 z-[1000] flex flex-col gap-1 pointer-events-auto">
@@ -45,7 +45,7 @@ function ZoomAndCenterControls({ targetCenter, targetZoom = 14 }) {
         <Minus size={14} />
       </button>
       <button
-        onClick={() => map.flyTo(targetCenter || [21.155, 79.090], targetZoom, { duration: 1.0 })}
+        onClick={() => map.flyTo([targetCenter[0], targetCenter[1]] || [21.155, 79.090], targetZoom, { duration: 1.0 })}
         className="w-7 h-7 rounded-md bg-[#0F121A] border border-[#303A50] hover:border-slate-500 text-slate-400 hover:text-slate-200 flex items-center justify-center hover:bg-[#151923] transition-colors shadow-2xl cursor-pointer mt-0.5"
         title="Reset Mine View"
       >
@@ -270,6 +270,7 @@ export default function MineMap({
       style={{ height }}
     >
       <MapContainer
+        key={`${activeMineData.id || 'gumgaon'}-${mapCenter[0]}-${mapCenter[1]}`}
         center={mapCenter}
         zoom={activeMineData.zoom || 14}
         minZoom={11}

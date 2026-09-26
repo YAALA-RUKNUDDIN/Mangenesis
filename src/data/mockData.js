@@ -372,6 +372,49 @@ export const mines = [
     roads: [
       [[21.680, 79.715], [21.688, 79.728]]
     ]
+  },
+
+  {
+    id: 'mansar',
+    name: 'Mansar Manganese Mine',
+    pilot: false,
+    district: 'Nagpur',
+    state: 'Maharashtra',
+    center: [21.402, 79.282],
+    zoom: 14,
+    type: 'Opencast & Underground',
+    capacity_tpd: 9000,
+    elevation_m: 308,
+    geological_formation: 'Mansar Schist & Gondite Horizon',
+    mineralization_trend: 'ENE-WSW Strike, Dip 60° S',
+    description: 'High-grade braunite ore deposit with active open pit benches and underground decline development.',
+    zones: [
+      {
+        id: 'man-East-01',
+        name: 'Mansar Main Quarry Bench',
+        color: '#10B981',
+        priority: 'HIGH',
+        probability: 92,
+        center: [21.405, 79.285],
+        coordinates: [
+          [21.408, 79.280], [21.412, 79.288], [21.404, 79.294], [21.399, 79.284]
+        ],
+        geological_formation: 'Braunite-Quartzite Lode',
+        indicators: [
+          'High SWIR spectral absorption band',
+          'Confirmed ore thickness 45m along strike'
+        ],
+        recommendation: 'Advance eastern pit wall cutback and initiate bench dewatering.'
+      }
+    ],
+    drill_points: [
+      { id: 'DP-M01', lat: 21.406, lng: 79.286, status: 'completed', depth: 130, grade: '45.8% Mn' },
+      { id: 'DP-M02', lat: 21.401, lng: 79.281, status: 'completed', depth: 95, grade: '42.0% Mn' },
+      { id: 'DP-M03', lat: 21.409, lng: 79.290, status: 'active', depth: 55, grade: '39.5% Mn' }
+    ],
+    roads: [
+      [[21.395, 79.275], [21.405, 79.285]]
+    ]
   }
 ];
 

@@ -33,13 +33,24 @@ export default function AppLayout({ children }) {
   const {
     activeMine,
     setActiveMine,
+    switchMine,
     activeMineData,
     minesList,
     activeRole,
     setActiveRole,
+    switchRole,
     startSimulation,
     simulationActive,
   } = useScenario();
+
+  const handleMineSelect = (mineId) => {
+    if (typeof switchMine === 'function') {
+      switchMine(mineId);
+    } else if (typeof setActiveMine === 'function') {
+      setActiveMine(mineId);
+    }
+    setMineDropdownOpen(false);
+  };
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -343,38 +354,47 @@ export default function AppLayout({ children }) {
             <div className="relative">
               <button
                 onClick={() => setMineDropdownOpen(!mineDropdownOpen)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#121824] border border-[#243046] hover:border-[#334462] rounded-[8px] text-xs font-mono text-slate-200 transition-colors"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#121824] border border-[#243046] hover:border-[#334462] rounded-[8px] text-xs font-mono text-slate-200 transition-colors cursor-pointer"
               >
                 <span className="text-slate-400 text-[10px]">MINE:</span>
-                <span className="font-semibold text-white truncate max-w-[90px] sm:max-w-none">
+                <span className="font-semibold text-white truncate max-w-[120px] sm:max-w-none">
                   {activeMineData.name || 'Gumgaon'}
                 </span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
               </button>
 
               {mineDropdownOpen && (
-                <div className="absolute right-0 mt-1.5 w-52 bg-[#0D111A] border border-[#243046] rounded-[8px] shadow-2xl py-1 z-50">
-                  <div className="px-3 py-1 text-[10px] font-mono text-slate-500 uppercase border-b border-[#1C2536]">
-                    Select MOIL Mine
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setMineDropdownOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-1.5 w-64 bg-[#0D111A] border border-[#243046] rounded-[8px] shadow-2xl py-1 z-50">
+                    <div className="px-3 py-1.5 text-[10px] font-mono text-slate-400 uppercase tracking-wider border-b border-[#1C2536] flex items-center justify-between">
+                      <span>Select MOIL Mine</span>
+                      <span className="text-amber-400 text-[9px] font-bold">{minesList.length} MINES</span>
+                    </div>
+                    {minesList.map((m) => (
+                      <button
+                        key={m.id}
+                        onClick={() => handleMineSelect(m.id)}
+                        className={`w-full text-left px-3 py-2 text-xs font-mono flex items-center justify-between transition-colors cursor-pointer ${
+                          m.id === activeMine
+                            ? 'bg-[#172030] text-amber-400 font-semibold'
+                            : 'text-slate-300 hover:bg-[#121824] hover:text-white'
+                        }`}
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-medium">{m.name}</span>
+                          <span className="text-[10px] text-slate-500">{m.district ? `${m.district}, ` : ''}{m.state}</span>
+                        </div>
+                        {m.id === activeMine && (
+                          <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0 ml-2" />
+                        )}
+                      </button>
+                    ))}
                   </div>
-                  {minesList.map((m) => (
-                    <button
-                      key={m.id}
-                      onClick={() => {
-                        setActiveMine(m.id);
-                        setMineDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 text-xs font-mono flex items-center justify-between transition-colors ${
-                        m.id === activeMine
-                          ? 'bg-[#172030] text-amber-400 font-semibold'
-                          : 'text-slate-300 hover:bg-[#121824]'
-                      }`}
-                    >
-                      <span>{m.name}</span>
-                      <span className="text-[10px] text-slate-500">{m.state}</span>
-                    </button>
-                  ))}
-                </div>
+                </>
               )}
             </div>
 
@@ -413,6 +433,27 @@ export default function AppLayout({ children }) {
               >
                 <X className="w-5 h-5" />
               </button>
+            </div>
+
+            {/* Mobile Mine Selector */}
+            <div className="py-3 border-b border-[#1C2536]">
+              <label className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block mb-1.5">
+                Active MOIL Mine
+              </label>
+              <select
+                value={activeMine}
+                onChange={(e) => {
+                  handleMineSelect(e.target.value);
+                  setSidebarOpen(false);
+                }}
+                className="w-full bg-[#121824] border border-[#243046] text-white text-xs font-mono rounded-[6px] px-2.5 py-1.5 focus:outline-none focus:border-amber-500"
+              >
+                {minesList.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name} ({m.state})
+                  </option>
+                ))}
+              </select>
             </div>
 
             <nav className="flex-1 overflow-y-auto py-4 space-y-4">

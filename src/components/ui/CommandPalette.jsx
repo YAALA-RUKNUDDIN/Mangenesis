@@ -24,7 +24,11 @@ export default function CommandPalette({ isOpen, onClose }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef(null);
   const navigate = useNavigate();
-  const { setActiveMine, startSimulation } = useScenario();
+  const { setActiveMine, switchMine, startSimulation } = useScenario();
+  const setMine = (id) => {
+    if (typeof switchMine === 'function') switchMine(id);
+    else if (typeof setActiveMine === 'function') setActiveMine(id);
+  };
 
   // Command items
   const items = [
@@ -118,7 +122,7 @@ export default function CommandPalette({ isOpen, onClose }) {
       description: 'Underground + open pit operation, Mansar Formation Braunite ore',
       icon: Building2,
       action: () => {
-        setActiveMine('gumgaon');
+        setMine('gumgaon');
         navigate('/app');
       },
     },
@@ -129,7 +133,29 @@ export default function CommandPalette({ isOpen, onClose }) {
       description: 'Deepest underground manganese mine in Asia, high-grade ore reef',
       icon: Building2,
       action: () => {
-        setActiveMine('balaghat');
+        setMine('balaghat');
+        navigate('/app');
+      },
+    },
+    {
+      category: 'SELECT MINE',
+      id: 'mine-dongri',
+      title: 'Dongri Buzurg Mine & EMD Plant (Bhandara, MH)',
+      description: 'Large opencast pit, peroxide and battery-grade electrolytic manganese ore',
+      icon: Building2,
+      action: () => {
+        setMine('dongri_buzurg');
+        navigate('/app');
+      },
+    },
+    {
+      category: 'SELECT MINE',
+      id: 'mine-kandri',
+      title: 'Kandri Manganese Mine (Nagpur, MH)',
+      description: 'High-grade braunitic gondite ore deposit transitioning to underground decline',
+      icon: Building2,
+      action: () => {
+        setMine('kandri');
         navigate('/app');
       },
     },
@@ -140,18 +166,7 @@ export default function CommandPalette({ isOpen, onClose }) {
       description: 'Sausar Group synclinal limb, high phosphorus low silica facies',
       icon: Building2,
       action: () => {
-        setActiveMine('chikla');
-        navigate('/app');
-      },
-    },
-    {
-      category: 'SELECT MINE',
-      id: 'mine-dongri',
-      title: 'Dongri Buzurg Mine (Bhandara, MH)',
-      description: 'Large opencast pit, peroxide and battery-grade manganese ore',
-      icon: Building2,
-      action: () => {
-        setActiveMine('dongri');
+        setMine('chikla');
         navigate('/app');
       },
     },
@@ -159,10 +174,10 @@ export default function CommandPalette({ isOpen, onClose }) {
       category: 'SELECT MINE',
       id: 'mine-mansar',
       title: 'Mansar Manganese Mine (Nagpur, MH)',
-      description: 'Stratiform deposit, critical reserve replacement zone',
+      description: 'Stratiform deposit, critical reserve replacement zone with open pit benches',
       icon: Building2,
       action: () => {
-        setActiveMine('mansar');
+        setMine('mansar');
         navigate('/app');
       },
     },
@@ -173,7 +188,7 @@ export default function CommandPalette({ isOpen, onClose }) {
       description: 'Historic open pit cluster, active satellite reconnaissance zone',
       icon: Building2,
       action: () => {
-        setActiveMine('tirodi');
+        setMine('tirodi');
         navigate('/app');
       },
     },

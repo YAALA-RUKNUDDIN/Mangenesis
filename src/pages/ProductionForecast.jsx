@@ -40,7 +40,8 @@ export default function ProductionForecast() {
 
   // Calculate dynamic outputs based on simulator inputs
   const simulationResults = useMemo(() => {
-    const baseTarget = 47.0; // kt monthly quota
+    // Dynamic monthly quota based on mine capacity (e.g. Gumgaon 47kt, Balaghat 65.8kt)
+    const baseTarget = parseFloat((((activeMineData.capacity_tpd || 10000) * 0.0047)).toFixed(1));
     // Weather impact penalty
     const weatherPenalty =
       weatherSeverity === 'heavy' ? 4.2 : weatherSeverity === 'moderate' ? 1.8 : 0.0;
