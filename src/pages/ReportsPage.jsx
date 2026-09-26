@@ -11,16 +11,37 @@ import {
   AlertTriangle,
   Cpu,
   Eye,
+  Loader2,
 } from 'lucide-react';
 import { useScenario } from '../context/ScenarioContext';
 import KPICard from '../components/ui/KPICard';
 import Button from '../components/ui/Button';
 import StatusBadge from '../components/ui/StatusBadge';
 import Modal from '../components/ui/Modal';
+import { generateReportPDF } from '../utils/reportPdfGenerator';
 
 export default function ReportsPage() {
   const { activeMineData } = useScenario();
   const [activePreviewReport, setActivePreviewReport] = useState(null);
+  const [downloadingId, setDownloadingId] = useState(null);
+  const [downloadSuccessId, setDownloadSuccessId] = useState(null);
+
+  const handleDownload = async (report) => {
+    if (!report || downloadingId) return;
+    try {
+      setDownloadingId(report.id);
+      // Brief pause to allow UI spinner transition
+      await new Promise((resolve) => setTimeout(resolve, 350));
+      generateReportPDF(report, activeMineData);
+      setDownloadSuccessId(report.id);
+      setTimeout(() => setDownloadSuccessId(null), 3500);
+    } catch (err) {
+      console.error('PDF generation failed:', err);
+      alert('Failed to generate report PDF. Please check your browser permissions.');
+    } finally {
+      setDownloadingId(null);
+    }
+  };
 
   const reports = [
     {
@@ -107,10 +128,13 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      {/* Reports Grid (Section 38) */}
+      {/* Reports Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 font-mono">
         {reports.map((rep) => {
           const Icon = rep.icon;
+          const isDownloading = downloadingId === rep.id;
+          const isSuccess = downloadSuccessId === rep.id;
+
           return (
             <div
               key={rep.id}
@@ -160,7 +184,7 @@ export default function ReportsPage() {
                 </p>
               </div>
 
-              {/* Action Buttons: View, Download, Export PDF, Share */}
+              {/* Action Buttons: View, Download, Export PDF */}
               <div className="pt-3 border-t border-[#1C2536] flex items-center justify-between gap-2">
                 <Button
                   size="sm"
@@ -175,16 +199,31 @@ export default function ReportsPage() {
                   <Button
                     size="sm"
                     variant="ghost"
-                    icon={Download}
-                    onClick={() => alert(`Downloading ${rep.title} (${rep.fileSize})`)}
-                    title="Download Report"
+                    icon={isDownloading ? Loader2 : isSuccess ? CheckCircle2 : Download}
+                    className={
+                      isDownloading
+                        ? 'animate-spin text-amber-400'
+                        : isSuccess
+                        ? 'text-emerald-400'
+                        : 'text-slate-400 hover:text-white'
+                    }
+                    disabled={isDownloading}
+                    onClick={() => handleDownload(rep)}
+                    title="Download Report PDF"
                   />
                   <Button
                     size="sm"
                     variant="primary"
-                    onClick={() => alert(`Generating official PDF export for ${rep.id}`)}
+                    disabled={isDownloading}
+                    icon={isDownloading ? Loader2 : isSuccess ? CheckCircle2 : undefined}
+                    className={isDownloading ? '[&_svg]:animate-spin' : ''}
+                    onClick={() => handleDownload(rep)}
                   >
-                    Export PDF
+                    {isDownloading
+                      ? 'Exporting...'
+                      : isSuccess
+                      ? 'Exported!'
+                      : 'Export PDF'}
                   </Button>
                 </div>
               </div>
@@ -235,13 +274,22 @@ export default function ReportsPage() {
               <Button
                 size="sm"
                 variant="primary"
-                icon={Download}
-                onClick={() => {
-                  alert(`Downloading ${activePreviewReport.id}`);
-                  setActivePreviewReport(null);
-                }}
+                disabled={downloadingId === activePreviewReport.id}
+                icon={
+                  downloadingId === activePreviewReport.id
+                    ? Loader2
+                    : downloadSuccessId === activePreviewReport.id
+                    ? CheckCircle2
+                    : Download
+                }
+                className={downloadingId === activePreviewReport.id ? '[&_svg]:animate-spin' : ''}
+                onClick={() => handleDownload(activePreviewReport)}
               >
-                Download Signed PDF
+                {downloadingId === activePreviewReport.id
+                  ? 'Generating PDF...'
+                  : downloadSuccessId === activePreviewReport.id
+                  ? 'PDF Downloaded!'
+                  : 'Download Signed PDF'}
               </Button>
             </div>
           </div>
@@ -250,3 +298,4 @@ export default function ReportsPage() {
     </div>
   );
 }
+
