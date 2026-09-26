@@ -53,7 +53,7 @@ export default function ReportsPage() {
       generatedDate: '24 Sep 2026, 18:30 IST',
       status: 'VERIFIED',
       confidence: 91.4,
-      summary: 'Ordinary Kriging spatial block estimation for Sausar Group beds. Categorizes 3.1 Mt as UNFC 111 (Measured) and 1.7 Mt as UNFC 122 (Indicated) with σ² ≤ 10 variance thresholds.',
+      summary: 'Ordinary Kriging spatial block estimation for Sausar Group beds. Categorizes 3.1 Mt as UNFC 111 (Measured) and 1.7 Mt as UNFC 122 (Indicated) with Var <= 10 variance thresholds.',
       icon: Layers,
       fileSize: '4.2 MB',
     },
