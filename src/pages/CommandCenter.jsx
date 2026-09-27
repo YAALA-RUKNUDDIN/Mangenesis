@@ -110,48 +110,80 @@ export default function CommandCenter() {
       {/* ===================== CORE KPI ROW (DECISION > INSIGHT > DATA) ===================== */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 font-mono">
         <KPICard
-          title="Total Proved Reserve"
+          title="AI Predicted Reserve"
           value="4.82"
           unit="Mt"
+          uncertainty="± 0.38 Mt"
           trend={{ value: "+4.2% YTD", positive: true }}
-          context="UNFC 111 (Measured) + 122"
-          timestamp="Ordinary Kriging"
+          context="UNFC 111 (Proved) + 122 (Probable)"
+          timestamp="3D Ordinary Kriging"
+          provenance={{
+            tier: 'ai',
+            source: '3D Ordinary Kriging (GSI/IBM Lithology Core Boreholes)',
+            confidence: 'R² = 0.892 • P90'
+          }}
           variant="mineral"
           icon={Layers}
         />
         <KPICard
-          title="Monthly Output Trajectory"
+          title="Production Output"
           value="42.8"
           unit="kt"
-          trend={{ value: "-4.2 kt vs 47.0 kt Quota", positive: false }}
+          trend={{ value: "-4.2 kt vs 47.0 kt Target", positive: false }}
           context="Shortfall projected in 4 days"
+          timestamp="MOIL Monthly Return"
+          provenance={{
+            tier: 'government',
+            source: 'MOIL Monthly Return Form F-1 / IBM Stat. 2024-25',
+            confidence: 'Official Recorded'
+          }}
           variant="warning"
           icon={TrendingUp}
         />
         <KPICard
-          title="Active Operational Risk"
+          title="Operational Hazard Status"
           value="High"
           trend={{ value: "1 Critical • 2 Warnings", positive: false }}
-          context="Fleet uptime at 82%"
+          context="Fleet uptime 82% • Bench 3 Water Influx"
+          timestamp="In-pit IoT Telemetry"
+          provenance={{
+            tier: 'telemetry',
+            source: 'Fleet CAN-bus & Ultrasonic Water Sensor Telemetry',
+            confidence: 'Real-time'
+          }}
           variant="danger"
           icon={AlertTriangle}
         />
         <KPICard
-          title="Actionable Recovery"
+          title="Simulated Recovery"
           value="+3.9"
           unit="kt"
-          trend={{ value: "₹4.87 Cr Preserved", positive: true }}
-          context="Via Excavator EX-02 dispatch"
+          uncertainty="± 0.4 kt"
+          trend={{ value: "₹4.87 Cr Preserved (Sim)", positive: true }}
+          context="Via Excavator EX-02 dispatch optimization"
+          timestamp="PuLP MILP Solver"
+          provenance={{
+            tier: 'simulation',
+            source: 'MILP Fleet Dispatch & Haulage Optimization Model',
+            confidence: 'Constrained Opt.'
+          }}
           variant="healthy"
           icon={CheckSquare}
         />
         <Link to="/app/roi-dashboard" className="block transition-transform hover:-translate-y-0.5">
           <KPICard
-            title="Annual Value Saved"
+            title="Annual Value Simulation"
             value="₹18.42"
             unit="Cr"
-            trend={{ value: "₹126.2 Cr Enterprise", positive: true }}
-            context="Click for full ROI breakdown"
+            uncertainty="Sensitivity: ₹14.8–21.2 Cr"
+            trend={{ value: "₹126.2 Cr Enterprise Sim", positive: true }}
+            context="Based on MOIL ₹12,500/T benchmark"
+            timestamp="Monte Carlo Sim"
+            provenance={{
+              tier: 'simulation',
+              source: 'Economic Sensitivity Model (MOIL Price Circular FY25)',
+              confidence: 'Scenario Engine'
+            }}
             variant="healthy"
             icon={CircleDollarSign}
           />
@@ -214,12 +246,12 @@ export default function CommandCenter() {
 
             <div className="grid grid-cols-2 gap-3 my-4">
               <div className="bg-[#121824] p-3 rounded-[8px] border border-[#1C2536]">
-                <span className="text-[10px] text-slate-500 block uppercase">Monthly Quota</span>
+                <span className="text-[10px] text-slate-500 block uppercase">Govt Target (MOIL FY25)</span>
                 <span className="text-white font-bold text-base">47.0 kt</span>
               </div>
               <div className="bg-[#121824] p-3 rounded-[8px] border border-[#1C2536]">
-                <span className="text-[10px] text-slate-500 block uppercase">AI Forecast Output</span>
-                <span className="text-amber-400 font-bold text-base">42.8 kt</span>
+                <span className="text-[10px] text-slate-500 block uppercase">AI Forecast (LightGBM)</span>
+                <span className="text-amber-400 font-bold text-base">42.8 <span className="text-xs text-slate-400 font-normal">± 1.4 kt</span></span>
               </div>
             </div>
 

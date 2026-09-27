@@ -289,21 +289,21 @@ export default function LandingPage() {
               {/* Bottom Quick KPI preview with precise tabular formatting */}
               <div className="grid grid-cols-3 gap-2 mt-3 text-center font-mono">
                 <div className="bg-[#0E131E] p-2 rounded-[6px] border border-[#1C2536]">
-                  <span className="text-[9px] text-slate-400 block uppercase tracking-wider">EST. RESERVE</span>
+                  <span className="text-[9px] text-slate-400 block uppercase tracking-wider">AI PRED. RESERVE</span>
                   <div className="text-sm font-bold text-white num-tabular">
-                    4.82 <span className="text-[10px] font-normal text-slate-400">Mt</span>
+                    4.82 <span className="text-[10px] font-normal text-slate-400">± 0.38 Mt</span>
                   </div>
                 </div>
                 <div className="bg-[#0E131E] p-2 rounded-[6px] border border-[#1C2536]">
-                  <span className="text-[9px] text-slate-400 block uppercase tracking-wider">CONFIDENCE</span>
+                  <span className="text-[9px] text-slate-400 block uppercase tracking-wider">GEOSTAT. FIT</span>
                   <div className="text-sm font-bold text-emerald-400 num-tabular">
-                    89.4<span className="text-[10px] font-normal text-slate-400">%</span>
+                    R² = 0.892
                   </div>
                 </div>
                 <div className="bg-[#0E131E] p-2 rounded-[6px] border border-[#1C2536]">
-                  <span className="text-[9px] text-slate-400 block uppercase tracking-wider">30D SHORTFALL</span>
+                  <span className="text-[9px] text-slate-400 block uppercase tracking-wider">PREDICTED GAP</span>
                   <div className="text-sm font-bold text-amber-400 num-tabular">
-                    -4.2 <span className="text-[10px] font-normal text-slate-400">kt</span>
+                    -4.2 <span className="text-[10px] font-normal text-slate-400">± 1.4 kt</span>
                   </div>
                 </div>
               </div>

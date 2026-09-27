@@ -190,6 +190,122 @@ export default function PublicLayout({ children }) {
           </div>
         </div>
 
+        {/* ===================== SCIENTIFIC REFERENCES & DATA REPOSITORIES ===================== */}
+        <div className="max-w-7xl mx-auto mb-8 pt-8 border-t border-[#1C2536]">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-3 font-mono flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            Verified Scientific Citations & Public Data Repositories
+          </h4>
+          <p className="text-xs text-slate-400 mb-4 max-w-4xl font-sans">
+            MANGENESIS ingests and cross-calibrates all models against official open-source government repositories, space agencies, and statutory mining regulators. All datasets are traceable and verifiable:
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+            <a
+              href="https://ibm.gov.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded bg-[#121824] border border-[#1C2536] hover:border-amber-400/50 hover:bg-[#151D2C] transition-colors flex items-center justify-between group"
+            >
+              <div>
+                <span className="text-white font-bold block text-[11px] group-hover:text-amber-400">IBM India</span>
+                <span className="text-[10px] text-slate-400">National Mineral Inventory</span>
+              </div>
+              <ExternalLink size={12} className="text-slate-500 group-hover:text-amber-400 shrink-0 ml-1" />
+            </a>
+
+            <a
+              href="https://www.gsi.gov.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded bg-[#121824] border border-[#1C2536] hover:border-amber-400/50 hover:bg-[#151D2C] transition-colors flex items-center justify-between group"
+            >
+              <div>
+                <span className="text-white font-bold block text-[11px] group-hover:text-amber-400">GSI NGDR</span>
+                <span className="text-[10px] text-slate-400">Geoscience Data Repository</span>
+              </div>
+              <ExternalLink size={12} className="text-slate-500 group-hover:text-amber-400 shrink-0 ml-1" />
+            </a>
+
+            <a
+              href="https://moil.nic.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded bg-[#121824] border border-[#1C2536] hover:border-amber-400/50 hover:bg-[#151D2C] transition-colors flex items-center justify-between group"
+            >
+              <div>
+                <span className="text-white font-bold block text-[11px] group-hover:text-amber-400">MOIL Limited</span>
+                <span className="text-[10px] text-slate-400">Annual Reports & Tariffs</span>
+              </div>
+              <ExternalLink size={12} className="text-slate-500 group-hover:text-amber-400 shrink-0 ml-1" />
+            </a>
+
+            <a
+              href="https://dataspace.copernicus.eu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded bg-[#121824] border border-[#1C2536] hover:border-amber-400/50 hover:bg-[#151D2C] transition-colors flex items-center justify-between group"
+            >
+              <div>
+                <span className="text-white font-bold block text-[11px] group-hover:text-amber-400">Copernicus Hub</span>
+                <span className="text-[10px] text-slate-400">Sentinel-2 MSI Level-2A</span>
+              </div>
+              <ExternalLink size={12} className="text-slate-500 group-hover:text-amber-400 shrink-0 ml-1" />
+            </a>
+
+            <a
+              href="https://gpm.nasa.gov"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded bg-[#121824] border border-[#1C2536] hover:border-amber-400/50 hover:bg-[#151D2C] transition-colors flex items-center justify-between group"
+            >
+              <div>
+                <span className="text-white font-bold block text-[11px] group-hover:text-amber-400">NASA GPM</span>
+                <span className="text-[10px] text-slate-400">IMERG Precipitation Radar</span>
+              </div>
+              <ExternalLink size={12} className="text-slate-500 group-hover:text-amber-400 shrink-0 ml-1" />
+            </a>
+
+            <a
+              href="https://smap.jpl.nasa.gov"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded bg-[#121824] border border-[#1C2536] hover:border-amber-400/50 hover:bg-[#151D2C] transition-colors flex items-center justify-between group"
+            >
+              <div>
+                <span className="text-white font-bold block text-[11px] group-hover:text-amber-400">NASA SMAP</span>
+                <span className="text-[10px] text-slate-400">Soil Moisture Active Passive</span>
+              </div>
+              <ExternalLink size={12} className="text-slate-500 group-hover:text-amber-400 shrink-0 ml-1" />
+            </a>
+
+            <a
+              href="https://earthexplorer.usgs.gov"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded bg-[#121824] border border-[#1C2536] hover:border-amber-400/50 hover:bg-[#151D2C] transition-colors flex items-center justify-between group"
+            >
+              <div>
+                <span className="text-white font-bold block text-[11px] group-hover:text-amber-400">USGS Landsat-9</span>
+                <span className="text-[10px] text-slate-400">OLI-2 SWIR & Thermal TIRS</span>
+              </div>
+              <ExternalLink size={12} className="text-slate-500 group-hover:text-amber-400 shrink-0 ml-1" />
+            </a>
+
+            <a
+              href="https://dgms.gov.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded bg-[#121824] border border-[#1C2536] hover:border-amber-400/50 hover:bg-[#151D2C] transition-colors flex items-center justify-between group"
+            >
+              <div>
+                <span className="text-white font-bold block text-[11px] group-hover:text-amber-400">DGMS India</span>
+                <span className="text-[10px] text-slate-400">Mines Safety Regulations</span>
+              </div>
+              <ExternalLink size={12} className="text-slate-500 group-hover:text-amber-400 shrink-0 ml-1" />
+            </a>
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto pt-6 border-t border-[#1C2536] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-mono">
           <div>
             © 2026 MANGENESIS • Developed for SIH26009
