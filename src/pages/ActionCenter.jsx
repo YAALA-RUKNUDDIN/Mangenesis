@@ -10,7 +10,9 @@ import {
   RotateCcw,
   ExternalLink,
   ShieldCheck,
+  CircleDollarSign,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useScenario } from '../context/ScenarioContext';
 import KPICard from '../components/ui/KPICard';
 import Button from '../components/ui/Button';
@@ -31,6 +33,7 @@ export default function ActionCenter() {
       secondaryFactor: 'Monsoon rainfall (38mm) saturated southern haul road.',
       recommendedAction: 'Reassign auxiliary Excavator EX-02 from waste stripping to high-grade Bench 3. Reroute haul traffic via eastern all-weather bypass.',
       expectedImprovement: '+8.4% Recovery (+3.9 kt)',
+      financialSavings: '₹4.87 Crores',
       confidence: 91.2,
       impact: 'Mitigates 78% of projected monthly production gap',
       status: 'Pending', // 'Pending' | 'Accepted' | 'Assigned' | 'In Progress' | 'Completed'
@@ -49,6 +52,7 @@ export default function ActionCenter() {
       secondaryFactor: 'Current drill density is 80m (insufficient for UNFC 111 Measured category).',
       recommendedAction: 'Execute 3 inclined core holes (DP-G07, G08, G09) at 35m spacing to convert 1.7 Mt Inferred ore into Measured reserve.',
       expectedImprovement: '+1.7 Mt Proved Reserve',
+      financialSavings: '₹21.25 Crores Asset Valuation',
       confidence: 88.5,
       impact: 'Upgrades JORC/UNFC compliance and secures FY27 mine plan',
       status: 'Accepted',
@@ -68,6 +72,7 @@ export default function ActionCenter() {
       secondaryFactor: 'Secondary rock breaking costs increased by 22% due to coarse fragmentation.',
       recommendedAction: 'Shift to 25ms electronic delay wave sequence with deck charging to reduce peak particle velocity (PPV) below 5 mm/s.',
       expectedImprovement: '+14% Muckpile Diggability',
+      financialSavings: '₹86 Lakhs / yr',
       confidence: 94.0,
       impact: 'Saves 2.4 hrs per day in excavator cycle times',
       status: 'In Progress',
@@ -89,6 +94,7 @@ export default function ActionCenter() {
       secondaryFactor: 'High-grade ore pit faces delayed by water clearing.',
       recommendedAction: 'Blend 30% of Stockpile 3 with 70% high-grade (44% Mn) ore from Block A to achieve required 38.5% plant feed spec.',
       expectedImprovement: '+₹54 Lakh Saved Waste',
+      financialSavings: '₹54 Lakhs Penalties Avoided',
       confidence: 96.5,
       impact: 'Eliminates 12 kt of sub-grade stock while maintaining blend',
       status: 'Completed',
@@ -147,10 +153,23 @@ export default function ActionCenter() {
             Turn predictions into verifiable operational actions with quantified recovery potential and state progression tracking for {activeMineData.name || 'Gumgaon Mine'}.
           </p>
         </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <Link to="/app/roi-dashboard">
+            <Button
+              variant="secondary"
+              size="sm"
+              icon={CircleDollarSign}
+              className="text-xs"
+            >
+              Full Annual ROI Breakdown (₹18.42 Cr)
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* KPI Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 font-mono">
         <KPICard
           title="Active Interventions"
           value={recommendations.length.toString()}
@@ -185,6 +204,17 @@ export default function ActionCenter() {
           variant="mineral"
           icon={TrendingUp}
         />
+        <Link to="/app/roi-dashboard" className="block transition-transform hover:-translate-y-0.5">
+          <KPICard
+            title="Preserved Financial Value"
+            value="₹4.87"
+            unit="Cr"
+            trend={{ value: "₹18.4 Cr/yr Run-Rate", positive: true }}
+            context="Click for Cost-Benefit breakdown"
+            variant="healthy"
+            icon={CircleDollarSign}
+          />
+        </Link>
       </div>
 
       {/* Recommendations Cards Grid (Section 36 & 37) */}
@@ -284,9 +314,14 @@ export default function ActionCenter() {
                 </div>
 
                 <div className="bg-amber-500/10 p-3 rounded-[8px] border border-amber-500/25 space-y-1">
-                  <span className="text-[10px] text-amber-400 uppercase font-bold block">
-                    Expected Operational Impact:
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] text-amber-400 uppercase font-bold block">
+                      Expected Impact:
+                    </span>
+                    <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/30">
+                      Value: {rec.financialSavings}
+                    </span>
+                  </div>
                   <p className="text-amber-200 font-bold text-sm leading-snug">
                     {rec.expectedImprovement}
                   </p>

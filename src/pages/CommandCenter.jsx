@@ -18,6 +18,7 @@ import {
   ChevronRight,
   Download,
   FileText,
+  CircleDollarSign,
 } from 'lucide-react';
 import { useScenario } from '../context/ScenarioContext';
 import KPICard from '../components/ui/KPICard';
@@ -81,7 +82,7 @@ export default function CommandCenter() {
               <StatusBadge status="critical" label="IMMEDIATE ATTENTION" size="xs" />
             </div>
             <p className="text-xs text-slate-300 font-sans mt-0.5 max-w-2xl leading-relaxed">
-              Hydraulic pump pressure drop combined with 38mm monsoonal rainfall risks a <strong>4.2 kt monthly output shortfall</strong> within 48 hours.
+              Hydraulic pump pressure drop combined with 38mm monsoonal rainfall risks a <strong>4.2 kt monthly output shortfall (₹5.25 Cr revenue at risk)</strong> within 48 hours.
             </p>
           </div>
         </div>
@@ -100,14 +101,14 @@ export default function CommandCenter() {
           </Button>
           <Link to="/app/recommendations">
             <Button variant="primary" size="sm" iconRight={ArrowRight}>
-              Execute Prescribed Action (+3.9 kt Recovery)
+              Execute Prescribed Action (+3.9 kt • ₹4.87 Cr Recovery)
             </Button>
           </Link>
         </div>
       </div>
 
       {/* ===================== CORE KPI ROW (DECISION > INSIGHT > DATA) ===================== */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 font-mono">
         <KPICard
           title="Total Proved Reserve"
           value="4.82"
@@ -139,11 +140,22 @@ export default function CommandCenter() {
           title="Actionable Recovery"
           value="+3.9"
           unit="kt"
-          trend={{ value: "78% Deficit Recovery", positive: true }}
+          trend={{ value: "₹4.87 Cr Preserved", positive: true }}
           context="Via Excavator EX-02 dispatch"
           variant="healthy"
           icon={CheckSquare}
         />
+        <Link to="/app/roi-dashboard" className="block transition-transform hover:-translate-y-0.5">
+          <KPICard
+            title="Annual Value Saved"
+            value="₹18.42"
+            unit="Cr"
+            trend={{ value: "₹126.2 Cr Enterprise", positive: true }}
+            context="Click for full ROI breakdown"
+            variant="healthy"
+            icon={CircleDollarSign}
+          />
+        </Link>
       </div>
 
       {/* ===================== PRIMARY DUAL INTELLIGENCE SECTIONS ===================== */}

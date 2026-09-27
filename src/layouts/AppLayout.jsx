@@ -26,6 +26,7 @@ import {
   Satellite,
   WifiOff,
   Zap,
+  CircleDollarSign,
 } from 'lucide-react';
 import { useScenario } from '../context/ScenarioContext';
 import Button from '../components/ui/Button';
@@ -99,9 +100,10 @@ export default function AppLayout({ children }) {
       ],
     },
     {
-      group: 'GOVERNANCE',
+      group: 'VALUE & GOVERNANCE',
       items: [
-        { label: 'Reports', path: '/app/reports', icon: FileText },
+        { label: 'ROI & Value Saved', path: '/app/roi-dashboard', icon: CircleDollarSign },
+        { label: 'Executive Reports', path: '/app/reports', icon: FileText },
         { label: 'Data Health', path: '/app/data-health', icon: Activity },
       ],
     },
@@ -122,6 +124,7 @@ export default function AppLayout({ children }) {
     if (path === '/app/production-forecast') return 'Production Forecast & Shortfall';
     if (path === '/app/risk-intelligence') return 'Production Risk Intelligence';
     if (path === '/app/recommendations') return 'Action Center & Prescriptions';
+    if (path === '/app/roi-dashboard') return 'Annual ROI & Financial Value Realization';
     if (path === '/app/reports') return 'Executive Reports & Compliance';
     if (path === '/app/data-health') return 'Data Pipeline Health & Lineage';
     if (path === '/app/settings') return 'Platform & Workspace Settings';
@@ -405,6 +408,16 @@ export default function AppLayout({ children }) {
                 </>
               )}
             </div>
+
+            {/* Annual Value Saved Quick Badge */}
+            <Link
+              to="/app/roi-dashboard"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-mono text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-colors cursor-pointer group"
+              title="Click to view Annual Savings & Economic ROI Breakdown (₹18.42 Cr Single Mine / ₹126.2 Cr Enterprise)"
+            >
+              <CircleDollarSign className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
+              <span>SAVED: <strong className="text-white font-bold">₹18.4 Cr/yr</strong></span>
+            </Link>
 
             {/* Orbital Space Telemetry Modal Trigger */}
             <button
