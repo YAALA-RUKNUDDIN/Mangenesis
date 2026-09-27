@@ -316,7 +316,7 @@ export default function MineMap({
 
   return (
     <div
-      className={`relative w-full rounded-xl overflow-hidden border border-[#242C3E] bg-[#080A0F] ${className}`}
+      className={`relative w-full rounded-xl overflow-hidden border border-[#242C3E] bg-[#080A0F] isolate z-0 ${className}`}
       style={{ height }}
     >
       <MapContainer
