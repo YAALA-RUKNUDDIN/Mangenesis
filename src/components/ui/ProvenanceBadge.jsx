@@ -17,8 +17,10 @@ export default function ProvenanceBadge({
   uncertainty = '',
   size = 'sm',
   showSource = true,
+  showTooltip = true,
   className = '',
 }) {
+  const shouldShowSource = showSource && showTooltip !== false;
   const configs = {
     government: {
       label: 'Govt Verified',
@@ -79,7 +81,7 @@ export default function ProvenanceBadge({
         <Icon className="w-3 h-3 shrink-0" />
         <span>{cfg.label}</span>
       </span>
-      {showSource && displaySource && (
+      {shouldShowSource && displaySource && (
         <span className="text-[10px] text-slate-400 font-mono truncate min-w-0 flex-1 opacity-80">
           • {displaySource}
         </span>
