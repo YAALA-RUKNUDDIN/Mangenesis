@@ -16,14 +16,19 @@ import {
   CheckCircle2,
   Calendar,
   ChevronRight,
+  Download,
+  FileText,
 } from 'lucide-react';
 import { useScenario } from '../context/ScenarioContext';
 import KPICard from '../components/ui/KPICard';
 import Button from '../components/ui/Button';
 import StatusBadge from '../components/ui/StatusBadge';
 import MineMap from '../components/maps/MineMap';
+import { generateReportPDF } from '../utils/reportPdfGenerator';
 
 export default function CommandCenter() {
+  const [pdfDownloading, setPdfDownloading] = useState(false);
+  const [pdfSuccess, setPdfSuccess] = useState(false);
   const {
     activeMineData,
     activeScenario,
@@ -34,6 +39,31 @@ export default function CommandCenter() {
     resetSimulation,
     simulationStep,
   } = useScenario();
+
+  const handleInstantDossier = () => {
+    setPdfDownloading(true);
+    try {
+      const executiveReport = {
+        id: 'REP-EXEC-01',
+        title: 'Executive Operational Brief & Production Continuity Dossier',
+        category: 'Executive Summary & DGMS Compliance',
+        mine: activeMineData.name || 'Gumgaon Mine',
+        period: 'Q3 FY26 • 2026',
+        generatedDate: new Date().toLocaleString(),
+        status: 'OFFICIAL ACTIONABLE',
+        confidence: 94.6,
+        summary: `Comprehensive AI operational assessment for ${activeMineData.name || 'Gumgaon Mine'}. Projects 42.8 kt output against 47.0 kt quota with +3.9 kt actionable recovery via Excavator EX-02 dispatch under strict DGMS safety compliance.`,
+      };
+      generateReportPDF(executiveReport, activeMineData);
+      setPdfSuccess(true);
+      setTimeout(() => setPdfSuccess(false), 4000);
+    } catch (err) {
+      console.error('PDF export failed:', err);
+      alert('PDF generation encountered an error.');
+    } finally {
+      setPdfDownloading(false);
+    }
+  };
 
   return (
     <div className="space-y-6 max-w-[1600px] mx-auto font-sans">
@@ -56,7 +86,18 @@ export default function CommandCenter() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={Download}
+            onClick={handleInstantDossier}
+            disabled={pdfDownloading}
+            title="Download official signed MOIL compliance dossier"
+            className="text-xs"
+          >
+            {pdfSuccess ? 'Dossier Downloaded!' : pdfDownloading ? 'Generating...' : 'Executive Dossier (PDF)'}
+          </Button>
           <Link to="/app/recommendations">
             <Button variant="primary" size="sm" iconRight={ArrowRight}>
               Execute Prescribed Action (+3.9 kt Recovery)

@@ -153,6 +153,10 @@ export default function MineMap({
   selectedZone: propSelectedZone,
   onZoneSelect,
   className = '',
+  layerMode = 'all',
+  selectedFormation = null,
+  depthFilter = null,
+  minGradeFilter = null,
 }) {
   const { activeMineData, liveZones } = useScenario();
   const mapCenter = activeMineData.center || [activeMineData.lat || 21.155, activeMineData.lon || 79.090];
@@ -264,6 +268,52 @@ export default function MineMap({
   const drillPoints = activeMineData.drill_points || [];
   const mineRoads = activeMineData.roads || [];
 
+  // Filter drill points by depth bench and minimum cutoff grade
+  const filteredDrillPoints = drillPoints.filter((dp) => {
+    if (depthFilter && dp.depth && dp.depth > depthFilter) return false;
+    if (minGradeFilter && dp.grade) {
+      const g = parseFloat(dp.grade);
+      if (!isNaN(g) && g < minGradeFilter) return false;
+    }
+    return true;
+  });
+
+  // Highlight or style zones based on selected stratigraphic formation
+  const displayZones = activeZones.map((z) => {
+    if (!selectedFormation) return z;
+    const formText = `${z.name} ${z.geological_formation || ''}`.toLowerCase();
+    let isMatch = false;
+    let customColor = z.color;
+
+    if (
+      selectedFormation === 'mansar' &&
+      (formText.includes('mansar') || formText.includes('gondite') || formText.includes('schist') || formText.includes('a-12'))
+    ) {
+      isMatch = true;
+      customColor = '#10B981'; // Vibrant emerald ore horizon
+    } else if (
+      selectedFormation === 'chorbaoli' &&
+      (formText.includes('chorbaoli') || formText.includes('quartzite') || formText.includes('d-09'))
+    ) {
+      isMatch = true;
+      customColor = '#38BDF8'; // Sky blue hanging wall cap
+    } else if (
+      selectedFormation === 'tirodi' &&
+      (formText.includes('tirodi') || formText.includes('gneiss') || formText.includes('basement') || formText.includes('c-03'))
+    ) {
+      isMatch = true;
+      customColor = '#94A3B8'; // Slate footwall
+    }
+
+    return {
+      ...z,
+      color: isMatch ? customColor : '#475569',
+      weight: isMatch ? 2.5 : 1,
+      fillOpacity: isMatch ? 0.55 : 0.12,
+      isFormationMatch: isMatch,
+    };
+  });
+
   return (
     <div
       className={`relative w-full rounded-xl overflow-hidden border border-[#242C3E] bg-[#080A0F] ${className}`}
@@ -303,7 +353,7 @@ export default function MineMap({
         <ZoomAndCenterControls targetCenter={mapCenter} targetZoom={activeMineData.zoom || 14} />
 
         {/* 1. NDVI Layer */}
-        {isLayerActive('ndvi') && (
+        {(isLayerActive('ndvi') || layerMode === 'ndvi') && (
           <Polygon
             positions={[
               [mapCenter[0] + 0.008, mapCenter[1] - 0.015],
@@ -313,16 +363,44 @@ export default function MineMap({
             ]}
             pathOptions={{
               fillColor: '#10B981',
-              fillOpacity: 0.22,
+              fillOpacity: 0.32,
               color: '#10B981',
-              weight: 1.2,
+              weight: 1.8,
               dashArray: '2, 4',
             }}
           >
             <Tooltip sticky className="dark-map-tooltip">
               <div className="text-xs text-slate-200">
-                <div className="font-semibold text-emerald-400">Sentinel-2 NDVI Layer</div>
-                <div className="text-[11px] text-slate-400">Mineral Alteration Proxy: 0.38</div>
+                <div className="font-semibold text-emerald-400">Sentinel-2 NDVI Alteration Layer</div>
+                <div className="text-[11px] text-slate-300">Vegetation Stress Proxy: <strong className="text-emerald-300">0.34 NDVI</strong></div>
+                <div className="text-[10px] text-slate-400">Surface metal toxicity outcrop indicator</div>
+              </div>
+            </Tooltip>
+          </Polygon>
+        )}
+
+        {/* 1B. SWIR 11/12 Manganese Oxide Alteration Anomaly Layer */}
+        {(isLayerActive('swir') || layerMode === 'alteration') && (
+          <Polygon
+            positions={[
+              [mapCenter[0] + 0.006, mapCenter[1] - 0.016],
+              [mapCenter[0] + 0.018, mapCenter[1] - 0.002],
+              [mapCenter[0] + 0.012, mapCenter[1] + 0.021],
+              [mapCenter[0] - 0.004, mapCenter[1] + 0.007],
+            ]}
+            pathOptions={{
+              fillColor: '#F59E0B',
+              fillOpacity: 0.45,
+              color: '#F59E0B',
+              weight: 2.5,
+              dashArray: '6, 6',
+            }}
+          >
+            <Tooltip sticky className="dark-map-tooltip">
+              <div className="text-xs text-slate-200 p-1">
+                <div className="font-bold text-amber-400">Sentinel-2 SWIR 11/12 Alteration Anomaly</div>
+                <div className="text-[11px] text-slate-300">Absorption Ratio: <strong className="text-amber-300">2.18x background</strong></div>
+                <div className="text-[10px] text-emerald-400 font-mono mt-0.5">High Manganese Pyrolusite / Braunite Bed Correlation</div>
               </div>
             </Tooltip>
           </Polygon>
@@ -418,8 +496,8 @@ export default function MineMap({
         ))}
 
         {/* 6. Drill Hole Core Assay Markers */}
-        {isLayerActive('drillData') &&
-          drillPoints.map((dp) => (
+        {(isLayerActive('drillData') || layerMode === 'drilling' || layerMode === 'all') &&
+          filteredDrillPoints.map((dp) => (
             <Marker
               key={dp.id}
               position={[dp.lat, dp.lng]}
@@ -483,15 +561,50 @@ export default function MineMap({
           ))}
 
         {/* 7. Reserve Zones */}
-        {activeZones.map((zone) => (
-          <ZoneOverlay
-            key={zone.id}
-            zone={zone}
-            isSelected={selectedZone?.id === zone.id}
-            onSelect={handleZoneSelect}
-          />
-        ))}
+        {layerMode !== 'drilling' &&
+          displayZones.map((zone) => (
+            <ZoneOverlay
+              key={zone.id}
+              zone={zone}
+              isSelected={selectedZone?.id === zone.id || zone.isFormationMatch}
+              onSelect={handleZoneSelect}
+            />
+          ))}
       </MapContainer>
+
+      {/* Dynamic Exploration Filter HUD Overlay */}
+      {(layerMode !== 'all' || selectedFormation || depthFilter || minGradeFilter) && (
+        <div className="absolute top-3 left-3 z-[1000] bg-[#0A0D14]/92 backdrop-blur-md border border-[#243046] px-3 py-1.5 rounded-[8px] text-[11px] font-mono text-slate-300 shadow-2xl flex flex-wrap items-center gap-2 pointer-events-auto">
+          <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+          <span className="font-bold text-white uppercase">
+            {layerMode === 'alteration'
+              ? 'SWIR 11/12 Alteration Active'
+              : layerMode === 'ndvi'
+              ? 'Sentinel-2 NDVI Stress Active'
+              : layerMode === 'drilling'
+              ? `Drill Collars (${filteredDrillPoints.length} Visible)`
+              : 'All Horizons'}
+          </span>
+          {selectedFormation && (
+            <>
+              <span className="text-slate-600">|</span>
+              <span className="text-amber-400 capitalize font-semibold">{selectedFormation} Formation</span>
+            </>
+          )}
+          {depthFilter && (
+            <>
+              <span className="text-slate-600">|</span>
+              <span className="text-sky-400">Bench: 0 to -{depthFilter}m</span>
+            </>
+          )}
+          {minGradeFilter && (
+            <>
+              <span className="text-slate-600">|</span>
+              <span className="text-emerald-400">≥{minGradeFilter}% Mn</span>
+            </>
+          )}
+        </div>
+      )}
 
       {/* Floating Controls */}
       {showControls && (

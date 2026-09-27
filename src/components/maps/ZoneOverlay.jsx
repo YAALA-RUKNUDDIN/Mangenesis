@@ -37,9 +37,9 @@ export default function ZoneOverlay({ zone, isSelected, onSelect }) {
         positions={zone.coordinates}
         pathOptions={{
           fillColor: zone.color,
-          fillOpacity: isSelected ? 0.35 : 0.18,
+          fillOpacity: zone.fillOpacity !== undefined ? zone.fillOpacity : isSelected ? 0.45 : 0.22,
           color: zone.color,
-          weight: isSelected ? 2 : 1.2,
+          weight: zone.weight !== undefined ? zone.weight : isSelected ? 2.5 : 1.5,
           dashArray: isSelected ? undefined : '3, 3',
         }}
         eventHandlers={{

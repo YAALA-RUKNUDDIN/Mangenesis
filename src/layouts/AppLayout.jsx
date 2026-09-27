@@ -23,10 +23,15 @@ import {
   Search,
   PanelLeftClose,
   PanelLeft,
+  Satellite,
+  WifiOff,
+  Zap,
 } from 'lucide-react';
 import { useScenario } from '../context/ScenarioContext';
 import Button from '../components/ui/Button';
 import CommandPalette from '../components/ui/CommandPalette';
+import SatelliteTelemetryModal from '../components/ui/SatelliteTelemetryModal';
+import EdgeGatewayModal from '../components/ui/EdgeGatewayModal';
 
 export default function AppLayout({ children }) {
   const location = useLocation();
@@ -56,6 +61,9 @@ export default function AppLayout({ children }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [mineDropdownOpen, setMineDropdownOpen] = useState(false);
+  const [satelliteModalOpen, setSatelliteModalOpen] = useState(false);
+  const [edgeModalOpen, setEdgeModalOpen] = useState(false);
+  const [isOfflineSimulated, setIsOfflineSimulated] = useState(false);
 
   // Global Ctrl+K / Cmd+K listener
   useEffect(() => {
@@ -398,10 +406,43 @@ export default function AppLayout({ children }) {
               )}
             </div>
 
+            {/* Orbital Space Telemetry Modal Trigger */}
+            <button
+              onClick={() => setSatelliteModalOpen(true)}
+              className="hidden md:flex items-center gap-1.5 px-2 py-1 rounded-[6px] bg-sky-500/10 border border-sky-500/30 text-[10px] font-mono text-sky-300 hover:bg-sky-500/20 transition-colors cursor-pointer"
+              title="Inspect live satellite telemetry (Sentinel-2, Landsat-9, GPM, SMAP)"
+            >
+              <Satellite className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
+              <span>ORBITAL: LIVE</span>
+            </button>
+
+            {/* In-Pit Edge Gateway Offline Sync Trigger */}
+            <button
+              onClick={() => setEdgeModalOpen(true)}
+              className={`hidden lg:flex items-center gap-1.5 px-2 py-1 rounded-[6px] border text-[10px] font-mono transition-colors cursor-pointer ${
+                isOfflineSimulated
+                  ? 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20'
+                  : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20'
+              }`}
+              title="In-Pit Edge Gateway & Autonomous Offline Sync"
+            >
+              {isOfflineSimulated ? (
+                <>
+                  <WifiOff className="w-3 h-3 text-amber-400 animate-pulse" />
+                  <span>IN-PIT: OFFLINE</span>
+                </>
+              ) : (
+                <>
+                  <Zap className="w-3 h-3 text-emerald-400" />
+                  <span>IN-PIT: ONLINE</span>
+                </>
+              )}
+            </button>
+
             {/* Data Freshness Indicator */}
-            <div className="hidden md:flex items-center gap-1.5 text-[11px] font-mono text-slate-400 bg-[#0D111A] px-2 py-1 rounded-[6px] border border-[#1C2536]">
+            <div className="hidden xl:flex items-center gap-1.5 text-[11px] font-mono text-slate-400 bg-[#0D111A] px-2 py-1 rounded-[6px] border border-[#1C2536]">
               <Clock className="w-3 h-3 text-sky-400" />
-              <span>LIVE • 14m ago</span>
+              <span>SYNCED</span>
             </div>
           </div>
         </header>
@@ -496,6 +537,21 @@ export default function AppLayout({ children }) {
           </div>
         </div>
       )}
+
+      {/* Satellite Telemetry Inspector Modal */}
+      <SatelliteTelemetryModal
+        isOpen={satelliteModalOpen}
+        onClose={() => setSatelliteModalOpen(false)}
+        activeMineData={activeMineData}
+      />
+
+      {/* Edge Gateway & In-Pit Offline Sync Modal */}
+      <EdgeGatewayModal
+        isOpen={edgeModalOpen}
+        onClose={() => setEdgeModalOpen(false)}
+        isOfflineSimulated={isOfflineSimulated}
+        setIsOfflineSimulated={setIsOfflineSimulated}
+      />
     </div>
   );
 }

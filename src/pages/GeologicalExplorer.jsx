@@ -162,14 +162,38 @@ export default function GeologicalExplorer() {
 
         {/* Center Column: Large Interactive Map (6 cols) */}
         <div className="lg:col-span-6 bg-[#0D111A] border border-[#243046] rounded-[16px] overflow-hidden">
-          <div className="p-3 bg-[#0A0D14] border-b border-[#1C2536] flex items-center justify-between text-xs font-mono">
-            <span className="text-slate-300 font-bold">
-              EXPLORATION MAP • {activeMineData.name || 'Gumgaon'}
-            </span>
-            <span className="text-sky-400 text-[11px]">Filtered to -{depthFilter}m Depth</span>
+          <div className="p-3 bg-[#0A0D14] border-b border-[#1C2536] flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-slate-200 font-bold">
+                EXPLORATION MAP • {activeMineData.name || 'Gumgaon'}
+              </span>
+            </div>
+            <div className="flex items-center gap-3 text-[11px]">
+              <span className="text-amber-400 font-semibold">
+                {activeLayerMode === 'alteration'
+                  ? 'SWIR 11/12 Anomaly'
+                  : activeLayerMode === 'ndvi'
+                  ? 'NDVI Alteration'
+                  : activeLayerMode === 'drilling'
+                  ? 'Core Assays Only'
+                  : 'All Horizons'}
+              </span>
+              <span className="text-slate-600">•</span>
+              <span className="text-sky-400">Bench: 0 to -{depthFilter}m</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-emerald-400">Cutoff: ≥{minGradeFilter}% Mn</span>
+            </div>
           </div>
           <div className="h-[520px] w-full relative">
-            <MineMap height="100%" className="w-full h-full" />
+            <MineMap
+              height="100%"
+              className="w-full h-full"
+              layerMode={activeLayerMode}
+              selectedFormation={selectedFormation}
+              depthFilter={depthFilter}
+              minGradeFilter={minGradeFilter}
+            />
           </div>
         </div>
 
