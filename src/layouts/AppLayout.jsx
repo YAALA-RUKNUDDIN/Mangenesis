@@ -33,6 +33,7 @@ import Button from '../components/ui/Button';
 import CommandPalette from '../components/ui/CommandPalette';
 import SatelliteTelemetryModal from '../components/ui/SatelliteTelemetryModal';
 import EdgeGatewayModal from '../components/ui/EdgeGatewayModal';
+import MangenesisCopilot from '../components/copilot/MangenesisCopilot';
 
 export default function AppLayout({ children }) {
   const location = useLocation();
@@ -565,6 +566,9 @@ export default function AppLayout({ children }) {
         isOfflineSimulated={isOfflineSimulated}
         setIsOfflineSimulated={setIsOfflineSimulated}
       />
+
+      {/* Floating Mangenesis Reasoning AI Copilot */}
+      <MangenesisCopilot />
     </div>
   );
 }
