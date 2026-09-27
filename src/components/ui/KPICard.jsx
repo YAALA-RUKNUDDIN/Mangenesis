@@ -50,39 +50,49 @@ export default function KPICard({
   return (
     <div
       onClick={onClick}
-      className={`bg-[#0D111A] border rounded-[14px] p-4 transition-all flex flex-col justify-between ${variantBorders[variant] || variantBorders.default} ${
+      className={`bg-[#0D111A] border rounded-[14px] p-4 transition-all flex flex-col justify-between overflow-hidden ${variantBorders[variant] || variantBorders.default} ${
         onClick ? 'cursor-pointer hover:bg-[#121824]' : ''
       } ${className}`}
     >
-      <div>
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider font-mono">
+      <div className="min-w-0">
+        <div className="flex items-start justify-between gap-2 mb-1.5">
+          <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider font-mono truncate">
             {title}
           </span>
           {Icon && (
-            <div className={`p-1.5 rounded-[6px] border ${iconColors[variant] || iconColors.default}`}>
+            <div className={`p-1.5 rounded-[6px] border shrink-0 ${iconColors[variant] || iconColors.default}`}>
               <Icon className="w-3.5 h-3.5" />
             </div>
           )}
         </div>
 
-        <div className="flex flex-wrap items-baseline gap-1.5 my-1">
-          <span className="text-2xl md:text-3xl font-bold font-mono text-white tracking-tight num-tabular">
-            {value}
-          </span>
-          {uncertainty && (
-            <span className="text-xs font-mono font-bold text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/30" title="95% Confidence Interval">
-              {uncertainty}
+        <div className="my-1 min-w-0">
+          <div className="flex flex-wrap items-baseline gap-1.5">
+            <span className="text-2xl lg:text-3xl font-bold font-mono text-white tracking-tight num-tabular">
+              {value}
             </span>
+            {unit && <span className="text-xs font-mono text-slate-400 font-normal">{unit}</span>}
+            {uncertainty && uncertainty.length <= 12 && (
+              <span className="text-[10px] font-mono font-semibold text-purple-300 bg-purple-500/15 px-1.5 py-0.5 rounded border border-purple-500/30 shrink-0" title="Statistical Uncertainty Interval">
+                {uncertainty}
+              </span>
+            )}
+          </div>
+          {uncertainty && uncertainty.length > 12 && (
+            <div className="mt-1">
+              <span className="inline-block text-[10px] font-mono font-medium text-purple-300 bg-purple-500/15 px-1.5 py-0.5 rounded border border-purple-500/30 truncate max-w-full" title="Statistical Uncertainty / Sensitivity Range">
+                {uncertainty}
+              </span>
+            </div>
           )}
-          {unit && <span className="text-xs font-mono text-slate-400 font-normal">{unit}</span>}
         </div>
 
         {/* Provenance Metadata Badge */}
         {provenance && (
-          <div className="mt-2">
+          <div className="mt-2.5 w-full min-w-0 overflow-hidden">
             <ProvenanceBadge
-              type={provenance.type || 'government'}
+              tier={provenance.tier || provenance.type}
+              type={provenance.type || provenance.tier}
               source={provenance.source}
               model={provenance.model}
               uncertainty={provenance.uncertainty}

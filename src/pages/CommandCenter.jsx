@@ -118,8 +118,9 @@ export default function CommandCenter() {
           context="UNFC 111 (Proved) + 122 (Probable)"
           timestamp="3D Ordinary Kriging"
           provenance={{
-            tier: 'ai',
-            source: '3D Ordinary Kriging (GSI/IBM Lithology Core Boreholes)',
+            tier: 'prediction',
+            type: 'prediction',
+            source: 'GSI/IBM Core Kriging',
             confidence: 'R² = 0.892 • P90'
           }}
           variant="mineral"
@@ -134,7 +135,8 @@ export default function CommandCenter() {
           timestamp="MOIL Monthly Return"
           provenance={{
             tier: 'government',
-            source: 'MOIL Monthly Return Form F-1 / IBM Stat. 2024-25',
+            type: 'government',
+            source: 'MOIL Form F-1 / IBM',
             confidence: 'Official Recorded'
           }}
           variant="warning"
@@ -147,8 +149,9 @@ export default function CommandCenter() {
           context="Fleet uptime 82% • Bench 3 Water Influx"
           timestamp="In-pit IoT Telemetry"
           provenance={{
-            tier: 'telemetry',
-            source: 'Fleet CAN-bus & Ultrasonic Water Sensor Telemetry',
+            tier: 'observed',
+            type: 'observed',
+            source: 'CAN-bus Fleet IoT',
             confidence: 'Real-time'
           }}
           variant="danger"
@@ -164,7 +167,8 @@ export default function CommandCenter() {
           timestamp="PuLP MILP Solver"
           provenance={{
             tier: 'simulation',
-            source: 'MILP Fleet Dispatch & Haulage Optimization Model',
+            type: 'simulation',
+            source: 'PuLP MILP Dispatch',
             confidence: 'Constrained Opt.'
           }}
           variant="healthy"
@@ -181,7 +185,8 @@ export default function CommandCenter() {
             timestamp="Monte Carlo Sim"
             provenance={{
               tier: 'simulation',
-              source: 'Economic Sensitivity Model (MOIL Price Circular FY25)',
+              type: 'simulation',
+              source: 'MOIL Price Circular FY25',
               confidence: 'Scenario Engine'
             }}
             variant="healthy"

@@ -1,61 +1,66 @@
-import { ShieldCheck, Satellite, Cpu, Calculator, Activity, HelpCircle } from 'lucide-react';
+import { ShieldCheck, Satellite, Cpu, Calculator, Activity } from 'lucide-react';
 
 /**
  * Universal Scientific Data Provenance Badge
  * Classifies every metric on Mangenesis into one of 5 verified tiers:
  * - government: Verified Government Data (IBM, MOIL, GSI NGDR) -> Green
  * - satellite: Satellite Derived (Sentinel-2, Landsat-9, NASA GPM, SMAP) -> Blue
- * - prediction: AI Model Prediction (LightGBM, 3D Kriging, TreeSHAP) -> Purple
+ * - prediction / ai: AI Model Prediction (LightGBM, 3D Kriging, TreeSHAP) -> Purple
  * - simulation: Scenario Simulation (Economic Model, MILP Dispatch) -> Orange
- * - observed: In-Pit Field Telemetry (CAN-bus, IoT sensors, core logs) -> Slate/Cyan
+ * - observed / telemetry: In-Pit Field Telemetry (CAN-bus, IoT sensors, core logs) -> Cyan
  */
 export default function ProvenanceBadge({
-  type = 'government',
+  tier,
+  type,
   source = '',
   model = '',
   uncertainty = '',
   size = 'sm',
+  showSource = true,
   className = '',
 }) {
   const configs = {
     government: {
-      label: 'Verified Government',
+      label: 'Govt Verified',
       defaultSource: 'IBM / MOIL / GSI',
-      badgeClass: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400',
-      dotClass: 'bg-emerald-400',
+      badgeClass: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
       icon: ShieldCheck,
     },
     satellite: {
-      label: 'Satellite Derived',
-      defaultSource: 'ESA Sentinel-2 / NASA GPM',
-      badgeClass: 'bg-sky-500/15 border-sky-500/30 text-sky-400',
-      dotClass: 'bg-sky-400',
+      label: 'Satellite Data',
+      defaultSource: 'Sentinel-2 / GPM',
+      badgeClass: 'bg-sky-500/10 border-sky-500/30 text-sky-400',
       icon: Satellite,
     },
     prediction: {
       label: 'AI Prediction',
       defaultSource: model ? `Model: ${model}` : 'LightGBM / 3D Kriging',
-      badgeClass: 'bg-purple-500/15 border-purple-500/30 text-purple-300',
-      dotClass: 'bg-purple-400',
+      badgeClass: 'bg-purple-500/10 border-purple-500/30 text-purple-300',
       icon: Cpu,
     },
     simulation: {
-      label: 'Scenario Simulation',
-      defaultSource: 'Economic / What-If Model',
-      badgeClass: 'bg-amber-500/15 border-amber-500/30 text-amber-300',
-      dotClass: 'bg-amber-400',
+      label: 'Scenario Sim',
+      defaultSource: 'Economic / What-If',
+      badgeClass: 'bg-amber-500/10 border-amber-500/30 text-amber-300',
       icon: Calculator,
     },
     observed: {
       label: 'Field Telemetry',
-      defaultSource: 'In-Pit IoT / DGMS Log',
-      badgeClass: 'bg-cyan-500/15 border-cyan-500/30 text-cyan-300',
-      dotClass: 'bg-cyan-400',
+      defaultSource: 'CAN-bus / IoT Sensor',
+      badgeClass: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300',
       icon: Activity,
     },
   };
 
-  const cfg = configs[type] || configs.government;
+  const raw = (tier || type || 'government').toLowerCase();
+  const key =
+    raw === 'ai' || raw === 'prediction' ? 'prediction' :
+    raw === 'telemetry' || raw === 'observed' ? 'observed' :
+    raw === 'satellite' ? 'satellite' :
+    raw === 'simulation' ? 'simulation' :
+    'government';
+
+  const cfg = configs[key] || configs.government;
   const Icon = cfg.icon;
   const displaySource = source || cfg.defaultSource;
 
@@ -67,15 +72,20 @@ export default function ProvenanceBadge({
 
   return (
     <div
-      className={`inline-flex items-center font-mono font-medium rounded-[5px] border ${cfg.badgeClass} ${sizeClasses[size]} ${className}`}
-      title={`${cfg.label}: ${displaySource}${uncertainty ? ` (Uncertainty: ${uncertainty})` : ''}`}
+      className={`flex items-center gap-1.5 w-full min-w-0 overflow-hidden ${className}`}
+      title={`${cfg.label}: ${displaySource}${uncertainty ? ` (${uncertainty})` : ''}`}
     >
-      <Icon className="w-3 h-3 shrink-0" />
-      <span className="font-bold uppercase tracking-wider">{cfg.label}</span>
-      <span className="opacity-40">•</span>
-      <span className="truncate max-w-[150px] font-sans opacity-90">{displaySource}</span>
+      <span className={`inline-flex items-center shrink-0 font-mono font-bold uppercase tracking-wider rounded-[4px] border ${cfg.badgeClass} ${sizeClasses[size]}`}>
+        <Icon className="w-3 h-3 shrink-0" />
+        <span>{cfg.label}</span>
+      </span>
+      {showSource && displaySource && (
+        <span className="text-[10px] text-slate-400 font-mono truncate min-w-0 flex-1 opacity-80">
+          • {displaySource}
+        </span>
+      )}
       {uncertainty && (
-        <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-black/30 text-amber-300 ml-0.5">
+        <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-black/40 text-amber-300 shrink-0 border border-amber-500/20">
           {uncertainty}
         </span>
       )}
